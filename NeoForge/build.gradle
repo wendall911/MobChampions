@@ -1,0 +1,111 @@
+plugins {
+    id 'multiloader-loader'
+    id 'net.neoforged.moddev'
+    id 'io.github.goooler.shadow'
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
+}
+
+archivesBaseName = "${mod_id}"
+version = neoforge_mod_version
+
+neoForge {
+    version = neoforge_version
+    parchment {
+        minecraftVersion = parchment_mc_version
+        mappingsVersion = parchment_version
+    }
+    runs {
+        configureEach {
+            systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
+            ideName = "NeoForge ${it.name.capitalize()} (${project.path})" // Unify the run config names with fabric
+        }
+        client {
+            client()
+        }
+        server {
+            server()
+        }
+    }
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+dependencies {
+    implementation group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-neoforge', version: "${spectrelib_version}"
+    jarJar group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-neoforge', version: "${spectrelib_version}"
+
+    // Testing mods
+    //runtimeOnly "curse.maven:configured-457570:5441232"
+    //runtimeOnly "curse.maven:catalogue-459701:5441227"
+}
+
+shadowJar {
+    archiveClassifier = ''
+}
+
+tasks.register('idePostSync') {}
+
+task changelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+    file = new File(project(":").projectDir.toString() + '/build/libs/changelog.txt');
+    templateContent = file(project(":").projectDir.toString() + '/files/templates/changelog.mustache').getText('UTF-8');
+    fromRepo = file("$projectDir");
+    toRef = "HEAD";
+    fromRef = "${minecraft_version}-${last_mod_version}";
+}
+
+def updates = tasks.register("generateUpdates", Copy) {
+    it.outputs.upToDateWhen {
+        false
+    }
+
+    it.from("../files/templates/") {
+        include 'updates.json'
+        expand 'version': version, 'minecraft_version': minecraft_version
+    }
+
+    it.into '../files/'
+}
+
+tasks.generateUpdates.mustRunAfter('jar', 'sourcesJar')
+
+tasks.build.dependsOn('changelog', 'generateUpdates')
+
+def changelogFile = project(":").projectDir.toString() + '/build/libs/changelog.txt'
+def publishFile = project(":").projectDir.toString() + "/NeoForge/build/libs/${archivesBaseName}-${version}.jar"
+
+publishMods {
+    file = file(publishFile)
+    if (file(changelogFile).exists()) {
+        changelog = file(changelogFile).text
+    }
+    type = STABLE
+    modLoaders.add('neoforge')
+
+    if (project.hasProperty('mccurseApiKey')) {
+        curseforge {
+            accessToken = project.mccurseApiKey
+            projectId = project.mccurseId
+            javaVersions.add(JavaVersion.toVersion("${java_version}"))
+            clientRequired = true
+            serverRequired = true
+            minecraftVersions.addAll("${release_versions}".split(','))
+            embeds('spectrelib')
+            optional('catalogue')
+            optional('apothic-enchanting')
+            optional('let-me-despawn')
+        }
+    }
+    if (project.hasProperty('mcModrinthId')) {
+        modrinth {
+            accessToken = project.modrinthKey
+            projectId = project.mcModrinthId
+            minecraftVersions.addAll("${release_versions}".split(','))
+            optional('lmd')
+        }
+    }
+    if (project.hasProperty('mcGithubToken')) {
+    }
+}

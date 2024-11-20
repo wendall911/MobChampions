@@ -1,0 +1,85 @@
+plugins {
+    id 'multiloader-loader'
+    id 'fabric-loom'
+}
+
+version = fabric_mod_version
+archivesBaseName = "${mod_id}"
+
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings(loom.layered {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${parchment_mc_version}:${parchment_version}@zip")
+    })
+
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+
+    modImplementation "com.illusivesoulworks.spectrelib:spectrelib-fabric:${spectrelib_version}"
+    include "com.illusivesoulworks.spectrelib:spectrelib-fabric:${spectrelib_version}"
+
+    modRuntimeOnly("com.terraformersmc:modmenu:${mod_menu_version}") {
+        transitive = false
+    }
+
+    include group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-fabric', version: "${spectrelib_version}"
+
+    // Testing Mods
+    //modRuntimeOnly "curse.maven:mod-XXX:XXX"
+}
+
+loom {
+    mixin {
+        defaultRefmapName.set("${mod_id}.refmap.json")
+    }
+    runs {
+        client {
+            client()
+            setConfigName("Fabric Client")
+            ideConfigGenerated(true)
+            runDir("run")
+        }
+        server {
+            server()
+            setConfigName("Fabric Server")
+            ideConfigGenerated(true)
+            runDir("run")
+        }
+    }
+}
+
+def changelogFile = project(":").projectDir.toString() + '/build/libs/changelog.txt'
+def publishFile = project(":").projectDir.toString() + "/Fabric/build/libs/${archivesBaseName}-${version}.jar"
+
+publishMods {
+    file = file(publishFile)
+    if (file(changelogFile).exists()) {
+        changelog = file(changelogFile).text
+    }
+    type = STABLE
+    modLoaders.add('fabric')
+
+    if (project.hasProperty('mccurseApiKey')) {
+        curseforge {
+            accessToken = project.mccurseApiKey
+            projectId = project.mccurseId
+            javaVersions.add(JavaVersion.toVersion("${java_version}"))
+            clientRequired = true
+            serverRequired = true
+            minecraftVersions.addAll("${release_versions}".split(','))
+            embeds('spectrelib')
+            optional('let-me-despawn')
+        }
+    }
+    if (project.hasProperty('mcModrinthId')) {
+        modrinth {
+            accessToken = project.modrinthKey
+            projectId = project.mcModrinthId
+            minecraftVersions.addAll("${release_versions}".split(','))
+            optional('lmd')
+        }
+    }
+    if (project.hasProperty('mcGithubToken')) {
+    }
+}
