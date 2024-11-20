@@ -11,11 +11,11 @@ import com.illusivesoulworks.spectrelib.config.SpectreConfigSpec;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 
-import mobchampions.MobChampions;
 import net.minecraft.world.item.component.FireworkExplosion;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import mobchampions.MobChampions;
 import mobchampions.util.ColorHelper;
 
 public class ConfigHandler {
@@ -63,6 +63,9 @@ public class ConfigHandler {
         private final SpectreConfigSpec.ConfigValue<String> fireworksShape;
         private final SpectreConfigSpec.IntValue fireworksHeight;
 
+        /*
+         * TODO Figure out why sections aren't working in the GUI ...
+         */
         public Client(SpectreConfigSpec.Builder builder) {
             fireworksChance = builder
                 .comment("Chance of fireworks after creeper explosion.")
