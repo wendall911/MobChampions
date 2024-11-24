@@ -4,6 +4,7 @@
   "package": "mobchampions.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "LevelMixin",
     "LivingEntityMixin"
   ],
   "client": [
