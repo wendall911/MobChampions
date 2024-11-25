@@ -41,6 +41,7 @@ public abstract class LivingEntityMixin extends Entity {
             )
         ) {
             // Check if has mobChampion attachement, check level, add bonus loot
+            // Broadcast death message
             MobChampions.LOGGER.warn("dropping xp");
         }
     }
