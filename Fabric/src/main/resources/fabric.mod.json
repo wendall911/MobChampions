@@ -21,7 +21,7 @@
     "client": [
       "mobchampions.MobChampionsFabricClient"
     ],
-    "spectrelib-config": [
+    "whitenoise-config": [
       "mobchampions.FabricConfigInitializer"
     ]
   },

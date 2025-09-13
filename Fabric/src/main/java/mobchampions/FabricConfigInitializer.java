@@ -1,12 +1,12 @@
 package mobchampions;
 
-import com.illusivesoulworks.spectrelib.config.SpectreConfigInitializer;
+import technology.roughness.whitenoise.config.WhiteNoiseConfigInitializer;
 
-public class FabricConfigInitializer implements SpectreConfigInitializer {
+public class FabricConfigInitializer implements WhiteNoiseConfigInitializer {
 
     @Override
     public void onInitializeConfig() {
-        MobChampions.init();
+        MobChampions.initConfig();
     }
 
 }

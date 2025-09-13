@@ -12,7 +12,7 @@ import mobchampions.network.LaunchFireworksPacket;
 public class MobChampionsNeoForge {
 
     public MobChampionsNeoForge(IEventBus eventBus) {
-        MobChampions.init();
+        MobChampions.initConfig();
     }
 
     private void registerPayloadHandler(final RegisterPayloadHandlersEvent event) {
@@ -23,4 +23,3 @@ public class MobChampionsNeoForge {
     }
 
 }
-

@@ -25,4 +25,11 @@ public class MobChampionsNeoForgeNetwork {
         });
     }
 
+    public void processMobChampionData(NeoForgeMobChampionData msgData, IPayloadContext ctx) {
+        ctx.enqueueWork(() -> {
+            //MobChampionData.process(ctx.);
+        });
+
+    }
+
 }
