@@ -9,7 +9,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import mobchampions.network.LaunchFireworksPacket;
 import mobchampions.util.FireworksHelper;
 
-public class MobChampionsFabricClient implements ClientModInitializer {
+public class MobChampionsClientFabric implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
