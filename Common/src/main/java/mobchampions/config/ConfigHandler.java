@@ -15,7 +15,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import technology.roughness.whitenoise.config.WhiteNoiseConfigSpec;
 
-import mobchampions.MobChampions;
+import mobchampions.common.Translations;
 import mobchampions.util.ColorHelper;
 
 public class ConfigHandler {
@@ -25,8 +25,6 @@ public class ConfigHandler {
 
     private static final Client CLIENT;
     private static final Common COMMON;
-
-    private static final String CONFIG_PREFIX = "gui." + MobChampions.MODID + ".config.";
 
     static {
         final Pair<Client, WhiteNoiseConfigSpec> specPairClient = new WhiteNoiseConfigSpec.Builder().configure(Client::new);
@@ -40,7 +38,6 @@ public class ConfigHandler {
 
     public static void init() {
         Client.decodedColors.clear();
-
 
         CLIENT.fireworksColors.get().forEach((colorString) -> {
             Client.decodedColors.add(ColorHelper.decode(colorString).getRGB());
@@ -60,37 +57,32 @@ public class ConfigHandler {
         private final WhiteNoiseConfigSpec.ConfigValue<List<? extends String>> fireworksColors;
         private final WhiteNoiseConfigSpec.BooleanValue fireworksFlicker;
         private final WhiteNoiseConfigSpec.BooleanValue fireworksTrail;
-        private final WhiteNoiseConfigSpec.ConfigValue<String> fireworksShape;
+        private final WhiteNoiseConfigSpec.EnumValue<FireworkExplosion.Shape> fireworksShape;
         private final WhiteNoiseConfigSpec.IntValue fireworksHeight;
 
-        /*
-         * TODO Figure out why sections aren't working in the GUI ...
-         */
         public Client(WhiteNoiseConfigSpec.Builder builder) {
+            builder.push("visuals");
+
             fireworksChance = builder
-                .comment("Chance of fireworks after creeper explosion.")
-                .translation(CONFIG_PREFIX + "fireworksChance")
+                .comment(getTranslation("fireworkschance"))
                 .defineInRange("fireworksChance", 100, 0, 100);
             fireworksColors = builder
-                .comment("Colors to use in fireworks. Requires hex color. Default: "
-                    + "[\"" + String.join("\", \"", colorStrings) + "\"]")
-                .translation(CONFIG_PREFIX + "fireworksColors")
-                    .defineListAllowEmpty(colorsList, getColors(), hexValidator);
+                .comment(
+                    getTranslation("colors"),
+                    "Default: [\"" + String.join("\", \"", colorStrings) + "\"]"
+                )
+                .defineListAllowEmpty(colorsList, getColors(), hexValidator);
             fireworksFlicker = builder
-                .comment("Fireworks flicker.")
-                .translation(CONFIG_PREFIX + "fireworksFlicker")
+                .comment(getTranslation("fireworksflicker"))
                 .define("fireworksFlicker", true);
             fireworksTrail = builder
-                .comment("Fireworks trail.")
-                .translation(CONFIG_PREFIX + "fireworksTrail")
+                .comment(getTranslation("fireworkstrail"))
                 .define("fireworksTrail", true);
             fireworksShape = builder
-                .comment("Fireworks shape. One of: " + shapes)
-                .translation(CONFIG_PREFIX + "fireworksShape")
-                .defineInList("fireworksShape", "CREEPER", shapes);
+                .comment(getTranslation("fireworksshape"), "One of: " + shapes)
+                .defineEnum("fireworksShape", FireworkExplosion.Shape.CREEPER);
             fireworksHeight = builder
-                .comment("Height above creeper that fireworks explode. Default 5")
-                .translation(CONFIG_PREFIX + "fireworksHeight")
+                .comment(getTranslation("fireworksheight"), "Default 5")
                 .defineInRange("fireworksHeight", 5, 0, 32);
         }
 
@@ -111,7 +103,7 @@ public class ConfigHandler {
         }
 
         public static FireworkExplosion.Shape getFireworksShape() {
-            return FireworkExplosion.Shape.valueOf(CLIENT.fireworksShape.get());
+            return CLIENT.fireworksShape.get();
         }
 
         public static float getFireworksHeight() {
@@ -126,27 +118,19 @@ public class ConfigHandler {
 
     public static class Common {
 
-        private final WhiteNoiseConfigSpec.BooleanValue disableBlockDamage;
-        private final WhiteNoiseConfigSpec.BooleanValue disableItemDamage;
-
         public Common(WhiteNoiseConfigSpec.Builder builder) {
-            disableBlockDamage = builder.comment("Disable block damage on Creeper explosion.")
-                .translation(CONFIG_PREFIX + "disableBlockDamage")
-                .define("disableBlockDamage", true);
+            builder.push("general");
 
-            disableItemDamage = builder.comment("Disable dropped item damage on Creeper explosion.")
-                .translation(CONFIG_PREFIX + "disableItemDamage")
-                .define("disableItemDamage", true);
         }
 
-        public static boolean disableBlockDamage() {
-            return COMMON.disableBlockDamage.get();
-        }
+    }
 
-        public static boolean disableItemDamage() {
-            return COMMON.disableItemDamage.get();
-        }
+    private static String getTranslation(String key) {
+        return Translations.get(key);
+    }
 
+    private static String getTranslation(String key, String... values) {
+        return Translations.get(key, values);
     }
 
 }

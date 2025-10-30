@@ -3,15 +3,17 @@ package mobchampions.network;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 
+import mobchampions.network.MobChampion.Rank;
+
 public interface IMobChampion {
 
-    void setRank(int rank);
+    void setRank(Rank rank);
 
     void setPrefix(int prefix);
 
     void setSuffix(int suffix);
 
-    int getRank();
+    Rank getRank();
 
     int getPrefix();
 

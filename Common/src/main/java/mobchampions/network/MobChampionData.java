@@ -1,5 +1,6 @@
 package mobchampions.network;
 
+import mobchampions.network.MobChampion.Rank;
 import mobchampions.platform.Services;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -10,25 +11,25 @@ import static mobchampions.MobChampions.prefix;
 
 public class MobChampionData {
 
-    public int rank;
+    public Rank rank;
     public int prefix;
     public int suffix;
     public static final ResourceLocation ID = prefix("mob_champion_data");
 
-    public MobChampionData(int rank, int prefix, int suffix) {
+    public MobChampionData(Rank rank, int prefix, int suffix) {
         this.rank = rank;
         this.prefix = prefix;
         this.suffix = suffix;
     }
 
     public MobChampionData(FriendlyByteBuf buf) {
-        rank = buf.readInt();
+        rank = Rank.values()[buf.readInt()];
         prefix = buf.readInt();
         suffix = buf.readInt();
     }
 
     public void write(FriendlyByteBuf buf) {
-        buf.writeInt(rank);
+        buf.writeInt(rank.ordinal());
         buf.writeInt(prefix);
         buf.writeInt(suffix);
     }

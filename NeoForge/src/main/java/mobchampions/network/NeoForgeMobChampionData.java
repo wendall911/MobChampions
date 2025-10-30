@@ -1,5 +1,7 @@
 package mobchampions.network;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -10,14 +12,14 @@ public class NeoForgeMobChampionData extends MobChampion implements CustomPacket
 
     public static final Type<NeoForgeMobChampionData> TYPE = new Type<>(MobChampionData.ID);
     public static final StreamCodec<FriendlyByteBuf, NeoForgeMobChampionData> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.COMPOUND_TAG,
-            NeoForgeMobChampionData::getData,
-            NeoForgeMobChampionData::new
+        ByteBufCodecs.COMPOUND_TAG,
+        NeoForgeMobChampionData::getData,
+        NeoForgeMobChampionData::new
     );
     private final MobChampionData mobChampionData;
     private final CompoundTag data;
 
-    public NeoForgeMobChampionData(int rank, int prefix, int suffix) {
+    public NeoForgeMobChampionData(Rank rank, int prefix, int suffix) {
         mobChampionData = new MobChampionData(rank, prefix, suffix);
 
         this.setRank(mobChampionData.rank);
@@ -42,8 +44,8 @@ public class NeoForgeMobChampionData extends MobChampion implements CustomPacket
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return null;
+    public @NotNull Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
 }

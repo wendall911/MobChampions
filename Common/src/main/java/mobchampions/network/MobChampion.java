@@ -5,12 +5,12 @@ import net.minecraft.nbt.ListTag;
 
 public class MobChampion implements IMobChampion {
 
-    private int rank;
+    private Rank rank;
     private int prefix;
     private int suffix;
 
     @Override
-    public void setRank(int rank) {
+    public void setRank(Rank rank) {
         this.rank = rank;
     }
 
@@ -25,7 +25,7 @@ public class MobChampion implements IMobChampion {
     }
 
     @Override
-    public int getRank() {
+    public Rank getRank() {
         return this.rank;
     }
 
@@ -57,7 +57,7 @@ public class MobChampion implements IMobChampion {
 
     @Override
     public CompoundTag write(CompoundTag tag) {
-        tag.putInt("rank", this.getRank());
+        tag.putInt("rank", this.getRank().ordinal());
         tag.putInt("prefix", this.getPrefix());
         tag.putInt("suffix", this.getSuffix());
 
@@ -66,9 +66,17 @@ public class MobChampion implements IMobChampion {
 
     @Override
     public void read(CompoundTag tag) {
-        this.setRank(tag.getInt("rank"));
+        this.setRank(Rank.values()[tag.getInt("rank")]);
         this.setPrefix(tag.getInt("prefix"));
         this.setSuffix(tag.getInt("suffix"));
+    }
+
+    public enum Rank {
+        NONE,
+        COMMON,
+        UNCOMMON,
+        RARE,
+        LEGENDARY
     }
 
 }

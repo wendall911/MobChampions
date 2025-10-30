@@ -1,5 +1,7 @@
 package mobchampions.components;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -14,12 +16,12 @@ import mobchampions.network.MobChampionData;
 public class ComponentMobChampionData extends MobChampion implements Component, AutoSyncedComponent {
 
     @Override
-    public void readFromNbt(CompoundTag tag, HolderLookup.Provider registryLookup) {
+    public void readFromNbt(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registryLookup) {
         this.read(tag);
     }
 
     @Override
-    public void writeToNbt(CompoundTag tag, HolderLookup.Provider registryLookup) {
+    public void writeToNbt(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registryLookup) {
         this.write(tag);
     }
 

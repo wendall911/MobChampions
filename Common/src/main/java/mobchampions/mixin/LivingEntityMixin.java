@@ -42,6 +42,10 @@ public abstract class LivingEntityMixin extends Entity {
         ) {
             // Check if has mobChampion attachement, check level, add bonus loot
             // Broadcast death message
+            /*
+             * Add bouns XP drop based on mob champion rank.
+             * Bonus loot is in the death loot table.
+             */
             MobChampions.LOGGER.warn("dropping xp");
         }
     }

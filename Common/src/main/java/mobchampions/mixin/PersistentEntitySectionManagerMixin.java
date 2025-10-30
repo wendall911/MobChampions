@@ -16,8 +16,12 @@ public abstract class PersistentEntitySectionManagerMixin<T extends EntityAccess
     @Inject(method = "addEntity", at = @At("RETURN"))
     private void mc$addEntity(T entity, boolean worldGenSpawned, CallbackInfoReturnable<Boolean> cir) {
         if (cir.getReturnValue()) {
-            // If this isn't cancelled, check if entity is whitelisted, then add effects, etc.
-
+            /*
+             * Whitelist should likely be based on entity type tags, or a config list of entity types.
+             * If whitelisted, check for mob champion spawn based on config chance.
+             * Randomly generate an optional mob champion rank. If it is a
+             * champion, apply effects, modify attributes, set custom name, etc.
+             */
             MobChampions.LOGGER.warn("added entity to world");
         }
     }
