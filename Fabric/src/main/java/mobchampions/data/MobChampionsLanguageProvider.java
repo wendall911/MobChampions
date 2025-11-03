@@ -20,6 +20,10 @@ public class MobChampionsLanguageProvider extends FabricLanguageProvider {
     public void generateTranslations(HolderLookup.Provider provider, TranslationBuilder builder) {
         addTranslationTitle(builder, "Mob Champions");
         addTranslation(builder, "visuals");
+        addTranslation(builder, "uncommonchampioncolor");
+        addTranslation(builder, "rarechampioncolor");
+        addTranslation(builder, "epicchampioncolor");
+        addTranslation(builder, "legendarychampioncolor");
         addTranslation(builder, "fireworkschance");
         addTranslation(builder, "fireworksflicker");
         addTranslation(builder, "fireworkstrail");

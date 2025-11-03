@@ -7,3 +7,6 @@ runs
 # IntelliJ
 .idea
 *.iml
+
+# Minecraft datagen
+.cache

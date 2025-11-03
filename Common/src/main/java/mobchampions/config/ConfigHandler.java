@@ -126,13 +126,17 @@ public class ConfigHandler {
 
     public static class Client {
 
-        private static final String[] colorStrings = new String[]{"#3B511A", "#41CD34"};
+        private static final String[] colorStrings = new String[]{"#FFDB00", "#F49000", "#D27C00", "#BD6F00"};
         private static final List<String> colorsList = List.of("colors");
         private static final IntList decodedColors = new IntArrayList();
         private static final Predicate<Object> hexValidator = s -> s instanceof String
             && ((String) s).matches("#[a-fA-F\\d]{6}");
         private static final List<String> shapes = Stream.of(FireworkExplosion.Shape.values()).map(Enum::name).toList();
 
+        private final WhiteNoiseConfigSpec.ConfigValue<String> uncommonChampionColor;
+        private final WhiteNoiseConfigSpec.ConfigValue<String> rareChampionColor;
+        private final WhiteNoiseConfigSpec.ConfigValue<String> epicChampionColor;
+        private final WhiteNoiseConfigSpec.ConfigValue<String> legendaryChampionColor;
         private final WhiteNoiseConfigSpec.IntValue fireworksChance;
         private final WhiteNoiseConfigSpec.ConfigValue<List<? extends String>> fireworksColors;
         private final WhiteNoiseConfigSpec.BooleanValue fireworksFlicker;
@@ -143,6 +147,18 @@ public class ConfigHandler {
         public Client(WhiteNoiseConfigSpec.Builder builder) {
             builder.push("visuals");
 
+            uncommonChampionColor = builder
+                .comment(getTranslation("uncommonchampioncolor"))
+                .define("uncommonChampionColor", "#00F403", hexValidator);
+            rareChampionColor = builder
+                .comment(getTranslation("rarechampioncolor"))
+                .define("rareChampionColor", "#3600FF", hexValidator);
+            epicChampionColor = builder
+                .comment(getTranslation("epicchampioncolor"))
+                .define("epicChampionColor", "#EF00F4", hexValidator);
+            legendaryChampionColor = builder
+                .comment(getTranslation("legendarychampioncolor"))
+                .define("legendaryChampionColor", "#F49000", hexValidator);
             fireworksChance = builder
                 .comment(getTranslation("fireworkschance"))
                 .defineInRange("fireworksChance", 100, 0, 100);
@@ -160,10 +176,26 @@ public class ConfigHandler {
                 .define("fireworksTrail", true);
             fireworksShape = builder
                 .comment(getTranslation("fireworksshape"), "One of: " + shapes)
-                .defineEnum("fireworksShape", FireworkExplosion.Shape.CREEPER);
+                .defineEnum("fireworksShape", FireworkExplosion.Shape.BURST);
             fireworksHeight = builder
                 .comment(getTranslation("fireworksheight"), "Default 5")
                 .defineInRange("fireworksHeight", 5, 0, 32);
+        }
+
+        public static int getUncommonChampionColor() {
+            return ColorHelper.decode(CLIENT.uncommonChampionColor.get()).getRGB();
+        }
+
+        public static int getRareChampionColor() {
+            return ColorHelper.decode(CLIENT.rareChampionColor.get()).getRGB();
+        }
+
+        public static int getEpicChampionColor() {
+            return ColorHelper.decode(CLIENT.epicChampionColor.get()).getRGB();
+        }
+
+        public static int getLegendaryChampionColor() {
+            return ColorHelper.decode(CLIENT.legendaryChampionColor.get()).getRGB();
         }
 
         public static int fireworksChance() {
