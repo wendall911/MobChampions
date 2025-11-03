@@ -27,7 +27,7 @@ public class ComponentMobChampionData extends MobChampion implements Component, 
 
     @Override
     public void writeSyncPacket(RegistryFriendlyByteBuf buf, ServerPlayer recipient) {
-        MobChampionData mobChampionData = new MobChampionData(getEntityId(), getRank(), getPrefix(), getSuffix());
+        MobChampionData mobChampionData = new MobChampionData(getEntityId(), getRank());
 
         mobChampionData.write(buf);
     }
@@ -38,8 +38,6 @@ public class ComponentMobChampionData extends MobChampion implements Component, 
 
         this.setEntityId(mobChampionData.entityId);
         this.setRank(mobChampionData.rank);
-        this.setPrefix(mobChampionData.prefix);
-        this.setSuffix(mobChampionData.suffix);
     }
 
 }

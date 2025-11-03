@@ -37,8 +37,6 @@ public class MobChampionsClientFabric implements ClientModInitializer {
                     if (entity instanceof LivingEntity livingEntity) {
                         Services.PLATFORM.getMobChampionData(livingEntity).ifPresent(mobChampionData -> {
                             mobChampionData.setRank(data.rank);
-                            mobChampionData.setPrefix(data.prefix);
-                            mobChampionData.setSuffix(data.suffix);
                         });
                     }
                 }

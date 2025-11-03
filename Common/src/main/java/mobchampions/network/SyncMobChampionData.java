@@ -19,13 +19,11 @@ public class SyncMobChampionData extends MobChampion implements CustomPacketPayl
     private final MobChampionData mobChampionData;
     private final CompoundTag data;
 
-    public SyncMobChampionData(int entityId, Rank rank, int prefix, int suffix) {
-        mobChampionData = new MobChampionData(entityId, rank, prefix, suffix);
+    public SyncMobChampionData(int entityId, Rank rank) {
+        mobChampionData = new MobChampionData(entityId, rank);
 
         this.setEntityId(mobChampionData.entityId);
         this.setRank(mobChampionData.rank);
-        this.setPrefix(mobChampionData.prefix);
-        this.setSuffix(mobChampionData.suffix);
 
         data = this.write(new CompoundTag());
     }
@@ -33,7 +31,7 @@ public class SyncMobChampionData extends MobChampion implements CustomPacketPayl
     public SyncMobChampionData(CompoundTag tag) {
         this.read(tag);
         data = this.write(new CompoundTag());
-        mobChampionData = new MobChampionData(getEntityId(), getRank(), getPrefix(), getSuffix());
+        mobChampionData = new MobChampionData(getEntityId(), getRank());
     }
 
     public MobChampionData getMobChampionData() {

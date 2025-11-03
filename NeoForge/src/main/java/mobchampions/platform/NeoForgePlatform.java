@@ -33,7 +33,7 @@ public class NeoForgePlatform implements IPlatform {
         getMobChampionData(entity).ifPresent(data -> {
             PacketDistributor.sendToPlayer(
                 player,
-                new SyncMobChampionData(data.getEntityId(), data.getRank(), data.getPrefix(), data.getSuffix())
+                new SyncMobChampionData(data.getEntityId(), data.getRank())
             );
         });
     }

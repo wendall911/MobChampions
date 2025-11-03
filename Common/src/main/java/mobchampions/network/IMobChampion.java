@@ -11,17 +11,9 @@ public interface IMobChampion {
 
     void setRank(Rank rank);
 
-    void setPrefix(int prefix);
-
-    void setSuffix(int suffix);
-
     int getEntityId();
 
     Rank getRank();
-
-    int getPrefix();
-
-    int getSuffix();
 
     ListTag write();
 
