@@ -3,8 +3,11 @@ package mobchampions.network;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
+import mobchampions.platform.Services;
 import mobchampions.util.FireworksHelper;
 
 public class MobChampionsNeoForgeNetwork {
@@ -25,9 +28,22 @@ public class MobChampionsNeoForgeNetwork {
         });
     }
 
-    public void processMobChampionData(NeoForgeMobChampionData msgData, IPayloadContext ctx) {
-        ctx.enqueueWork(() -> {
-            //MobChampionData.process(ctx.);
+    public void processMobChampionData(SyncMobChampionData payload, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            ClientLevel level = Minecraft.getInstance().level;
+            MobChampionData data = payload.getMobChampionData();
+
+            if (level != null) {
+                Entity entity = level.getEntity(data.entityId);
+
+                if (entity instanceof LivingEntity livingEntity) {
+                    Services.PLATFORM.getMobChampionData(livingEntity).ifPresent(mobChampionData -> {
+                        mobChampionData.setRank(data.rank);
+                        mobChampionData.setPrefix(data.prefix);
+                        mobChampionData.setSuffix(data.suffix);
+                    });
+                }
+            }
         });
 
     }

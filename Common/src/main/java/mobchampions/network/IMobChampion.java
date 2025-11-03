@@ -7,11 +7,15 @@ import mobchampions.network.MobChampion.Rank;
 
 public interface IMobChampion {
 
+    void setEntityId(int entityId);
+
     void setRank(Rank rank);
 
     void setPrefix(int prefix);
 
     void setSuffix(int suffix);
+
+    int getEntityId();
 
     Rank getRank();
 

@@ -2,6 +2,8 @@ package mobchampions.config;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -15,7 +17,9 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import technology.roughness.whitenoise.config.WhiteNoiseConfigSpec;
 
+import mobchampions.MobChampions;
 import mobchampions.common.Translations;
+import mobchampions.network.MobChampion.Rank;
 import mobchampions.util.ColorHelper;
 
 public class ConfigHandler {
@@ -36,12 +40,88 @@ public class ConfigHandler {
         COMMON = specPairCommon.getLeft();
     }
 
-    public static void init() {
+    public static void clientInit() {
         Client.decodedColors.clear();
-
         CLIENT.fireworksColors.get().forEach((colorString) -> {
             Client.decodedColors.add(ColorHelper.decode(colorString).getRGB());
         });
+    }
+
+    public static void commonInit() {
+        // Initialize total weight
+        Common.totalWeight = COMMON.commonChampionWeight.get()
+            + COMMON.uncommonChampionWeight.get()
+            + COMMON.rareChampionWeight.get()
+            + COMMON.epicChampionWeight.get()
+            + COMMON.legendaryChampionWeight.get();
+
+        // Initialize champion weight map
+        Common.championWeightMap.clear();
+
+        // Generate ranges based on weights
+        for (Rank rank : Rank.values()) {
+            switch (rank) {
+                case COMMON -> {
+                    if (COMMON.commonChampionWeight.get() >= 0) {
+                        Common.championWeightMap.put(
+                            0,
+                            rank
+                        );
+                    }
+                }
+                case UNCOMMON -> {
+                    if (COMMON.commonChampionWeight.get() >= 0) {
+                        Common.championWeightMap.put(
+                            COMMON.commonChampionWeight.get(),
+                            rank
+                        );
+                    }
+                }
+                case RARE -> {
+                    if (COMMON.commonChampionWeight.get() >= 0) {
+                        Common.championWeightMap.put(
+                            COMMON.commonChampionWeight.get()
+                                + COMMON.uncommonChampionWeight.get(),
+                            rank
+                        );
+                    }
+                }
+                case EPIC -> {
+                    if (COMMON.commonChampionWeight.get() >= 0) {
+                        Common.championWeightMap.put(
+                            COMMON.commonChampionWeight.get()
+                                + COMMON.uncommonChampionWeight.get()
+                                + COMMON.rareChampionWeight.get(),
+                            rank
+                        );
+                    }
+                }
+                case LEGENDARY -> {
+                    if (COMMON.commonChampionWeight.get() >= 0) {
+                        Common.championWeightMap.put(
+                            COMMON.commonChampionWeight.get()
+                                + COMMON.uncommonChampionWeight.get()
+                                + COMMON.rareChampionWeight.get()
+                                + COMMON.epicChampionWeight.get(),
+                            rank
+                        );
+                    }
+                }
+            }
+        }
+
+        MobChampions.LOGGER.warn("Configured champion rank weights: {} {}", Common.championWeightMap, Common.getTotalWeight());
+
+        int randomWeight = MobChampions.RANDOM.nextInt(Common.getTotalWeight());
+        Rank selectedChampion = Common.getChampionByWeight(randomWeight);
+        MobChampions.LOGGER.warn("Random weight: {}, Selected Champion Rank: {}", randomWeight, selectedChampion);
+        MobChampions.LOGGER.warn("Odds: Common: {}%, Uncommon: {}%, Rare: {}%, Epic: {}%, Legendary: {}%",
+            (COMMON.commonChampionWeight.get() * 100.0F) / Common.getTotalWeight(),
+            (COMMON.uncommonChampionWeight.get() * 100.0F) / Common.getTotalWeight(),
+            (COMMON.rareChampionWeight.get() * 100.0F) / Common.getTotalWeight(),
+            (COMMON.epicChampionWeight.get() * 100.0F) / Common.getTotalWeight(),
+            (COMMON.legendaryChampionWeight.get() * 100.0F) / Common.getTotalWeight()
+        );
     }
 
     public static class Client {
@@ -50,7 +130,7 @@ public class ConfigHandler {
         private static final List<String> colorsList = List.of("colors");
         private static final IntList decodedColors = new IntArrayList();
         private static final Predicate<Object> hexValidator = s -> s instanceof String
-            && ((String) s).matches("#[a-zA-Z\\d]{6}");
+            && ((String) s).matches("#[a-fA-F\\d]{6}");
         private static final List<String> shapes = Stream.of(FireworkExplosion.Shape.values()).map(Enum::name).toList();
 
         private final WhiteNoiseConfigSpec.IntValue fireworksChance;
@@ -118,9 +198,40 @@ public class ConfigHandler {
 
     public static class Common {
 
-        public Common(WhiteNoiseConfigSpec.Builder builder) {
-            builder.push("general");
+        private static int totalWeight;
+        private static final NavigableMap<Integer, Rank> championWeightMap = new TreeMap<>();
+        private final WhiteNoiseConfigSpec.IntValue commonChampionWeight;
+        private final WhiteNoiseConfigSpec.IntValue uncommonChampionWeight;
+        private final WhiteNoiseConfigSpec.IntValue rareChampionWeight;
+        private final WhiteNoiseConfigSpec.IntValue epicChampionWeight;
+        private final WhiteNoiseConfigSpec.IntValue legendaryChampionWeight;
 
+        public Common(WhiteNoiseConfigSpec.Builder builder) {
+            builder.push("spawning");
+
+            commonChampionWeight = builder
+                .comment(getTranslation("commonchampionweight"))
+                .defineInRange("commonChampionWeight", 91, 0, 100);
+            uncommonChampionWeight = builder
+                .comment(getTranslation("uncommonchampionweight"))
+                .defineInRange("uncommonChampionWeight", 50, 0, 100);
+            rareChampionWeight = builder
+                .comment(getTranslation("rarechampionweight"))
+                .defineInRange("rareChampionWeight", 30, 0, 100);
+            epicChampionWeight = builder
+                .comment(getTranslation("epicchampionweight"))
+                .defineInRange("epicChampionWeight", 9, 0, 100);
+            legendaryChampionWeight = builder
+                .comment(getTranslation("legendarychampionweight"))
+                .defineInRange("legendaryChampionWeight", 2, 0, 100);
+        }
+
+        public static int getTotalWeight() {
+            return totalWeight;
+        }
+
+        public static Rank getChampionByWeight(int weight) {
+            return championWeightMap.floorEntry(weight).getValue();
         }
 
     }

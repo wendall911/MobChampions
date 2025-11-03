@@ -8,20 +8,21 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
-public class NeoForgeMobChampionData extends MobChampion implements CustomPacketPayload {
+public class SyncMobChampionData extends MobChampion implements CustomPacketPayload {
 
-    public static final Type<NeoForgeMobChampionData> TYPE = new Type<>(MobChampionData.ID);
-    public static final StreamCodec<FriendlyByteBuf, NeoForgeMobChampionData> STREAM_CODEC = StreamCodec.composite(
+    public static final Type<SyncMobChampionData> TYPE = new Type<>(MobChampionData.ID);
+    public static final StreamCodec<FriendlyByteBuf, SyncMobChampionData> STREAM_CODEC = StreamCodec.composite(
         ByteBufCodecs.COMPOUND_TAG,
-        NeoForgeMobChampionData::getData,
-        NeoForgeMobChampionData::new
+        SyncMobChampionData::getData,
+        SyncMobChampionData::new
     );
     private final MobChampionData mobChampionData;
     private final CompoundTag data;
 
-    public NeoForgeMobChampionData(Rank rank, int prefix, int suffix) {
-        mobChampionData = new MobChampionData(rank, prefix, suffix);
+    public SyncMobChampionData(int entityId, Rank rank, int prefix, int suffix) {
+        mobChampionData = new MobChampionData(entityId, rank, prefix, suffix);
 
+        this.setEntityId(mobChampionData.entityId);
         this.setRank(mobChampionData.rank);
         this.setPrefix(mobChampionData.prefix);
         this.setSuffix(mobChampionData.suffix);
@@ -29,10 +30,10 @@ public class NeoForgeMobChampionData extends MobChampion implements CustomPacket
         data = this.write(new CompoundTag());
     }
 
-    public NeoForgeMobChampionData(CompoundTag tag) {
+    public SyncMobChampionData(CompoundTag tag) {
         this.read(tag);
         data = this.write(new CompoundTag());
-        mobChampionData = new MobChampionData(getRank(), getPrefix(), getSuffix());
+        mobChampionData = new MobChampionData(getEntityId(), getRank(), getPrefix(), getSuffix());
     }
 
     public MobChampionData getMobChampionData() {

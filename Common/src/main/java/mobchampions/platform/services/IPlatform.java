@@ -2,15 +2,28 @@ package mobchampions.platform.services;
 
 import java.util.Optional;
 
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 
 import mobchampions.network.IMobChampion;
 
 public interface IPlatform {
 
-    void sendLaunchFireworksPacket(Monster monster);
+    /*
+     * Send a LaunchFireworksPacket to all players tracking the given entity.
+     * This is used to trigger fireworks effects on the client side when a Mob Champion is defeated.
+     */
+    void sendLaunchFireworksPacket(LivingEntity entity);
 
-    Optional<? extends IMobChampion> getMobChampionData(Entity entity);
+    /*
+     * Get the Mob Champion data for the given entity, if it exists.
+     */
+    Optional<? extends IMobChampion> getMobChampionData(LivingEntity entity);
+
+    /*
+     * Sync the Mob Champion data for the given entity to the given player.
+     * This is triggered when a player first starts tracking an entity.
+     */
+    void syncMobChampionData(ServerPlayer player, LivingEntity entity);
 
 }

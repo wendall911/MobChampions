@@ -22,7 +22,7 @@ public abstract class LevelMixin {
             method = "explode(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/damagesource/DamageSource;Lnet/minecraft/world/level/ExplosionDamageCalculator;DDDFZLnet/minecraft/world/level/Level$ExplosionInteraction;ZLnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/core/Holder;)Lnet/minecraft/world/level/Explosion;",
             at = @At("HEAD")
     )
-    private void cf$explode(Entity entity, DamageSource damageSource, ExplosionDamageCalculator damageCalculator, double x, double y, double z, float radius, boolean fire, Level.ExplosionInteraction explosionInteraction, boolean animate, ParticleOptions smallParticles, ParticleOptions largeParticles, Holder<SoundEvent> soundEvent, CallbackInfoReturnable<Explosion> cir) {
+    private void mc$explode(Entity entity, DamageSource damageSource, ExplosionDamageCalculator damageCalculator, double x, double y, double z, float radius, boolean fire, Level.ExplosionInteraction explosionInteraction, boolean animate, ParticleOptions smallParticles, ParticleOptions largeParticles, Holder<SoundEvent> soundEvent, CallbackInfoReturnable<Explosion> cir) {
         // Check if entity is MobChampion
         // Expand radius based on config radius += expansion value
     }

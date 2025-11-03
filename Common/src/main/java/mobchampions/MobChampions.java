@@ -25,10 +25,11 @@ public class MobChampions {
     public static void initConfig() {
         if (Services.PLATFORM.isPhysicalClient()) {
             WhiteNoiseConfig clientConfig = WhiteNoiseConfigLoader.add(WhiteNoiseConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC, MODID);
-            clientConfig.addLoadListener((config, flag) -> ConfigHandler.init());
+            clientConfig.addLoadListener((config, flag) -> ConfigHandler.clientInit());
         }
 
-        WhiteNoiseConfigLoader.add(WhiteNoiseConfig.Type.COMMON, ConfigHandler.COMMON_SPEC, MODID);
+        WhiteNoiseConfig commonConfig = WhiteNoiseConfigLoader.add(WhiteNoiseConfig.Type.COMMON, ConfigHandler.COMMON_SPEC, MODID);
+        commonConfig.addLoadListener((config, flag) -> ConfigHandler.commonInit());
     }
 
     public static ResourceLocation prefix(String path) {
