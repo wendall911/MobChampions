@@ -14,6 +14,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import mobchampions.config.ConfigHandler;
 import mobchampions.event.MobChampionEventHandler;
+import mobchampions.network.MobChampion;
+import mobchampions.platform.Services;
 
 @Mixin(Mob.class)
 public abstract class MobMixin {
@@ -31,6 +33,24 @@ public abstract class MobMixin {
 
             MobChampionEventHandler.addNormalMob(livingEntity);
         }
+    }
+
+    @Inject(method = "getBaseExperienceReward", at = @At("RETURN"), cancellable = true)
+    public void mobchampions$modifyExperienceReward(CallbackInfoReturnable<Integer> cir) {
+        LivingEntity livingEntity = (LivingEntity) (Object) this;
+        int baseXP = cir.getReturnValue();
+
+        if (baseXP <= 0) {
+            return; // No XP to modify
+        }
+
+        Services.PLATFORM.getMobChampionData(livingEntity).ifPresent(data -> {
+            if (data.getEntityId() != -1 && data.getRank() != MobChampion.Rank.COMMON) {
+                // Modify XP based on champion rank multiplier
+                int modifiedXP = (int) (baseXP * ConfigHandler.Common.getExperienceMultiplierForRank(data.getRank()));
+                cir.setReturnValue(modifiedXP);
+            }
+        });
     }
 
 }

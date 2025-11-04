@@ -301,6 +301,10 @@ public class ConfigHandler {
         private final WhiteNoiseConfigSpec.DoubleValue legendaryChampionMovementSpeedMultiplier;
         private final WhiteNoiseConfigSpec.DoubleValue legendaryChampionAttackDamageMultiplier;
         private final WhiteNoiseConfigSpec.DoubleValue legendaryChampionKnockbackResistanceAddition;
+        private final WhiteNoiseConfigSpec.DoubleValue uncommonExperienceMultiplier;
+        private final WhiteNoiseConfigSpec.DoubleValue rareExperienceMultiplier;
+        private final WhiteNoiseConfigSpec.DoubleValue epicExperienceMultiplier;
+        private final WhiteNoiseConfigSpec.DoubleValue legendaryExperienceMultiplier;
 
         public Common(WhiteNoiseConfigSpec.Builder builder) {
             builder.push("spawning").comment(getTranslation("spawning")); // spawning
@@ -395,6 +399,23 @@ public class ConfigHandler {
             legendaryChampionKnockbackResistanceAddition = builder
                 .comment(getTranslation("legendarychampionknockbackresistanceaddition"))
                 .defineInRange("legendaryChampionKnockbackResistanceAddition", 1.0, 0.01, 1.0);
+
+            builder.pop(); // spawning.stats
+            builder.pop(); // spawning
+            builder.push("experience"); // experience
+
+            uncommonExperienceMultiplier = builder
+                .comment(getTranslation("uncommonexperiencemultiplier"))
+                .defineInRange("uncommonExperienceMultiplier", 2.0, 0, 50.0);
+            rareExperienceMultiplier = builder
+                .comment(getTranslation("rareexperiencemultiplier"))
+                .defineInRange("rareExperienceMultiplier", 5.0, 0, 50.0);
+            epicExperienceMultiplier = builder
+                .comment(getTranslation("epicexperiencemultiplier"))
+                .defineInRange("epicExperienceMultiplier", 11.0, 0, 50.0);
+            legendaryExperienceMultiplier = builder
+                .comment(getTranslation("legendaryexperiencemultiplier"))
+                .defineInRange("legendaryExperienceMultiplier", 20.0, 0, 50.0);
         }
 
         private static Supplier<List<? extends String>> getFields(String[] strings) {
@@ -495,6 +516,16 @@ public class ConfigHandler {
 
         public static double getLegendaryChampionKnockbackResistanceAddition() {
             return COMMON.legendaryChampionKnockbackResistanceAddition.get();
+        }
+
+        public static double getExperienceMultiplierForRank(Rank rank) {
+            return switch (rank) {
+                case UNCOMMON -> COMMON.uncommonExperienceMultiplier.get();
+                case RARE -> COMMON.rareExperienceMultiplier.get();
+                case EPIC -> COMMON.epicExperienceMultiplier.get();
+                case LEGENDARY -> COMMON.legendaryExperienceMultiplier.get();
+                default -> 1.0;
+            };
         }
 
     }
