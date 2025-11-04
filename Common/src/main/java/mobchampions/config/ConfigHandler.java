@@ -49,7 +49,7 @@ public class ConfigHandler {
 
     public static void commonInit() {
         // Initialize total weight
-        Common.totalWeight = COMMON.commonChampionWeight.get()
+        Common.totalWeight = COMMON.commonMobWeight.get()
             + COMMON.uncommonChampionWeight.get()
             + COMMON.rareChampionWeight.get()
             + COMMON.epicChampionWeight.get()
@@ -62,7 +62,7 @@ public class ConfigHandler {
         for (Rank rank : Rank.values()) {
             switch (rank) {
                 case COMMON -> {
-                    if (COMMON.commonChampionWeight.get() >= 0) {
+                    if (COMMON.commonMobWeight.get() >= 0) {
                         Common.championWeightMap.put(
                             0,
                             rank
@@ -70,26 +70,26 @@ public class ConfigHandler {
                     }
                 }
                 case UNCOMMON -> {
-                    if (COMMON.commonChampionWeight.get() >= 0) {
+                    if (COMMON.commonMobWeight.get() >= 0) {
                         Common.championWeightMap.put(
-                            COMMON.commonChampionWeight.get(),
+                            COMMON.commonMobWeight.get(),
                             rank
                         );
                     }
                 }
                 case RARE -> {
-                    if (COMMON.commonChampionWeight.get() >= 0) {
+                    if (COMMON.commonMobWeight.get() >= 0) {
                         Common.championWeightMap.put(
-                            COMMON.commonChampionWeight.get()
+                            COMMON.commonMobWeight.get()
                                 + COMMON.uncommonChampionWeight.get(),
                             rank
                         );
                     }
                 }
                 case EPIC -> {
-                    if (COMMON.commonChampionWeight.get() >= 0) {
+                    if (COMMON.commonMobWeight.get() >= 0) {
                         Common.championWeightMap.put(
-                            COMMON.commonChampionWeight.get()
+                            COMMON.commonMobWeight.get()
                                 + COMMON.uncommonChampionWeight.get()
                                 + COMMON.rareChampionWeight.get(),
                             rank
@@ -97,9 +97,9 @@ public class ConfigHandler {
                     }
                 }
                 case LEGENDARY -> {
-                    if (COMMON.commonChampionWeight.get() >= 0) {
+                    if (COMMON.commonMobWeight.get() >= 0) {
                         Common.championWeightMap.put(
-                            COMMON.commonChampionWeight.get()
+                            COMMON.commonMobWeight.get()
                                 + COMMON.uncommonChampionWeight.get()
                                 + COMMON.rareChampionWeight.get()
                                 + COMMON.epicChampionWeight.get(),
@@ -116,7 +116,7 @@ public class ConfigHandler {
         Rank selectedChampion = Common.getChampionByWeight(randomWeight);
         MobChampions.LOGGER.warn("Random weight: {}, Selected Champion Rank: {}", randomWeight, selectedChampion);
         MobChampions.LOGGER.warn("Odds: Common: {}%, Uncommon: {}%, Rare: {}%, Epic: {}%, Legendary: {}%",
-            (COMMON.commonChampionWeight.get() * 100.0F) / Common.getTotalWeight(),
+            (COMMON.commonMobWeight.get() * 100.0F) / Common.getTotalWeight(),
             (COMMON.uncommonChampionWeight.get() * 100.0F) / Common.getTotalWeight(),
             (COMMON.rareChampionWeight.get() * 100.0F) / Common.getTotalWeight(),
             (COMMON.epicChampionWeight.get() * 100.0F) / Common.getTotalWeight(),
@@ -232,18 +232,38 @@ public class ConfigHandler {
 
         private static int totalWeight;
         private static final NavigableMap<Integer, Rank> championWeightMap = new TreeMap<>();
-        private final WhiteNoiseConfigSpec.IntValue commonChampionWeight;
+        private final WhiteNoiseConfigSpec.IntValue commonMobWeight;
         private final WhiteNoiseConfigSpec.IntValue uncommonChampionWeight;
         private final WhiteNoiseConfigSpec.IntValue rareChampionWeight;
         private final WhiteNoiseConfigSpec.IntValue epicChampionWeight;
         private final WhiteNoiseConfigSpec.IntValue legendaryChampionWeight;
+        private final WhiteNoiseConfigSpec.ConfigValue<List<? extends String>> championWhitelistMobs;
+        private static final List<String> championWhitelist = List.of("championWhitelist");
+        private static final String[] defaultWhitelist = {
+            "minecraft:bogged",
+            "minecraft:cave_spider",
+            "minecraft:zombie",
+            "minecraft:zombified_piglin",
+            "minecraft:skeleton",
+            "minecraft:creeper",
+            "minecraft:spider",
+            "minecraft:enderman",
+            "minecraft:witch",
+            "minecraft:husk",
+            "minecraft:stray",
+            "minecraft:wither_skeleton",
+            "minecraft:drowned",
+            "minecraft:pillager"
+        };
+        private final Predicate<Object> entityTypeValidator = s -> s instanceof String
+            && ((String) s).matches("[a-z]+[:]{1}[a-z_]+");
 
         public Common(WhiteNoiseConfigSpec.Builder builder) {
             builder.push("spawning");
 
-            commonChampionWeight = builder
-                .comment(getTranslation("commonchampionweight"))
-                .defineInRange("commonChampionWeight", 91, 0, 100);
+            commonMobWeight = builder
+                .comment(getTranslation("commonmobweight"))
+                .defineInRange("commonMobWeight", 91, 0, 100);
             uncommonChampionWeight = builder
                 .comment(getTranslation("uncommonchampionweight"))
                 .defineInRange("uncommonChampionWeight", 50, 0, 100);
@@ -256,6 +276,16 @@ public class ConfigHandler {
             legendaryChampionWeight = builder
                 .comment(getTranslation("legendarychampionweight"))
                 .defineInRange("legendaryChampionWeight", 2, 0, 100);
+            championWhitelistMobs = builder
+                .comment(
+                    getTranslation("championwhitelist", String.join(", ", defaultWhitelist)),
+                    "Entity types must be in the format modid:entity_name"
+                )
+                .defineListAllowEmpty(championWhitelist, getFields(defaultWhitelist), entityTypeValidator);
+        }
+
+        private static Supplier<List<? extends String>> getFields(String[] strings) {
+            return () -> Arrays.asList(strings);
         }
 
         public static int getTotalWeight() {
@@ -264,6 +294,10 @@ public class ConfigHandler {
 
         public static Rank getChampionByWeight(int weight) {
             return championWeightMap.floorEntry(weight).getValue();
+        }
+
+        public static List<? extends String> getChampionWhitelist() {
+            return COMMON.championWhitelistMobs.get();
         }
 
     }

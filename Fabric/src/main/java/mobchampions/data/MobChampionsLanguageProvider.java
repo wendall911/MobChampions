@@ -25,17 +25,18 @@ public class MobChampionsLanguageProvider extends FabricLanguageProvider {
         addTranslation(builder, "epicchampioncolor");
         addTranslation(builder, "legendarychampioncolor");
         addTranslation(builder, "fireworkschance");
+        addTranslation(builder, "colors");
         addTranslation(builder, "fireworksflicker");
         addTranslation(builder, "fireworkstrail");
         addTranslation(builder, "fireworksshape");
         addTranslation(builder, "fireworksheight");
-        addTranslation(builder, "colors");
         addTranslation(builder, "spawning");
-        addTranslation(builder, "commonchampionweight");
+        addTranslation(builder, "commonmobweight");
         addTranslation(builder, "uncommonchampionweight");
         addTranslation(builder, "rarechampionweight");
         addTranslation(builder, "epicchampionweight");
         addTranslation(builder, "legendarychampionweight");
+        addTranslation(builder, "championwhitelist");
     }
 
     private void addTranslationTitle(TranslationBuilder builder, String title) {
