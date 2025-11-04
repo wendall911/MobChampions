@@ -39,8 +39,8 @@ dependencies {
     jarJar group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-neoforge", version: "${whitenoise_version}"
 
     // Testing mods
-    //runtimeOnly "curse.maven:configured-457570:5441232"
-    //runtimeOnly "curse.maven:catalogue-459701:5441227"
+    //runtimeOnly "curse.maven:mod-XXX:XXX"
+    runtimeOnly "curse.maven:jade-324717:${jade_neoforge_version}"
 }
 
 shadowJar {

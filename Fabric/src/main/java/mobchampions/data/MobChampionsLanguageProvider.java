@@ -37,6 +37,27 @@ public class MobChampionsLanguageProvider extends FabricLanguageProvider {
         addTranslation(builder, "epicchampionweight");
         addTranslation(builder, "legendarychampionweight");
         addTranslation(builder, "championwhitelist");
+        addTranslation(builder, "stats");
+        addTranslation(builder, "uncommonchampionhealthmultiplier");
+        addTranslation(builder, "uncommonchampionarmoraddition");
+        addTranslation(builder, "uncommonchampionmovementspeedmultiplier");
+        addTranslation(builder, "uncommonchampionattackdamagemultiplier");
+        addTranslation(builder, "uncommonchampionknockbackresistanceaddition");
+        addTranslation(builder, "rarechampionhealthmultiplier");
+        addTranslation(builder, "rarechampionarmoraddition");
+        addTranslation(builder, "rarechampionmovementspeedmultiplier");
+        addTranslation(builder, "rarechampionattackdamagemultiplier");
+        addTranslation(builder, "rarechampionknockbackresistanceaddition");
+        addTranslation(builder, "epicchampionhealthmultiplier");
+        addTranslation(builder, "epicchampionarmoraddition");
+        addTranslation(builder, "epicchampionmovementspeedmultiplier");
+        addTranslation(builder, "epicchampionattackdamagemultiplier");
+        addTranslation(builder, "epicchampionknockbackresistanceaddition");
+        addTranslation(builder, "legendarychampionhealthmultiplier");
+        addTranslation(builder, "legendarychampionarmoraddition");
+        addTranslation(builder, "legendarychampionmovementspeedmultiplier");
+        addTranslation(builder, "legendarychampionattackdamagemultiplier");
+        addTranslation(builder, "legendarychampionknockbackresistanceaddition");
     }
 
     private void addTranslationTitle(TranslationBuilder builder, String title) {

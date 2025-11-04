@@ -6,6 +6,7 @@
   "mixins": [
     "LevelMixin",
     "LivingEntityMixin",
+    "MobMixin",
     "PersistentEntitySectionManagerMixin"
   ],
   "client": [

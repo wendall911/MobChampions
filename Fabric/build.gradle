@@ -28,6 +28,7 @@ dependencies {
 
     // Testing Mods
     //modRuntimeOnly "curse.maven:mod-XXX:XXX"
+    modRuntimeOnly "curse.maven:jade-324717:${jade_fabric_version}"
 }
 
 loom {

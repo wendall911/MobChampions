@@ -5,8 +5,8 @@ import net.minecraft.nbt.ListTag;
 
 public class MobChampion implements IMobChampion {
 
-    private int entityId;
-    private Rank rank;
+    private int entityId = -1;
+    private Rank rank = Rank.COMMON;
 
     @Override
     public void setEntityId(int entityId) {

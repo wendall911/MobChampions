@@ -1,5 +1,6 @@
 package mobchampions.config;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NavigableMap;
@@ -11,6 +12,7 @@ import java.util.stream.Stream;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.component.FireworkExplosion;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -122,6 +124,11 @@ public class ConfigHandler {
             (COMMON.epicChampionWeight.get() * 100.0F) / Common.getTotalWeight(),
             (COMMON.legendaryChampionWeight.get() * 100.0F) / Common.getTotalWeight()
         );
+
+        Common.spawnTypeBlacklistEnums.clear();
+        COMMON.spawnTypeBlacklistSource.get().forEach(
+            (spawnTypeString) -> Common.spawnTypeBlacklistEnums.add(
+                Enum.valueOf(MobSpawnType.class, spawnTypeString)));
     }
 
     public static class Client {
@@ -257,9 +264,46 @@ public class ConfigHandler {
         };
         private final Predicate<Object> entityTypeValidator = s -> s instanceof String
             && ((String) s).matches("[a-z]+[:]{1}[a-z_]+");
+        private final WhiteNoiseConfigSpec.ConfigValue<List<? extends String>> spawnTypeBlacklistSource;
+        private static final List<Enum<MobSpawnType>> spawnTypeBlacklistEnums = new ArrayList<>();
+        private static final List<String> spawnTypeBlacklist =  List.of("spawnTypeBlacklist");
+        private static final String[] defaultSpawnTypeBlacklist = {
+            MobSpawnType.BREEDING.name(),
+            MobSpawnType.BUCKET.name(),
+            MobSpawnType.CHUNK_GENERATION.name(),
+            MobSpawnType.DISPENSER.name(),
+            MobSpawnType.PATROL.name(),
+            MobSpawnType.SPAWNER.name(),
+            MobSpawnType.STRUCTURE.name(),
+            MobSpawnType.TRIAL_SPAWNER.name()
+        };
+        private final Predicate<Object> spawnTypeValidator = s -> s instanceof String
+            && Arrays.stream(MobSpawnType.values())
+                .map(Enum::name)
+                .anyMatch(name -> name.equals(s));
+        private final WhiteNoiseConfigSpec.DoubleValue uncommonChampionHealthMultiplier;
+        private final WhiteNoiseConfigSpec.IntValue uncommonChampionArmorAddition;
+        private final WhiteNoiseConfigSpec.DoubleValue uncommonChampionMovementSpeedMultiplier;
+        private final WhiteNoiseConfigSpec.DoubleValue uncommonChampionAttackDamageMultiplier;
+        private final WhiteNoiseConfigSpec.DoubleValue uncommonChampionKnockbackResistanceAddition;
+        private final WhiteNoiseConfigSpec.DoubleValue rareChampionHealthMultiplier;
+        private final WhiteNoiseConfigSpec.IntValue rareChampionArmorAddition;
+        private final WhiteNoiseConfigSpec.DoubleValue rareChampionMovementSpeedMultiplier;
+        private final WhiteNoiseConfigSpec.DoubleValue rareChampionAttackDamageMultiplier;
+        private final WhiteNoiseConfigSpec.DoubleValue rareChampionKnockbackResistanceAddition;
+        private final WhiteNoiseConfigSpec.DoubleValue epicChampionHealthMultiplier;
+        private final WhiteNoiseConfigSpec.IntValue epicChampionArmorAddition;
+        private final WhiteNoiseConfigSpec.DoubleValue epicChampionMovementSpeedMultiplier;
+        private final WhiteNoiseConfigSpec.DoubleValue epicChampionAttackDamageMultiplier;
+        private final WhiteNoiseConfigSpec.DoubleValue epicChampionKnockbackResistanceAddition;
+        private final WhiteNoiseConfigSpec.DoubleValue legendaryChampionHealthMultiplier;
+        private final WhiteNoiseConfigSpec.IntValue legendaryChampionArmorAddition;
+        private final WhiteNoiseConfigSpec.DoubleValue legendaryChampionMovementSpeedMultiplier;
+        private final WhiteNoiseConfigSpec.DoubleValue legendaryChampionAttackDamageMultiplier;
+        private final WhiteNoiseConfigSpec.DoubleValue legendaryChampionKnockbackResistanceAddition;
 
         public Common(WhiteNoiseConfigSpec.Builder builder) {
-            builder.push("spawning");
+            builder.push("spawning").comment(getTranslation("spawning")); // spawning
 
             commonMobWeight = builder
                 .comment(getTranslation("commonmobweight"))
@@ -282,6 +326,75 @@ public class ConfigHandler {
                     "Entity types must be in the format modid:entity_name"
                 )
                 .defineListAllowEmpty(championWhitelist, getFields(defaultWhitelist), entityTypeValidator);
+            spawnTypeBlacklistSource = builder
+                .comment(getTranslation("spawntypeblacklist"))
+                .defineListAllowEmpty(spawnTypeBlacklist, getFields(defaultSpawnTypeBlacklist), spawnTypeValidator);
+
+            builder.push("stats").comment(getTranslation("stats")); // spawning.stats
+            // Uncommon Champion Stats
+            uncommonChampionHealthMultiplier = builder
+                .comment(getTranslation("uncommonchampionhealthmultiplier"))
+                .defineInRange("uncommonChampionHealthMultiplier", 0.5, 0.1, 20.0);
+            uncommonChampionArmorAddition = builder
+                .comment(getTranslation("uncommonchampionarmoraddition"))
+                .defineInRange("uncommonChampionArmorAddition", 2, 1, 20);
+            uncommonChampionMovementSpeedMultiplier = builder
+                .comment(getTranslation("uncommonchampionmovementspeedmultiplier"))
+                .defineInRange("uncommonChampionMovementSpeedMultiplier", 0.15, 0.01, 5.0);
+            uncommonChampionAttackDamageMultiplier = builder
+                .comment(getTranslation("uncommonchampionattackdamagemultiplier"))
+                .defineInRange("uncommonChampionAttackDamageMultiplier", 0.7, 0.01, 10.0);
+            uncommonChampionKnockbackResistanceAddition = builder
+                .comment(getTranslation("uncommonchampionknockbackresistanceaddition"))
+                .defineInRange("uncommonChampionKnockbackResistanceAddition", 0.03, 0.01, 1.0);
+            // Rare Champion Stats
+            rareChampionHealthMultiplier = builder
+                .comment(getTranslation("rarechampionhealthmultiplier"))
+                .defineInRange("rareChampionHealthMultiplier", 0.9, 0.1, 20.0);
+            rareChampionArmorAddition = builder
+                .comment(getTranslation("rarechampionarmoraddition"))
+                .defineInRange("rareChampionArmorAddition", 4, 1, 20);
+            rareChampionMovementSpeedMultiplier = builder
+                .comment(getTranslation("rarechampionmovementspeedmultiplier"))
+                .defineInRange("rareChampionMovementSpeedMultiplier", 0.25, 0.01, 5.0);
+            rareChampionAttackDamageMultiplier = builder
+                .comment(getTranslation("rarechampionattackdamagemultiplier"))
+                .defineInRange("rareChampionAttackDamageMultiplier", 2.1, 0.01, 10.0);
+            rareChampionKnockbackResistanceAddition = builder
+                .comment(getTranslation("rarechampionknockbackresistanceaddition"))
+                .defineInRange("rareChampionKnockbackResistanceAddition", 0.1, 0.01, 1.0);
+            // Epic Champion Stats
+            epicChampionHealthMultiplier = builder
+                .comment(getTranslation("epicchampionhealthmultiplier"))
+                .defineInRange("epicChampionHealthMultiplier", 1.8, 0.1, 20.0);
+            epicChampionArmorAddition = builder
+                .comment(getTranslation("epicchampionarmoraddition"))
+                .defineInRange("epicChampionArmorAddition", 8, 1, 20);
+            epicChampionMovementSpeedMultiplier = builder
+                .comment(getTranslation("epicchampionmovementspeedmultiplier"))
+                .defineInRange("epicChampionMovementSpeedMultiplier", 0.4, 0.01, 5.0);
+            epicChampionAttackDamageMultiplier = builder
+                .comment(getTranslation("epicchampionattackdamagemultiplier"))
+                .defineInRange("epicChampionAttackDamageMultiplier", 2.1, 0.01, 10.0);
+            epicChampionKnockbackResistanceAddition = builder
+                .comment(getTranslation("epicchampionknockbackresistanceaddition"))
+                .defineInRange("epicChampionKnockbackResistanceAddition", 0.5, 0.01, 1.0);
+            // Legendary Champion Stats
+            legendaryChampionHealthMultiplier = builder
+                .comment(getTranslation("legendarychampionhealthmultiplier"))
+                .defineInRange("legendaryChampionHealthMultiplier", 2.7, 0.1, 20.0);
+            legendaryChampionArmorAddition = builder
+                .comment(getTranslation("legendarychampionarmoraddition"))
+                .defineInRange("legendaryChampionArmorAddition", 15, 1, 20);
+            legendaryChampionMovementSpeedMultiplier = builder
+                .comment(getTranslation("legendarychampionmovementspeedmultiplier"))
+                .defineInRange("legendaryChampionMovementSpeedMultiplier", 0.8, 0.8, 5.0);
+            legendaryChampionAttackDamageMultiplier = builder
+                .comment(getTranslation("legendarychampionattackdamagemultiplier"))
+                .defineInRange("legendaryChampionAttackDamageMultiplier", 3.0, 0.01, 10.0);
+            legendaryChampionKnockbackResistanceAddition = builder
+                .comment(getTranslation("legendarychampionknockbackresistanceaddition"))
+                .defineInRange("legendaryChampionKnockbackResistanceAddition", 1.0, 0.01, 1.0);
         }
 
         private static Supplier<List<? extends String>> getFields(String[] strings) {
@@ -298,6 +411,90 @@ public class ConfigHandler {
 
         public static List<? extends String> getChampionWhitelist() {
             return COMMON.championWhitelistMobs.get();
+        }
+
+        public static List<Enum<MobSpawnType>> getSpawnTypeBlacklistEnums() {
+            return spawnTypeBlacklistEnums;
+        }
+
+        public static double getUncommonChampionHealthMultiplier() {
+            return COMMON.uncommonChampionHealthMultiplier.get();
+        }
+
+        public static int getUncommonChampionArmorAddition() {
+            return COMMON.uncommonChampionArmorAddition.get();
+        }
+
+        public static double getUncommonChampionMovementSpeedMultiplier() {
+            return COMMON.uncommonChampionMovementSpeedMultiplier.get();
+        }
+
+        public static double getUncommonChampionAttackDamageMultiplier() {
+            return COMMON.uncommonChampionAttackDamageMultiplier.get();
+        }
+
+        public static double getUncommonChampionKnockbackResistanceAddition() {
+            return COMMON.uncommonChampionKnockbackResistanceAddition.get();
+        }
+
+        public static double getRareChampionHealthMultiplier() {
+            return COMMON.rareChampionHealthMultiplier.get();
+        }
+
+        public static int getRareChampionArmorAddition() {
+            return COMMON.rareChampionArmorAddition.get();
+        }
+
+        public static double getRareChampionMovementSpeedMultiplier() {
+            return COMMON.rareChampionMovementSpeedMultiplier.get();
+        }
+
+        public static double getRareChampionAttackDamageMultiplier() {
+            return COMMON.rareChampionAttackDamageMultiplier.get();
+        }
+
+        public static double getRareChampionKnockbackResistanceAddition() {
+            return COMMON.rareChampionKnockbackResistanceAddition.get();
+        }
+
+        public static double getEpicChampionHealthMultiplier() {
+            return COMMON.epicChampionHealthMultiplier.get();
+        }
+
+        public static int getEpicChampionArmorAddition() {
+            return COMMON.epicChampionArmorAddition.get();
+        }
+
+        public static double getEpicChampionMovementSpeedMultiplier() {
+            return COMMON.epicChampionMovementSpeedMultiplier.get();
+        }
+
+        public static double getEpicChampionAttackDamageMultiplier() {
+            return COMMON.epicChampionAttackDamageMultiplier.get();
+        }
+
+        public static double getEpicChampionKnockbackResistanceAddition() {
+            return COMMON.epicChampionKnockbackResistanceAddition.get();
+        }
+
+        public static double getLegendaryChampionHealthMultiplier() {
+            return COMMON.legendaryChampionHealthMultiplier.get();
+        }
+
+        public static int getLegendaryChampionArmorAddition() {
+            return COMMON.legendaryChampionArmorAddition.get();
+        }
+
+        public static double getLegendaryChampionMovementSpeedMultiplier() {
+            return COMMON.legendaryChampionMovementSpeedMultiplier.get();
+        }
+
+        public static double getLegendaryChampionAttackDamageMultiplier() {
+            return COMMON.legendaryChampionAttackDamageMultiplier.get();
+        }
+
+        public static double getLegendaryChampionKnockbackResistanceAddition() {
+            return COMMON.legendaryChampionKnockbackResistanceAddition.get();
         }
 
     }
