@@ -14,109 +14,104 @@ public class MobChampionBuilder {
 
     private static final AttributeModifier UNCOMMON_HEALTH_MODIFIER = new AttributeModifier(
         MobChampions.prefix("uncommon_health_multiplier"),
-        ConfigHandler.Common.getUncommonChampionHealthMultiplier(),
+        ConfigHandler.Common.getUncommonHealthMultiplier(),
         AttributeModifier.Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier UNCOMMON_ARMOR_MODIFIER = new AttributeModifier(
         MobChampions.prefix("uncommon_armor_addition"),
-        ConfigHandler.Common.getUncommonChampionArmorAddition(),
+        ConfigHandler.Common.getUncommonArmorAddition(),
         AttributeModifier.Operation.ADD_VALUE
     );
     private static final AttributeModifier UNCOMMON_MOVEMENT_SPEED_MODIFIER = new AttributeModifier(
         MobChampions.prefix("uncommon_movement_speed_multiplier"),
-        ConfigHandler.Common.getUncommonChampionMovementSpeedMultiplier(),
+        ConfigHandler.Common.getUncommonMovementSpeedMultiplier(),
         Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier UNCOMMON_ATTACK_DAMAGE_MODIFIER = new AttributeModifier(
         MobChampions.prefix("uncommon_attack_damage_multiplier"),
-        ConfigHandler.Common.getUncommonChampionAttackDamageMultiplier(),
+        ConfigHandler.Common.getUncommonAttackDamageMultiplier(),
         Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier UNCOMMON_KNOCKBACK_RESISTANCE_MODIFIER = new AttributeModifier(
         MobChampions.prefix("uncommon_knockback_resistance_addition"),
-        ConfigHandler.Common.getUncommonChampionKnockbackResistanceAddition(),
+        ConfigHandler.Common.getUncommonKnockbackResistanceAddition(),
         Operation.ADD_VALUE
     );
     private static final AttributeModifier RARE_HEALTH_MODIFIER = new AttributeModifier(
         MobChampions.prefix("rare_health_multiplier"),
-        ConfigHandler.Common.getRareChampionHealthMultiplier(),
+        ConfigHandler.Common.getRareHealthMultiplier(),
         AttributeModifier.Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier RARE_ARMOR_MODIFIER = new AttributeModifier(
         MobChampions.prefix("rare_armor_addition"),
-        ConfigHandler.Common.getRareChampionArmorAddition(),
+        ConfigHandler.Common.getRareArmorAddition(),
         AttributeModifier.Operation.ADD_VALUE
     );
     private static final AttributeModifier RARE_MOVEMENT_SPEED_MODIFIER = new AttributeModifier(
         MobChampions.prefix("rare_movement_speed_multiplier"),
-        ConfigHandler.Common.getRareChampionMovementSpeedMultiplier(),
+        ConfigHandler.Common.getRareMovementSpeedMultiplier(),
         Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier RARE_ATTACK_DAMAGE_MODIFIER = new AttributeModifier(
         MobChampions.prefix("rare_attack_damage_multiplier"),
-        ConfigHandler.Common.getRareChampionAttackDamageMultiplier(),
+        ConfigHandler.Common.getRareAttackDamageMultiplier(),
         Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier RARE_KNOCKBACK_RESISTANCE_MODIFIER = new AttributeModifier(
         MobChampions.prefix("rare_knockback_resistance_addition"),
-        ConfigHandler.Common.getRareChampionKnockbackResistanceAddition(),
+        ConfigHandler.Common.getRareKnockbackResistanceAddition(),
         Operation.ADD_VALUE
     );
     private static final AttributeModifier EPIC_HEALTH_MODIFIER = new AttributeModifier(
         MobChampions.prefix("epic_health_multiplier"),
-        ConfigHandler.Common.getEpicChampionHealthMultiplier(),
+        ConfigHandler.Common.getEpicHealthMultiplier(),
         AttributeModifier.Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier EPIC_ARMOR_MODIFIER = new AttributeModifier(
         MobChampions.prefix("epic_armor_addition"),
-        ConfigHandler.Common.getEpicChampionArmorAddition(),
+        ConfigHandler.Common.getEpicArmorAddition(),
         AttributeModifier.Operation.ADD_VALUE
     );
     private static final AttributeModifier EPIC_MOVEMENT_SPEED_MODIFIER = new AttributeModifier(
         MobChampions.prefix("epic_movement_speed_multiplier"),
-        ConfigHandler.Common.getEpicChampionMovementSpeedMultiplier(),
+        ConfigHandler.Common.getEpicMovementSpeedMultiplier(),
         Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier EPIC_ATTACK_DAMAGE_MODIFIER = new AttributeModifier(
         MobChampions.prefix("epic_attack_damage_multiplier"),
-        ConfigHandler.Common.getEpicChampionAttackDamageMultiplier(),
+        ConfigHandler.Common.getEpicAttackDamageMultiplier(),
         Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier EPIC_KNOCKBACK_RESISTANCE_MODIFIER = new AttributeModifier(
         MobChampions.prefix("epic_knockback_resistance_addition"),
-        ConfigHandler.Common.getEpicChampionKnockbackResistanceAddition(),
+        ConfigHandler.Common.getEpicKnockbackResistanceAddition(),
         Operation.ADD_VALUE
     );
     private static final AttributeModifier LEGENDARY_HEALTH_MODIFIER = new AttributeModifier(
         MobChampions.prefix("legendary_health_multiplier"),
-        ConfigHandler.Common.getLegendaryChampionHealthMultiplier(),
+        ConfigHandler.Common.getLegendaryHealthMultiplier(),
         AttributeModifier.Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier LEGENDARY_ARMOR_MODIFIER = new AttributeModifier(
         MobChampions.prefix("legendary_armor_addition"),
-        ConfigHandler.Common.getLegendaryChampionArmorAddition(),
+        ConfigHandler.Common.getLegendaryArmorAddition(),
         AttributeModifier.Operation.ADD_VALUE
     );
     private static final AttributeModifier LEGENDARY_MOVEMENT_SPEED_MODIFIER = new AttributeModifier(
         MobChampions.prefix("legendary_movement_speed_multiplier"),
-        ConfigHandler.Common.getLegendaryChampionMovementSpeedMultiplier(),
+        ConfigHandler.Common.getLegendaryMovementSpeedMultiplier(),
         Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier LEGENDARY_ATTACK_DAMAGE_MODIFIER = new AttributeModifier(
         MobChampions.prefix("legendary_attack_damage_multiplier"),
-        ConfigHandler.Common.getLegendaryChampionAttackDamageMultiplier(),
+        ConfigHandler.Common.getLegendaryAttackDamageMultiplier(),
         Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier LEGENDARY_KNOCKBACK_RESISTANCE_MODIFIER = new AttributeModifier(
         MobChampions.prefix("legendary_knockback_resistance_addition"),
-        ConfigHandler.Common.getLegendaryChampionKnockbackResistanceAddition(),
+        ConfigHandler.Common.getLegendaryKnockbackResistanceAddition(),
         Operation.ADD_VALUE
     );
-
-    public static void resetChampionAttributesAndEffects(LivingEntity entity, Rank rank) {
-        removeChampionAttributesAndEffects(entity);
-        applyChampionAttributesAndEffects(entity, rank);
-    }
 
     public static void applyChampionAttributesAndEffects(LivingEntity entity, Rank rank) {
         switch(rank) {
@@ -155,30 +150,6 @@ public class MobChampionBuilder {
         updateMaxHealth(entity);
     }
 
-    public static void removeChampionAttributesAndEffects(LivingEntity entity) {
-        removeChampionAttribute(entity.getAttribute(Attributes.MAX_HEALTH), UNCOMMON_HEALTH_MODIFIER);
-        removeChampionAttribute(entity.getAttribute(Attributes.ARMOR), UNCOMMON_ARMOR_MODIFIER);
-        removeChampionAttribute(entity.getAttribute(Attributes.MOVEMENT_SPEED), UNCOMMON_MOVEMENT_SPEED_MODIFIER);
-        removeChampionAttribute(entity.getAttribute(Attributes.ATTACK_DAMAGE), UNCOMMON_ATTACK_DAMAGE_MODIFIER);
-        removeChampionAttribute(entity.getAttribute(Attributes.KNOCKBACK_RESISTANCE), UNCOMMON_KNOCKBACK_RESISTANCE_MODIFIER);
-        removeChampionAttribute(entity.getAttribute(Attributes.MAX_HEALTH), RARE_HEALTH_MODIFIER);
-        removeChampionAttribute(entity.getAttribute(Attributes.ARMOR), RARE_ARMOR_MODIFIER);
-        removeChampionAttribute(entity.getAttribute(Attributes.MOVEMENT_SPEED), RARE_MOVEMENT_SPEED_MODIFIER);
-        removeChampionAttribute(entity.getAttribute(Attributes.ATTACK_DAMAGE), RARE_ATTACK_DAMAGE_MODIFIER);
-        removeChampionAttribute(entity.getAttribute(Attributes.KNOCKBACK_RESISTANCE), RARE_KNOCKBACK_RESISTANCE_MODIFIER);
-        removeChampionAttribute(entity.getAttribute(Attributes.MAX_HEALTH), EPIC_HEALTH_MODIFIER);
-        removeChampionAttribute(entity.getAttribute(Attributes.ARMOR), EPIC_ARMOR_MODIFIER);
-        removeChampionAttribute(entity.getAttribute(Attributes.MOVEMENT_SPEED), EPIC_MOVEMENT_SPEED_MODIFIER);
-        removeChampionAttribute(entity.getAttribute(Attributes.ATTACK_DAMAGE), EPIC_ATTACK_DAMAGE_MODIFIER);
-        removeChampionAttribute(entity.getAttribute(Attributes.KNOCKBACK_RESISTANCE), EPIC_KNOCKBACK_RESISTANCE_MODIFIER);
-        removeChampionAttribute(entity.getAttribute(Attributes.MAX_HEALTH), LEGENDARY_HEALTH_MODIFIER);
-        removeChampionAttribute(entity.getAttribute(Attributes.ARMOR), LEGENDARY_ARMOR_MODIFIER);
-        removeChampionAttribute(entity.getAttribute(Attributes.MOVEMENT_SPEED), LEGENDARY_MOVEMENT_SPEED_MODIFIER);
-        removeChampionAttribute(entity.getAttribute(Attributes.ATTACK_DAMAGE), LEGENDARY_ATTACK_DAMAGE_MODIFIER);
-        removeChampionAttribute(entity.getAttribute(Attributes.KNOCKBACK_RESISTANCE), LEGENDARY_KNOCKBACK_RESISTANCE_MODIFIER);
-        updateMaxHealth(entity);
-    }
-
     public static void updateMaxHealth(LivingEntity entity) {
         AttributeInstance maxHealthAttribute = entity.getAttribute(Attributes.MAX_HEALTH);
 
@@ -190,12 +161,6 @@ public class MobChampionBuilder {
     public static void addChampionAttribute(AttributeInstance attributeInstance, AttributeModifier modifier) {
         if (attributeInstance != null && !attributeInstance.hasModifier(modifier.id())) {
             attributeInstance.addPermanentModifier(modifier);
-        }
-    }
-
-    public static void removeChampionAttribute(AttributeInstance attributeInstance, AttributeModifier modifier) {
-        if (attributeInstance != null && attributeInstance.hasModifier(modifier.id())) {
-            attributeInstance.removeModifier(modifier.id());
         }
     }
 
