@@ -1,10 +1,24 @@
 package mobchampions.util;
 
+import java.util.List;
+
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.providers.VanillaEnchantmentProviders;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 
 import mobchampions.MobChampions;
 import mobchampions.config.ConfigHandler;
@@ -113,7 +127,7 @@ public class MobChampionBuilder {
         Operation.ADD_VALUE
     );
 
-    public static void applyChampionAttributesAndEffects(LivingEntity entity, Rank rank) {
+    public static void build(LivingEntity entity, Rank rank) {
         switch(rank) {
             case UNCOMMON -> {
                 addChampionAttribute(entity.getAttribute(Attributes.MAX_HEALTH), UNCOMMON_HEALTH_MODIFIER);
@@ -148,6 +162,235 @@ public class MobChampionBuilder {
             }
         }
         updateMaxHealth(entity);
+        applyGlowingEffectIfNeeded(entity, rank);
+        applyInfestedEffectIfNeeded(entity, rank);
+        applyOozingEffectIfNeeded(entity, rank);
+        applyWeavingEffectIfNeeded(entity, rank);
+        applyWindChargedEffectIfNeeded(entity, rank);
+        equipChampionWeaponIfNeeded(entity, rank);
+        equipChampionGearIfNeeded(entity, rank);
+    }
+
+    private static void equipChampionWeaponIfNeeded(LivingEntity entity, Rank rank) {
+        boolean hasLootTableWeapon = false;
+        /*
+         * First check if weapon equipping is allowed for this entity.
+         * Then check if the entity already has a weapon.
+         * If not, attempt to equip a weapon based on the rank.
+         */
+        if (entity.canUseSlot(EquipmentSlot.MAINHAND) && entity.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty()) {
+            ItemStack weapon = ConfigHandler.Common.getWeaponForRank(rank);
+
+            if (weapon != null) {
+                entity.setItemSlot(EquipmentSlot.MAINHAND, weapon);
+            }
+        }
+
+        /*
+         * Next we will check if there is a need to update the main weapon with a loot table weapon.
+         * These will override the normal weapon if present.
+         * These weapons will drop normally on death.
+         */
+
+        finalizeChampionWeapon(entity, rank, hasLootTableWeapon);
+    }
+
+    private static void finalizeChampionWeapon(LivingEntity entity, Rank rank, boolean hasLootTableWeapon) {
+        /*
+         * Prevent champion normal weapon from dropping on death.
+         * Only applies if the entity has a weapon equipped and is a Mob.
+         * This also will disable drops of normal items from all champions with weapons.
+         */
+        if (!entity.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty() && entity instanceof Mob mob) {
+            Level level = entity.level();
+
+            if (level instanceof ServerLevel serverLevel) {
+                DifficultyInstance difficultyInstance = serverLevel.getCurrentDifficultyAt(entity.blockPosition());
+
+                enchantSpawnedWeapon(mob, rank, serverLevel, serverLevel.getRandom(), difficultyInstance);
+            }
+
+            if (hasLootTableWeapon) {
+                mob.setGuaranteedDrop(EquipmentSlot.MAINHAND);
+            }
+            else {
+                mob.setDropChance(EquipmentSlot.MAINHAND, 0.0F); // Prevent normal drop
+            }
+        }
+    }
+
+    private static void equipChampionGearIfNeeded(LivingEntity entity, Rank rank) {
+        boolean hasLootTableArmor = false;
+        /*
+         * First check if armor equipping is allowed for this entity.
+         * Then check if the entity already has the armor item.
+         * If not, attempt to equip an armor item based on the rank.
+         */
+        for (EquipmentSlot slot : getArmorSlots()) {
+            if (entity.canUseSlot(slot) && entity.getItemBySlot(slot).isEmpty()) {
+                ItemStack armor = ConfigHandler.Common.getArmorForRankAndSlot(rank, slot);
+
+                if (armor != null) {
+                    entity.setItemSlot(slot, armor);
+                }
+            }
+        }
+
+        /*
+         * Finalize champion armor by enchanting it if needed.
+         */
+        finalizeChampionArmor(entity, rank, hasLootTableArmor);
+    }
+
+    private static void finalizeChampionArmor(LivingEntity entity, Rank rank, boolean hasLootTableArmor) {
+        /*
+         * Prevent champion armor from dropping on death.
+         * Only applies if the entity has armor equipped and is a Mob.
+         * This also will disable drops of normal items from all champions with armor.
+         */
+        if (entity instanceof Mob mob) {
+            Level level = entity.level();
+
+            if (level instanceof ServerLevel serverLevel) {
+                DifficultyInstance difficultyInstance = serverLevel.getCurrentDifficultyAt(entity.blockPosition());
+
+                for (EquipmentSlot slot : getArmorSlots()) {
+                    if (!entity.getItemBySlot(slot).isEmpty()) {
+                        enchantSpawnedArmor(mob, rank, serverLevel, serverLevel.getRandom(), slot, difficultyInstance);
+                        if (hasLootTableArmor) {
+                            mob.setGuaranteedDrop(slot);
+                        }
+                        else {
+                            mob.setDropChance(slot, 0.0F); // Prevent normal drop
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static void enchantSpawnedWeapon(LivingEntity entity, Rank rank, ServerLevelAccessor level, RandomSource random, DifficultyInstance difficulty) {
+        float chance;
+
+        switch (rank) {
+            case RARE -> chance = 0.30F;
+            case EPIC -> chance = 0.60F;
+            case LEGENDARY -> chance = 0.80F;
+            default -> chance = 0.15F;
+        }
+        enchantSpawnedEquipment(entity, level, EquipmentSlot.MAINHAND, random, chance, difficulty);
+    }
+
+    private static void enchantSpawnedArmor(LivingEntity entity, Rank rank, ServerLevelAccessor level, RandomSource random, EquipmentSlot slot, DifficultyInstance difficulty) {
+        float chance;
+
+        switch (rank) {
+            case RARE -> chance = 0.50F;
+            case EPIC -> chance = 0.75F;
+            case LEGENDARY -> chance = 1.0F;
+            default -> chance = 0.25F;
+        }
+        enchantSpawnedEquipment(entity, level, slot, random, chance, difficulty);
+    }
+
+    private static void enchantSpawnedEquipment(LivingEntity entity, ServerLevelAccessor level, EquipmentSlot slot, RandomSource random, float enchantChance, DifficultyInstance difficulty) {
+        ItemStack itemstack = entity.getItemBySlot(slot);
+
+        if (!itemstack.isEmpty() && random.nextFloat() < enchantChance * difficulty.getSpecialMultiplier()) {
+            EnchantmentHelper.enchantItemFromProvider(itemstack, level.registryAccess(), VanillaEnchantmentProviders.MOB_SPAWN_EQUIPMENT, difficulty, random);
+            entity.setItemSlot(slot, itemstack);
+        }
+
+    }
+
+
+    private static void applyGlowingEffectIfNeeded(LivingEntity entity, Rank rank) {
+        int glowingEffectMinimumRankOrdinal = ConfigHandler.Common.getGlowingEffectMinimumRank().ordinal();
+
+        if (rank.ordinal() >= glowingEffectMinimumRankOrdinal) {
+            int glowingEffectDuration = ConfigHandler.Common.getGlowingEffectDuration();
+
+            entity.addEffect(new MobEffectInstance(
+                MobEffects.GLOWING,
+                glowingEffectDuration
+            ));
+        }
+    }
+
+    private static void applyInfestedEffectIfNeeded(LivingEntity entity, Rank rank) {
+        int infestedEffectMinimumRankOrdinal = ConfigHandler.Common.getInfestedEffectMinimumRank().ordinal();
+
+        if (rank.ordinal() >= infestedEffectMinimumRankOrdinal) {
+            double infestedEffectChance = ConfigHandler.Common.getInfestedEffectChance();
+            double bonusMultiplier = 1 + ConfigHandler.Common.getLegendaryEffectBonusMultiplier();
+
+            if (rank == Rank.LEGENDARY) {
+                infestedEffectChance = infestedEffectChance * bonusMultiplier;
+            }
+
+            if (MobChampions.RANDOM.nextFloat() < infestedEffectChance) {
+                MobEffectInstance infestedEffect = new MobEffectInstance(MobEffects.INFESTED, -1);
+
+                entity.addEffect(infestedEffect);
+            }
+        }
+    }
+
+    private static void applyOozingEffectIfNeeded(LivingEntity entity, Rank rank) {
+        int oozingEffectMinimumRankOrdinal = ConfigHandler.Common.getOozingEffectMinimumRank().ordinal();
+
+        if (rank.ordinal() >= oozingEffectMinimumRankOrdinal) {
+            double oozingEffectChance = ConfigHandler.Common.getOozingEffectChance();
+            double bonusMultiplier = 1 + ConfigHandler.Common.getLegendaryEffectBonusMultiplier();
+
+            if (rank == Rank.LEGENDARY) {
+                oozingEffectChance = oozingEffectChance * bonusMultiplier;
+            }
+
+            if (MobChampions.RANDOM.nextFloat() < oozingEffectChance) {
+                MobEffectInstance oozingEffect = new MobEffectInstance(MobEffects.OOZING, -1);
+
+                entity.addEffect(oozingEffect);
+            }
+        }
+    }
+
+    private static void applyWeavingEffectIfNeeded(LivingEntity entity, Rank rank) {
+        int weavingEffectMinimumRankOrdinal = ConfigHandler.Common.getWeavingEffectMinimumRank().ordinal();
+
+        if (rank.ordinal() >= weavingEffectMinimumRankOrdinal) {
+            double weavingEffectChance = ConfigHandler.Common.getWeavingEffectChance();
+            double bonusMultiplier = 1 + ConfigHandler.Common.getLegendaryEffectBonusMultiplier();
+
+            if (rank == Rank.LEGENDARY) {
+                weavingEffectChance = weavingEffectChance * bonusMultiplier;
+            }
+
+            if (MobChampions.RANDOM.nextFloat() < weavingEffectChance) {
+                MobEffectInstance weavingEffect = new MobEffectInstance(MobEffects.WEAVING, -1);
+
+                entity.addEffect(weavingEffect);
+            }
+        }
+    }
+
+    private static void applyWindChargedEffectIfNeeded(LivingEntity entity, Rank rank) {
+        int windChargedEffectMinimumRankOrdinal = ConfigHandler.Common.getWindChargedEffectMinimumRank().ordinal();
+
+        if (rank.ordinal() >= windChargedEffectMinimumRankOrdinal) {
+            double windChargedEffectChance = ConfigHandler.Common.getWindChargedEffectChance();
+            double bonusMultiplier = 1 + ConfigHandler.Common.getLegendaryEffectBonusMultiplier();
+
+            if (rank == Rank.LEGENDARY) {
+                windChargedEffectChance = windChargedEffectChance * bonusMultiplier;
+            }
+
+            if (MobChampions.RANDOM.nextFloat() < windChargedEffectChance) {
+                MobEffectInstance windChargedEffect = new MobEffectInstance(MobEffects.WIND_CHARGED, -1);
+
+                entity.addEffect(windChargedEffect);
+            }
+        }
     }
 
     public static void updateMaxHealth(LivingEntity entity) {
@@ -162,6 +405,15 @@ public class MobChampionBuilder {
         if (attributeInstance != null && !attributeInstance.hasModifier(modifier.id())) {
             attributeInstance.addPermanentModifier(modifier);
         }
+    }
+
+    public static List<EquipmentSlot> getArmorSlots() {
+        return List.of(
+            EquipmentSlot.HEAD,
+            EquipmentSlot.CHEST,
+            EquipmentSlot.LEGS,
+            EquipmentSlot.FEET
+        );
     }
 
 }

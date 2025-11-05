@@ -34,7 +34,7 @@ public class MobChampionEventHandler {
                     data.setRank(newRank);
 
                     // Apply champion effects/attributes if uncommon or higher
-                    MobChampionBuilder.applyChampionAttributesAndEffects(livingEntity, newRank);
+                    MobChampionBuilder.build(livingEntity, newRank);
                 }
             });
         }

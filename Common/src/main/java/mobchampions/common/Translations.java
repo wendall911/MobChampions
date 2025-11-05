@@ -110,6 +110,84 @@ public class Translations {
         translations.put("legendaryattackdamagemultiplier", "Attack damage multiplier applied to legendary champions.");
         translations.put("legendaryknockbackresistanceaddition.title", "Legendary Champion Knockback Resistance Addition");
         translations.put("legendaryknockbackresistanceaddition", "Knockback resistance addition applied to legendary champions.");
+        translations.put("effects.title", "Champion Effects Settings");
+        translations.put("effects", joiner(
+            "Settings that modify the effects applied to champions based on their rank."
+        ));
+        translations.put("glowingeffectminimumrank.title", "Glowing Effect Minimum Rank");
+        translations.put("glowingeffectminimumrank", "Minimum champion rank required to apply the glowing effect.");
+        translations.put("glowingeffectduration.title", "Glowing Effect Duration");
+        translations.put("glowingeffectduration", joiner(
+            "Duration in seconds for the glowing effect applied to champions.",
+            "Set to 0 to disable. Set to -1 for infinite duration."
+        ));
+        translations.put("infestedeffectminimumrank.title", "Infested Effect Minimum Rank");
+        translations.put("infestedeffectminimumrank", "Minimum champion rank required to apply the infested effect.");
+        translations.put("infestedeffectchance.title", "Infested Effect Chance");
+        translations.put("infestedeffectchance", "Chance for the infested effect to be applied to eligible champions.");
+        translations.put("oozingeffectminimumrank.title", "Oozing Effect Minimum Rank");
+        translations.put("oozingeffectminimumrank", "Minimum champion rank required to apply the oozing effect.");
+        translations.put("oozingeffectchance.title", "Oozing Effect Chance");
+        translations.put("oozingeffectchance", "Chance for the oozing effect to be applied to eligible champions.");
+        translations.put("weavingeffectminimumrank.title", "Weaving Effect Minimum Rank");
+        translations.put("weavingeffectminimumrank", "Minimum champion rank required to apply the weaving effect.");
+        translations.put("weavingeffectchance.title", "Weaving Effect Chance");
+        translations.put("weavingeffectchance", "Chance for the weaving effect to be applied to eligible champions.");
+        translations.put("windchargedeffectminimumrank.title", "Wind Charged Effect Minimum Rank");
+        translations.put("windchargedeffectminimumrank", "Minimum champion rank required to apply the wind charged effect.");
+        translations.put("windchargedeffectchance.title", "Wind Charged Effect Chance");
+        translations.put("windchargedeffectchance", "Chance for the wind charged effect to be applied to eligible champions.");
+        translations.put("legendaryeffectbonusmultiplier.title", "Legendary Effect Bonus Multiplier");
+        translations.put("legendaryeffectbonusmultiplier", "Multiplier applied to all effect chances for legendary champions.");
+        translations.put("equipment.title", "Champion Equipment Settings");
+        translations.put("equipment", joiner(
+            "Settings that modify the items equipped by champions based on their rank."
+        ));
+        translations.put("uncommonstandardweaponspawnchance.title", "Uncommon Champion Standard Weapons Spawn Chance");
+        translations.put("uncommonstandardweaponspawnchance", "Chance for uncommon champions to spawn with standard weapons.");
+        translations.put("rarestandardweaponspawnchance.title", "Rare Champion Standard Weapons Spawn Chance");
+        translations.put("rarestandardweaponspawnchance", "Chance for rare champions to spawn with standard weapons.");
+        translations.put("epicstandardweaponspawnchance.title", "Epic Champion Standard Weapons Spawn Chance");
+        translations.put("epicstandardweaponspawnchance", "Chance for epic champions to spawn with standard weapons.");
+        translations.put("legendarystandardweaponspawnchance.title", "Legendary Champion Standard Weapons Spawn Chance");
+        translations.put("legendarystandardweaponspawnchance", "Chance for legendary champions to spawn with standard weapons.");
+        translations.put("uncommonlootableweaponspawnchance.title", "Uncommon Champion Lootable Weapons Spawn Chance");
+        translations.put("uncommonlootableweaponspawnchance", "Chance for uncommon champions to spawn with lootable weapons.");
+        translations.put("rarelootableweaponspawnchance.title", "Rare Champion Lootable Weapons Spawn Chance");
+        translations.put("rarelootableweaponspawnchance", "Chance for rare champions to spawn with lootable weapons.");
+        translations.put("epiclootableweaponspawnchance.title", "Epic Champion Lootable Weapons Spawn Chance");
+        translations.put("epiclootableweaponspawnchance", "Chance for epic champions to spawn with lootable weapons.");
+        translations.put("legendarylootableweaponspawnchance.title", "Legendary Champion Lootable Weapons Spawn Chance");
+        translations.put("weaponlist.title", "Champion Weapon List");
+        translations.put("weaponlist", joiner(
+            "Format: <rarity>-<weight>-<modid:item_name>",
+            "Rarity: 1 (Uncommon), 2 (Rare), 3 (Epic), 4 (Legendary)",
+            "Weight: Integer value representing the relative chance of selection",
+            "Example: 2-50-minecraft:diamond_sword"
+        ));
+        translations.put("uncommonstandardarmorspawnchance.title", "Uncommon Champion Standard Armor Spawn Chance");
+        translations.put("uncommonstandardarmorspawnchance", "Chance for uncommon champions to spawn with standard armor.");
+        translations.put("rarestandardarmorspawnchance.title", "Rare Champion Standard Armor Spawn Chance");
+        translations.put("rarestandardarmorspawnchance", "Chance for rare champions to spawn with standard armor.");
+        translations.put("epicstandardarmorspawnchance.title", "Epic Champion Standard Armor Spawn Chance");
+        translations.put("epicstandardarmorspawnchance", "Chance for epic champions to spawn with standard armor.");
+        translations.put("legendarystandardarmorspawnchance.title", "Legendary Champion Standard Armor Spawn Chance");
+        translations.put("legendarystandardarmorspawnchance", "Chance for legendary champions to spawn with standard armor.");
+        translations.put("uncommonlootablearmorspawnchance.title", "Uncommon Champion Lootable Armor Spawn Chance");
+        translations.put("uncommonlootablearmorspawnchance", "Chance for uncommon champions to spawn with upgraded loot table armor.");
+        translations.put("rarelootablearmorspawnchance.title", "Rare Champion Lootable Armor Spawn Chance");
+        translations.put("rarelootablearmorspawnchance", "Chance for rare champions to spawn with upgraded loot table armor.");
+        translations.put("epiclootablearmorspawnchance.title", "Epic Champion Lootable Armor Spawn Chance");
+        translations.put("epiclootablearmorspawnchance", "Chance for epic champions to spawn with upgraded loot table armor.");
+        translations.put("legendarylootablearmorspawnchance.title", "Legendary Champion Lootable Armor Spawn Chance");
+        translations.put("legendarylootablearmorspawnchance", "Chance for legendary champions to spawn with upgraded loot table armor.");
+        translations.put("armorlist.title", "Champion Armor List");
+        translations.put("armorlist", joiner(
+            "Format: <rarity>-<weight>-<modid:item_name>",
+            "Rarity: 1 (Uncommon), 2 (Rare), 3 (Epic), 4 (Legendary)",
+            "Weight: Integer value representing the relative chance of selection",
+            "Example: 3-30-minecraft:diamond_chestplate"
+        ));
         translations.put("experience.title", "Champion Experience Settings");
         translations.put("experience", joiner(
             "Settings that modify the experience dropped by champions based on their rank."

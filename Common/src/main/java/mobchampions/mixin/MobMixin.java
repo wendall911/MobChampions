@@ -21,14 +21,15 @@ import mobchampions.platform.Services;
 public abstract class MobMixin {
 
     @Inject(method = "finalizeSpawn", at = @At("RETURN"))
-    public void mobchampions$onFinalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, SpawnGroupData spawnGroupData, CallbackInfoReturnable<SpawnGroupData> cir) {
+    public void mobchampions$onFinalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
+            MobSpawnType spawnType, SpawnGroupData spawnGroupData, CallbackInfoReturnable<SpawnGroupData> cir) {
         // Only process if spawn type is not blacklisted
         if (!ConfigHandler.Common.getSpawnTypeBlacklistEnums().contains(spawnType)) {
             LivingEntity livingEntity = (LivingEntity) (Object) this;
 
             MobChampionEventHandler.addRandomChampion(livingEntity);
         }
-        else { // For blacklisted spawn types, ensure mob is normal
+        else { // For blacklisted spawn types, ensure mob is set to COMMON so we can track it
             LivingEntity livingEntity = (LivingEntity) (Object) this;
 
             MobChampionEventHandler.addNormalMob(livingEntity);
@@ -48,6 +49,7 @@ public abstract class MobMixin {
             if (data.getEntityId() != -1 && data.getRank() != MobChampion.Rank.COMMON) {
                 // Modify XP based on champion rank multiplier
                 int modifiedXP = (int) (baseXP * ConfigHandler.Common.getExperienceMultiplierForRank(data.getRank()));
+
                 cir.setReturnValue(modifiedXP);
             }
         });

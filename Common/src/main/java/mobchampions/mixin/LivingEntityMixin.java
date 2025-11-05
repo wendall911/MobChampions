@@ -1,6 +1,7 @@
 package mobchampions.mixin;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,24 +31,11 @@ public abstract class LivingEntityMixin extends Entity {
         super(entityType, level);
     }
 
-    @Inject(method = "dropExperience", at = @At("HEAD"))
-    public void mc$dropExperience(Entity entity, CallbackInfo ci) {
-        if (this.level() instanceof ServerLevel serverLevel
-            && !this.wasExperienceConsumed()
-            && (this.isAlwaysExperienceDropper()
-                || this.lastHurtByPlayerTime > 0
-                && this.shouldDropExperience()
-                && this.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)
-            )
-        ) {
-            // Check if has mobChampion attachement, check level, add bonus loot
+    @Inject(method = "dropFromLootTable", at = @At("TAIL"))
+    public void mc$dropFromLootTable(DamageSource damageSource, boolean hitByPlayer, CallbackInfo ci) {
+            // Check if has mobChampion attachment, check level, add bonus loot
             // Broadcast death message
-            /*
-             * Add bouns XP drop based on mob champion rank.
-             * Bonus loot is in the death loot table.
-             */
-            MobChampions.LOGGER.warn("dropping xp");
-        }
+            MobChampions.LOGGER.warn("dropping bonus loot");
     }
 
 }

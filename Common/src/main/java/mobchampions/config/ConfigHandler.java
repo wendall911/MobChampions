@@ -2,7 +2,9 @@ package mobchampions.config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.function.Predicate;
@@ -12,7 +14,15 @@ import java.util.stream.Stream;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Equipable;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.FireworkExplosion;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -21,8 +31,10 @@ import technology.roughness.whitenoise.config.WhiteNoiseConfigSpec;
 
 import mobchampions.MobChampions;
 import mobchampions.common.Translations;
+import mobchampions.network.MobChampion;
 import mobchampions.network.MobChampion.Rank;
 import mobchampions.util.ColorHelper;
+import mobchampions.util.MobChampionBuilder;
 
 public class ConfigHandler {
 
@@ -113,10 +125,6 @@ public class ConfigHandler {
         }
 
         MobChampions.LOGGER.warn("Configured champion rank weights: {} {}", Common.championWeightMap, Common.getTotalWeight());
-
-        int randomWeight = MobChampions.RANDOM.nextInt(Common.getTotalWeight());
-        Rank selectedChampion = Common.getChampionByWeight(randomWeight);
-        MobChampions.LOGGER.warn("Random weight: {}, Selected Champion Rank: {}", randomWeight, selectedChampion);
         MobChampions.LOGGER.warn("Odds: Common: {}%, Uncommon: {}%, Rare: {}%, Epic: {}%, Legendary: {}%",
             (COMMON.commonMobWeight.get() * 100.0F) / Common.getTotalWeight(),
             (COMMON.uncommonWeight.get() * 100.0F) / Common.getTotalWeight(),
@@ -125,10 +133,187 @@ public class ConfigHandler {
             (COMMON.legendaryWeight.get() * 100.0F) / Common.getTotalWeight()
         );
 
+        // Initialize spawn type blacklist enums
         Common.spawnTypeBlacklistEnums.clear();
         COMMON.spawnTypeBlacklistSource.get().forEach(
             (spawnTypeString) -> Common.spawnTypeBlacklistEnums.add(
                 Enum.valueOf(MobSpawnType.class, spawnTypeString)));
+
+        // Initialize weapon items maps
+        Common.uncommonWeaponItemsMap.clear();
+        Common.rareWeaponItemsMap.clear();
+        Common.epicWeaponItemsMap.clear();
+        Common.legendaryWeaponItemsMap.clear();
+
+        final int[] lastUncommonWeight = {0};
+        final int[] lastRareWeight = {0};
+        final int[] lastEpicWeight = {0};
+        final int[] lastLegendaryWeight = {0};
+
+        COMMON.weapons.get().forEach((weaponString) -> {
+            String[] weaponParts = weaponString.split("-", 3);
+            Rank rank = switch (weaponParts[0]) {
+                case "2" -> Rank.RARE;
+                case "3" -> Rank.EPIC;
+                case "4" -> Rank.LEGENDARY;
+                default -> Rank.UNCOMMON;
+            };
+            int weight = Integer.parseInt(weaponParts[1]);
+            Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(weaponParts[2]));
+
+            if (item == Items.AIR) {
+                MobChampions.LOGGER.warn("Invalid item '{}' in weapons list, skipping...", weaponParts[2]);
+                return;
+            }
+
+            ItemStack itemStack = new ItemStack(item);
+
+            switch (rank) {
+                case UNCOMMON -> {
+                    Common.uncommonWeaponItemsMap.put(
+                        lastUncommonWeight[0],
+                        itemStack
+                    );
+                    lastUncommonWeight[0] += weight;
+                }
+                case RARE -> {
+                    Common.rareWeaponItemsMap.put(
+                        lastRareWeight[0],
+                        itemStack
+                    );
+                    lastRareWeight[0] += weight;
+                }
+                case EPIC -> {
+                    Common.epicWeaponItemsMap.put(
+                        lastEpicWeight[0],
+                        itemStack
+                    );
+                    lastEpicWeight[0] += weight;
+                }
+                case LEGENDARY -> {
+                    Common.legendaryWeaponItemsMap.put(
+                        lastLegendaryWeight[0],
+                        itemStack
+                    );
+                    lastLegendaryWeight[0] += weight;
+                }
+            }
+        });
+        Common.totalUncommonWeaponWeight = lastUncommonWeight[0];
+        Common.totalRareWeaponWeight = lastRareWeight[0];
+        Common.totalEpicWeaponWeight = lastEpicWeight[0];
+        Common.totalLegendaryWeaponWeight = lastLegendaryWeight[0];
+
+        MobChampions.LOGGER.warn("Configured uncommon weapon items: {} of: {}", Common.uncommonWeaponItemsMap, Common.totalUncommonWeaponWeight);
+        MobChampions.LOGGER.warn("Configured rare weapon items: {} of: {}", Common.rareWeaponItemsMap, Common.totalRareWeaponWeight);
+        MobChampions.LOGGER.warn("Configured epic weapon items: {} of: {}", Common.epicWeaponItemsMap, Common.totalEpicWeaponWeight);
+        MobChampions.LOGGER.warn("Configured legendary weapon items: {} of: {}", Common.legendaryWeaponItemsMap, Common.totalLegendaryWeaponWeight);
+
+        final Map<EquipmentSlot, Integer> lastUncommonWeights = new HashMap<>();
+        final Map<EquipmentSlot, Integer> lastRareWeights = new HashMap<>();
+        final Map<EquipmentSlot, Integer> lastEpicWeights = new HashMap<>();
+        final Map<EquipmentSlot, Integer> lastLegendaryWeights = new HashMap<>();
+
+        // Initialize armor items maps
+        for (EquipmentSlot slot : MobChampionBuilder.getArmorSlots()) {
+            for (Rank rank : Rank.values()) {
+                switch (rank) {
+                    case UNCOMMON -> {
+                        Common.totalUncommonArmorWeight.put(slot, 0);
+                        lastUncommonWeights.put(slot, 0);
+                        Common.uncommonArmorItemsMap.put(slot, new TreeMap<>());
+                    }
+                    case RARE -> {
+                        Common.totalRareArmorWeight.put(slot, 0);
+                        lastRareWeights.put(slot, 0);
+                        Common.rareArmorItemsMap.put(slot, new TreeMap<>());
+                    }
+                    case EPIC -> {
+                        Common.totalEpicArmorWeight.put(slot, 0);
+                        lastEpicWeights.put(slot, 0);
+                        Common.epicArmorItemsMap.put(slot, new TreeMap<>());
+                    }
+                    case LEGENDARY -> {
+                        Common.totalLegendaryArmorWeight.put(slot, 0);
+                        lastLegendaryWeights.put(slot, 0);
+                        Common.legendaryArmorItemsMap.put(slot, new TreeMap<>());
+                    }
+                    default -> {}
+                }
+            }
+        }
+
+        COMMON.armors.get().forEach((armorString) -> {
+            String[] armorParts = armorString.split("-", 3);
+            Rank rank = switch (armorParts[0]) {
+                case "2" -> Rank.RARE;
+                case "3" -> Rank.EPIC;
+                case "4" -> Rank.LEGENDARY;
+                default -> Rank.UNCOMMON;
+            };
+            int weight = Integer.parseInt(armorParts[1]);
+            Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(armorParts[2]));
+
+            if (item == Items.AIR) {
+                MobChampions.LOGGER.warn("Invalid item '{}' in armors list, skipping...", armorParts[2]);
+                return;
+            }
+
+            ItemStack itemStack = new ItemStack(item);
+            Equipable equipable = Equipable.get(itemStack);
+
+            // Check if item is equipable
+            if (equipable == null) {
+                MobChampions.LOGGER.warn("Item '{}' in armors list is not equipable, skipping...", armorParts[2]);
+                return;
+            }
+
+            EquipmentSlot slot = equipable.getEquipmentSlot();
+
+            switch (rank) {
+                case UNCOMMON -> {
+                    Common.uncommonArmorItemsMap.get(slot).put(
+                        lastUncommonWeights.get(slot),
+                        itemStack
+                    );
+                    lastUncommonWeights.put(slot, lastUncommonWeights.get(slot) + weight);
+                }
+                case RARE -> {
+                    Common.rareArmorItemsMap.get(slot).put(
+                        lastRareWeights.get(slot),
+                        itemStack
+                    );
+                    lastRareWeights.put(slot, lastRareWeights.get(slot) + weight);
+                }
+                case EPIC -> {
+                    Common.epicArmorItemsMap.get(slot).put(
+                        lastEpicWeights.get(slot),
+                        itemStack
+                    );
+                    lastEpicWeights.put(slot, lastEpicWeights.get(slot) + weight);
+                }
+                case LEGENDARY -> {
+                    Common.legendaryArmorItemsMap.get(slot).put(
+                        lastLegendaryWeights.get(slot),
+                        itemStack
+                    );
+                    lastLegendaryWeights.put(slot, lastLegendaryWeights.get(slot) + weight);
+                }
+            }
+        });
+
+        for (EquipmentSlot slot : MobChampionBuilder.getArmorSlots()) {
+            Common.totalUncommonArmorWeight.put(slot, lastUncommonWeights.get(slot));
+            Common.totalRareArmorWeight.put(slot, lastRareWeights.get(slot));
+            Common.totalEpicArmorWeight.put(slot, lastEpicWeights.get(slot));
+            Common.totalLegendaryArmorWeight.put(slot, lastLegendaryWeights.get(slot));
+
+            MobChampions.LOGGER.warn("Configured uncommon armor {} items: {} of: {}", slot, Common.uncommonArmorItemsMap.get(slot), Common.totalUncommonArmorWeight.get(slot));
+            MobChampions.LOGGER.warn("Configured rare armor {} items: {} of: {}", slot, Common.rareArmorItemsMap.get(slot), Common.totalRareArmorWeight.get(slot));
+            MobChampions.LOGGER.warn("Configured epic armor {} items: {} of: {}", slot, Common.epicArmorItemsMap.get(slot), Common.totalEpicArmorWeight.get(slot));
+            MobChampions.LOGGER.warn("Configured legendary armor {} items: {} of: {}", slot, Common.legendaryArmorItemsMap.get(slot), Common.totalLegendaryArmorWeight.get(slot));
+        }
+
     }
 
     public static class Client {
@@ -262,7 +447,7 @@ public class ConfigHandler {
             "minecraft:drowned",
             "minecraft:pillager"
         };
-        private final Predicate<Object> entityTypeValidator = s -> s instanceof String
+        private final Predicate<Object> resourceLocationValidator = s -> s instanceof String
             && ((String) s).matches("[a-z]+[:]{1}[a-z_]+");
         private final WhiteNoiseConfigSpec.ConfigValue<List<? extends String>> spawnTypeBlacklistSource;
         private static final List<Enum<MobSpawnType>> spawnTypeBlacklistEnums = new ArrayList<>();
@@ -301,7 +486,108 @@ public class ConfigHandler {
         private final WhiteNoiseConfigSpec.DoubleValue legendaryMovementSpeedMultiplier;
         private final WhiteNoiseConfigSpec.DoubleValue legendaryAttackDamageMultiplier;
         private final WhiteNoiseConfigSpec.DoubleValue legendaryKnockbackResistanceAddition;
+        private final WhiteNoiseConfigSpec.EnumValue<MobChampion.Rank> glowingEffectMinimumRank;
+        private final WhiteNoiseConfigSpec.IntValue glowingEffectDuration;
+        private final WhiteNoiseConfigSpec.EnumValue<MobChampion.Rank> infestedEffectMinimumRank;
+        private final WhiteNoiseConfigSpec.DoubleValue infestedEffectChance;
+        private final WhiteNoiseConfigSpec.EnumValue<MobChampion.Rank> oozingEffectMinimumRank;
+        private final WhiteNoiseConfigSpec.DoubleValue oozingEffectChance;
+        private final WhiteNoiseConfigSpec.EnumValue<MobChampion.Rank> weavingEffectMinimumRank;
+        private final WhiteNoiseConfigSpec.DoubleValue weavingEffectChance;
+        private final WhiteNoiseConfigSpec.EnumValue<MobChampion.Rank> windChargedEffectMinimumRank;
+        private final WhiteNoiseConfigSpec.DoubleValue windChargedEffectChance;
+        private final WhiteNoiseConfigSpec.DoubleValue uncommonStandardWeaponSpawnChance;
+        private final WhiteNoiseConfigSpec.DoubleValue rareStandardWeaponSpawnChance;
+        private final WhiteNoiseConfigSpec.DoubleValue epicStandardWeaponSpawnChance;
+        private final WhiteNoiseConfigSpec.DoubleValue legendaryStandardWeaponSpawnChance;
+        private final WhiteNoiseConfigSpec.DoubleValue uncommonLootableWeaponSpawnChance;
+        private final WhiteNoiseConfigSpec.DoubleValue rareLootableWeaponSpawnChance;
+        private final WhiteNoiseConfigSpec.DoubleValue epicLootableWeaponSpawnChance;
+        private final WhiteNoiseConfigSpec.DoubleValue legendaryLootableWeaponSpawnChance;
+        private final WhiteNoiseConfigSpec.ConfigValue<List<? extends String>> weapons;
+        private static final List<String> weaponList = List.of("weaponList");
+        private static final String[] defaultWeapons = {
+            "1-10-minecraft:stone_sword",
+            "1-10-minecraft:wooden_sword",
+            "1-10-minecraft:stone_axe",
+            "1-10-minecraft:wooden_axe",
+            "2-10-minecraft:iron_sword",
+            "2-10-minecraft:iron_axe",
+            "2-20-minecraft:golden_sword",
+            "2-20-minecraft:golden_axe",
+            "3-20-minecraft:iron_sword",
+            "3-20-minecraft:iron_axe",
+            "3-10-minecraft:diamond_sword",
+            "3-10-minecraft:diamond_axe",
+            "4-30-minecraft:diamond_sword",
+            "4-30-minecraft:diamond_axe",
+            "4-10-minecraft:netherite_sword",
+            "4-10-minecraft:netherite_axe"
+        };
+        private static final Predicate<Object> armorAndEquipmentValidator = s -> s instanceof String
+            && ((String) s).matches("[1-4]-[0-9]{0,3}-[a-z]+:[a-z_]+");
+        private static int totalUncommonWeaponWeight = 0;
+        private static int totalRareWeaponWeight = 0;
+        private static int totalEpicWeaponWeight = 0;
+        private static int totalLegendaryWeaponWeight = 0;
+        private static final NavigableMap<Integer, ItemStack> uncommonWeaponItemsMap = new TreeMap<>();
+        private static final NavigableMap<Integer, ItemStack> rareWeaponItemsMap = new TreeMap<>();
+        private static final NavigableMap<Integer, ItemStack> epicWeaponItemsMap = new TreeMap<>();
+        private static final NavigableMap<Integer, ItemStack> legendaryWeaponItemsMap = new TreeMap<>();
+        private final WhiteNoiseConfigSpec.DoubleValue uncommonStandardArmorSpawnChance;
+        private final WhiteNoiseConfigSpec.DoubleValue rareStandardArmorSpawnChance;
+        private final WhiteNoiseConfigSpec.DoubleValue epicStandardArmorSpawnChance;
+        private final WhiteNoiseConfigSpec.DoubleValue legendaryStandardArmorSpawnChance;
+        private final WhiteNoiseConfigSpec.DoubleValue uncommonLootableArmorSpawnChance;
+        private final WhiteNoiseConfigSpec.DoubleValue rareLootableArmorSpawnChance;
+        private final WhiteNoiseConfigSpec.DoubleValue epicLootableArmorSpawnChance;
+        private final WhiteNoiseConfigSpec.DoubleValue legendaryLootableArmorSpawnChance;
+        private final WhiteNoiseConfigSpec.ConfigValue<List<? extends String>> armors;
+        private static final List<String> armorList = List.of("armorList");
+        private static final String[] defaultArmors = {
+            "1-10-minecraft:golden_helmet",
+            "1-10-minecraft:leather_helmet",
+            "1-10-minecraft:golden_chestplate",
+            "1-10-minecraft:leather_chestplate",
+            "1-10-minecraft:golden_leggings",
+            "1-10-minecraft:leather_leggings",
+            "1-10-minecraft:golden_boots",
+            "1-10-minecraft:leather_boots",
+            "2-20-minecraft:chainmail_helmet",
+            "2-10-minecraft:iron_helmet",
+            "2-20-minecraft:chainmail_chestplate",
+            "2-10-minecraft:iron_chestplate",
+            "2-20-minecraft:chainmail_leggings",
+            "2-10-minecraft:iron_leggings",
+            "2-20-minecraft:chainmail_boots",
+            "2-10-minecraft:iron_boots",
+            "3-10-minecraft:diamond_helmet",
+            "3-20-minecraft:iron_helmet",
+            "3-10-minecraft:diamond_chestplate",
+            "3-20-minecraft:iron_chestplate",
+            "3-10-minecraft:diamond_leggings",
+            "3-20-minecraft:iron_leggings",
+            "3-10-minecraft:diamond_boots",
+            "3-20-minecraft:iron_boots",
+            "4-80-minecraft:diamond_helmet",
+            "4-40-minecraft:netherite_helmet",
+            "4-10-minecraft:diamond_chestplate",
+            "4-5-minecraft:netherite_chestplate",
+            "4-60-minecraft:diamond_leggings",
+            "4-30-minecraft:netherite_leggings",
+            "4-100-minecraft:diamond_boots",
+            "4-50-minecraft:netherite_boots"
+        };
+        private static final Map<EquipmentSlot, Integer> totalUncommonArmorWeight = new HashMap<>();
+        private static final Map<EquipmentSlot, Integer> totalRareArmorWeight = new HashMap<>();
+        private static final Map<EquipmentSlot, Integer> totalEpicArmorWeight = new HashMap<>();
+        private static final Map<EquipmentSlot, Integer> totalLegendaryArmorWeight = new HashMap<>();
+        private static final Map<EquipmentSlot, NavigableMap<Integer, ItemStack>> uncommonArmorItemsMap = new HashMap<>();
+        private static final Map<EquipmentSlot, NavigableMap<Integer, ItemStack>> rareArmorItemsMap = new HashMap<>();
+        private static final Map<EquipmentSlot, NavigableMap<Integer, ItemStack>> epicArmorItemsMap = new HashMap<>();
+        private static final Map<EquipmentSlot, NavigableMap<Integer, ItemStack>> legendaryArmorItemsMap = new HashMap<>();
         private final WhiteNoiseConfigSpec.DoubleValue uncommonExperienceMultiplier;
+        private final WhiteNoiseConfigSpec.DoubleValue legendaryEffectBonusMultiplier;
         private final WhiteNoiseConfigSpec.DoubleValue rareExperienceMultiplier;
         private final WhiteNoiseConfigSpec.DoubleValue epicExperienceMultiplier;
         private final WhiteNoiseConfigSpec.DoubleValue legendaryExperienceMultiplier;
@@ -329,7 +615,7 @@ public class ConfigHandler {
                     getTranslation("championwhitelist", String.join(", ", defaultWhitelist)),
                     "Entity types must be in the format modid:entity_name"
                 )
-                .defineListAllowEmpty(championWhitelist, getFields(defaultWhitelist), entityTypeValidator);
+                .defineListAllowEmpty(championWhitelist, getFields(defaultWhitelist), resourceLocationValidator);
             spawnTypeBlacklistSource = builder
                 .comment(getTranslation("spawntypeblacklist"))
                 .defineListAllowEmpty(spawnTypeBlacklist, getFields(defaultSpawnTypeBlacklist), spawnTypeValidator);
@@ -401,7 +687,104 @@ public class ConfigHandler {
                 .defineInRange("legendaryKnockbackResistanceAddition", 1.0, 0.01, 1.0);
 
             builder.pop(); // spawning.stats
+
+            builder.push("effects").comment(getTranslation("effects")); // spawning.effects
+
+            glowingEffectMinimumRank = builder
+                .comment(getTranslation("glowingeffectminimumrank"))
+                .defineEnum("glowingEffectMinimumRank", MobChampion.Rank.LEGENDARY);
+            glowingEffectDuration = builder
+                .comment(getTranslation("glowingeffectduration"))
+                .defineInRange("glowingEffectDuration", 15, -1, 60);
+            infestedEffectMinimumRank = builder
+                .comment(getTranslation("infestedeffectminimumrank"))
+                .defineEnum("infestedEffectMinimumRank", MobChampion.Rank.EPIC);
+            infestedEffectChance = builder
+                .comment(getTranslation("infestedeffectchance"))
+                .defineInRange("infestedEffectChance", 0.35, 0.0, 1.0);
+            oozingEffectMinimumRank = builder
+                .comment(getTranslation("oozingeffectminimumrank"))
+                .defineEnum("oozingEffectMinimumRank", MobChampion.Rank.EPIC);
+            oozingEffectChance = builder
+                .comment(getTranslation("oozingeffectchance"))
+                .defineInRange("oozingEffectChance", 0.45, 0.0, 1.0);
+            weavingEffectMinimumRank = builder
+                .comment(getTranslation("weavingeffectminimumrank"))
+                .defineEnum("weavingEffectMinimumRank", MobChampion.Rank.RARE);
+            weavingEffectChance = builder
+                .comment(getTranslation("weavingeffectchance"))
+                .defineInRange("weavingEffectChance", 0.60, 0.0, 1.0);
+            windChargedEffectMinimumRank = builder
+                .comment(getTranslation("windchargedeffectminimumrank"))
+                .defineEnum("windChargedEffectMinimumRank", MobChampion.Rank.EPIC);
+            windChargedEffectChance = builder
+                .comment(getTranslation("windchargedeffectchance"))
+                .defineInRange("windChargedEffectChance", 0.20, 0.0, 1.0);
+            legendaryEffectBonusMultiplier = builder
+                .comment(getTranslation("legendaryeffectbonusmultiplier"))
+                .defineInRange("legendaryEffectBonusMultiplier", 0.5, 0.0, 1.0);
+
+            builder.pop(); // spawning.effects
+            builder.push("equipment"); // spawning.equipment
+
+            uncommonStandardWeaponSpawnChance = builder
+                .comment(getTranslation("uncommonstandardweaponspawnchance"))
+                .defineInRange("uncommonStandardWeaponSpawnChance", 0.7, 0.0, 1.0);
+            rareStandardWeaponSpawnChance = builder
+                .comment(getTranslation("rarestandardweaponspawnchance"))
+                .defineInRange("rareStandardWeaponSpawnChance", 0.8, 0.0, 1.0);
+            epicStandardWeaponSpawnChance = builder
+                .comment(getTranslation("epicstandardweaponspawnchance"))
+                .defineInRange("epicStandardWeaponSpawnChance", 0.9, 0.0, 1.0);
+            legendaryStandardWeaponSpawnChance = builder
+                .comment(getTranslation("legendarystandardweaponspawnchance"))
+                .defineInRange("legendaryStandardWeaponSpawnChance", 0.95, 0.0, 1.0);
+            uncommonLootableWeaponSpawnChance = builder
+                .comment(getTranslation("uncommonlootableweaponspawnchance"))
+                .defineInRange("uncommonLootableWeaponSpawnChance", 0.02, 0.0, 1.0);
+            rareLootableWeaponSpawnChance = builder
+                .comment(getTranslation("rarelootableweaponspawnchance"))
+                .defineInRange("rareLootableWeaponSpawnChance", 0.05, 0.0, 1.0);
+            epicLootableWeaponSpawnChance = builder
+                .comment(getTranslation("epiclootableweaponspawnchance"))
+                .defineInRange("epicLootableWeaponSpawnChance", 0.1, 0.0, 1.0);
+            legendaryLootableWeaponSpawnChance = builder
+                .comment(getTranslation("legendarylootableweaponspawnchance"))
+                .defineInRange("legendaryLootableWeaponSpawnChance", 0.25, 0.0, 1.0);
+            weapons = builder
+                .comment(getTranslation("weaponlist"))
+                .defineListAllowEmpty(weaponList, getFields(defaultWeapons), armorAndEquipmentValidator);
+            uncommonStandardArmorSpawnChance = builder
+                .comment(getTranslation("uncommonstandardarmorspawnchance"))
+                .defineInRange("uncommonStandardArmorSpawnChance", 0.7, 0.0, 1.0);
+            rareStandardArmorSpawnChance = builder
+                .comment(getTranslation("rarestandardarmorspawnchance"))
+                .defineInRange("rareStandardArmorSpawnChance", 0.8, 0.0, 1.0);
+            epicStandardArmorSpawnChance = builder
+                .comment(getTranslation("epicstandardarmorspawnchance"))
+                .defineInRange("epicStandardArmorSpawnChance", 0.9, 0.0, 1.0);
+            legendaryStandardArmorSpawnChance = builder
+                .comment(getTranslation("legendarystandardarmorspawnchance"))
+                .defineInRange("legendaryStandardArmorSpawnChance", 0.95, 0.0, 1.0);
+            uncommonLootableArmorSpawnChance = builder
+                .comment(getTranslation("uncommonlootablearmorspawnchance"))
+                .defineInRange("uncommonLootableArmorSpawnChance", 0.05, 0.0, 1.0);
+            rareLootableArmorSpawnChance = builder
+                .comment(getTranslation("rarelootablearmorspawnchance"))
+                .defineInRange("rareLootableArmorSpawnChance", 0.1, 0.0, 1.0);
+            epicLootableArmorSpawnChance = builder
+                .comment(getTranslation("epiclootablearmorspawnchance"))
+                .defineInRange("epicLootableArmorSpawnChance", 0.25, 0.0, 1.0);
+            legendaryLootableArmorSpawnChance = builder
+                .comment(getTranslation("legendarylootablearmorspawnchance"))
+                .defineInRange("legendaryLootableArmorSpawnChance", 0.50, 0.0, 1.0);
+            armors = builder
+                .comment(getTranslation("armorlist"))
+                .defineListAllowEmpty(armorList, getFields(defaultArmors), armorAndEquipmentValidator);
+
+            builder.pop(); // spawning.equipment
             builder.pop(); // spawning
+
             builder.push("experience"); // experience
 
             uncommonExperienceMultiplier = builder
@@ -516,6 +899,162 @@ public class ConfigHandler {
 
         public static double getLegendaryKnockbackResistanceAddition() {
             return COMMON.legendaryKnockbackResistanceAddition.get();
+        }
+
+        public static MobChampion.Rank getGlowingEffectMinimumRank() {
+            return COMMON.glowingEffectMinimumRank.get();
+        }
+
+        public static int getGlowingEffectDuration() {
+            return COMMON.glowingEffectDuration.get() * 20;
+        }
+
+        public static MobChampion.Rank getInfestedEffectMinimumRank() {
+            return COMMON.infestedEffectMinimumRank.get();
+        }
+
+        public static double getInfestedEffectChance() {
+            return COMMON.infestedEffectChance.get();
+        }
+
+        public static MobChampion.Rank getOozingEffectMinimumRank() {
+            return COMMON.oozingEffectMinimumRank.get();
+        }
+
+        public static double getOozingEffectChance() {
+            return COMMON.oozingEffectChance.get();
+        }
+
+        public static MobChampion.Rank getWeavingEffectMinimumRank() {
+            return COMMON.weavingEffectMinimumRank.get();
+        }
+
+        public static double getWeavingEffectChance() {
+            return COMMON.weavingEffectChance.get();
+        }
+
+        public static MobChampion.Rank getWindChargedEffectMinimumRank() {
+            return COMMON.windChargedEffectMinimumRank.get();
+        }
+
+        public static double getWindChargedEffectChance() {
+            return COMMON.windChargedEffectChance.get();
+        }
+
+        public static double getLegendaryEffectBonusMultiplier() {
+            return COMMON.legendaryEffectBonusMultiplier.get();
+        }
+
+        public static ItemStack getWeaponForRank(Rank rank) {
+            int randomWeight;
+
+            if (MobChampions.RANDOM.nextFloat() > getStandardWeaponSpawnChanceForRank(rank)) {
+                return null;
+            }
+
+            switch (rank) {
+                case UNCOMMON -> {
+                    randomWeight = MobChampions.RANDOM.nextInt(Common.totalUncommonWeaponWeight);
+                    return getRandomUncommonWeaponItem(randomWeight);
+                }
+                case RARE -> {
+                    randomWeight = MobChampions.RANDOM.nextInt(Common.totalRareWeaponWeight);
+                    return getRandomRareWeaponItem(randomWeight);
+                }
+                case EPIC -> {
+                    randomWeight = MobChampions.RANDOM.nextInt(Common.totalEpicWeaponWeight);
+                    return getRandomEpicWeaponItem(randomWeight);
+                }
+                case LEGENDARY -> {
+                    randomWeight = MobChampions.RANDOM.nextInt(Common.totalLegendaryWeaponWeight);
+                    return getRandomLegendaryWeaponItem(randomWeight);
+                }
+                default -> {
+                    return null;
+                }
+            }
+        }
+
+        private static double getStandardWeaponSpawnChanceForRank(Rank rank) {
+            return switch (rank) {
+                case UNCOMMON -> COMMON.uncommonStandardWeaponSpawnChance.get();
+                case RARE -> COMMON.rareStandardWeaponSpawnChance.get();
+                case EPIC -> COMMON.epicStandardWeaponSpawnChance.get();
+                case LEGENDARY -> COMMON.legendaryStandardWeaponSpawnChance.get();
+                default -> 0.0;
+            };
+        }
+
+        public static ItemStack getRandomUncommonWeaponItem(int weight) {
+            return uncommonWeaponItemsMap.floorEntry(weight).getValue();
+        }
+
+        public static ItemStack getRandomRareWeaponItem(int weight) {
+            return rareWeaponItemsMap.floorEntry(weight).getValue();
+        }
+
+        public static ItemStack getRandomEpicWeaponItem(int weight) {
+            return epicWeaponItemsMap.floorEntry(weight).getValue();
+        }
+
+        public static ItemStack getRandomLegendaryWeaponItem(int weight) {
+            return legendaryWeaponItemsMap.floorEntry(weight).getValue();
+        }
+
+        public static ItemStack getArmorForRankAndSlot(Rank rank, EquipmentSlot slot) {
+            int randomWeight;
+
+            if (MobChampions.RANDOM.nextFloat() > getStandardArmorSpawnChanceForRank(rank)) {
+                return null;
+            }
+
+            switch (rank) {
+                case UNCOMMON -> {
+                    randomWeight = MobChampions.RANDOM.nextInt(Common.totalUncommonArmorWeight.get(slot));
+                    return getRandomUncommonArmorItem(slot, randomWeight);
+                }
+                case RARE -> {
+                    randomWeight = MobChampions.RANDOM.nextInt(Common.totalRareArmorWeight.get(slot));
+                    return getRandomRareArmorItem(slot, randomWeight);
+                }
+                case EPIC -> {
+                    randomWeight = MobChampions.RANDOM.nextInt(Common.totalEpicArmorWeight.get(slot));
+                    return getRandomEpicArmorItem(slot, randomWeight);
+                }
+                case LEGENDARY -> {
+                    randomWeight = MobChampions.RANDOM.nextInt(Common.totalLegendaryArmorWeight.get(slot));
+                    return getRandomLegendaryArmorItem(slot, randomWeight);
+                }
+                default -> {
+                    return null;
+                }
+            }
+        }
+
+        private static double getStandardArmorSpawnChanceForRank(Rank rank) {
+            return switch (rank) {
+                case UNCOMMON -> COMMON.uncommonStandardArmorSpawnChance.get();
+                case RARE -> COMMON.rareStandardArmorSpawnChance.get();
+                case EPIC -> COMMON.epicStandardArmorSpawnChance.get();
+                case LEGENDARY -> COMMON.legendaryStandardArmorSpawnChance.get();
+                default -> 0.0f;
+            };
+        }
+
+        public static ItemStack getRandomUncommonArmorItem(EquipmentSlot slot, int weight) {
+            return uncommonArmorItemsMap.get(slot).floorEntry(weight).getValue();
+        }
+
+        public static ItemStack getRandomRareArmorItem(EquipmentSlot slot, int weight) {
+            return rareArmorItemsMap.get(slot).floorEntry(weight).getValue();
+        }
+
+        public static ItemStack getRandomEpicArmorItem(EquipmentSlot slot, int weight) {
+            return epicArmorItemsMap.get(slot).floorEntry(weight).getValue();
+        }
+
+        public static ItemStack getRandomLegendaryArmorItem(EquipmentSlot slot, int weight) {
+            return legendaryArmorItemsMap.get(slot).floorEntry(weight).getValue();
         }
 
         public static double getExperienceMultiplierForRank(Rank rank) {
