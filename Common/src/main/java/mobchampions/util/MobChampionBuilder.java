@@ -197,9 +197,9 @@ public class MobChampionBuilder {
 
     private static void finalizeChampionWeapon(LivingEntity entity, Rank rank, boolean hasLootTableWeapon) {
         /*
-         * Prevent champion normal weapon from dropping on death.
          * Only applies if the entity has a weapon equipped and is a Mob.
-         * This also will disable drops of normal items from all champions with weapons.
+         * Applies drop chance to standard weapons.
+         * Sets guaranteed drop for loot table weapons.
          */
         if (!entity.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty() && entity instanceof Mob mob) {
             Level level = entity.level();
@@ -214,7 +214,7 @@ public class MobChampionBuilder {
                 mob.setGuaranteedDrop(EquipmentSlot.MAINHAND);
             }
             else {
-                mob.setDropChance(EquipmentSlot.MAINHAND, 0.0F); // Prevent normal drop
+                mob.setDropChance(EquipmentSlot.MAINHAND, (float) ConfigHandler.Common.getStandardWeaponDropChance());
             }
         }
     }
@@ -244,9 +244,9 @@ public class MobChampionBuilder {
 
     private static void finalizeChampionArmor(LivingEntity entity, Rank rank, boolean hasLootTableArmor) {
         /*
-         * Prevent champion armor from dropping on death.
          * Only applies if the entity has armor equipped and is a Mob.
-         * This also will disable drops of normal items from all champions with armor.
+         * Applies drop chance to standard armor.
+         * Sets guaranteed drop for loot table armor.
          */
         if (entity instanceof Mob mob) {
             Level level = entity.level();
@@ -261,7 +261,7 @@ public class MobChampionBuilder {
                             mob.setGuaranteedDrop(slot);
                         }
                         else {
-                            mob.setDropChance(slot, 0.0F); // Prevent normal drop
+                            mob.setDropChance(slot, (float) ConfigHandler.Common.getStandardArmorDropChance());
                         }
                     }
                 }

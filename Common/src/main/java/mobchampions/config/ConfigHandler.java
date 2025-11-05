@@ -502,6 +502,7 @@ public class ConfigHandler {
         private final WhiteNoiseConfigSpec.DoubleValue weavingEffectChance;
         private final WhiteNoiseConfigSpec.EnumValue<MobChampion.Rank> windChargedEffectMinimumRank;
         private final WhiteNoiseConfigSpec.DoubleValue windChargedEffectChance;
+        private final WhiteNoiseConfigSpec.DoubleValue standardWeaponDropChance;
         private final WhiteNoiseConfigSpec.DoubleValue uncommonStandardWeaponSpawnChance;
         private final WhiteNoiseConfigSpec.DoubleValue rareStandardWeaponSpawnChance;
         private final WhiteNoiseConfigSpec.DoubleValue epicStandardWeaponSpawnChance;
@@ -540,6 +541,7 @@ public class ConfigHandler {
         private static final NavigableMap<Integer, ItemStack> rareWeaponItemsMap = new TreeMap<>();
         private static final NavigableMap<Integer, ItemStack> epicWeaponItemsMap = new TreeMap<>();
         private static final NavigableMap<Integer, ItemStack> legendaryWeaponItemsMap = new TreeMap<>();
+        private final WhiteNoiseConfigSpec.DoubleValue standardArmorDropChance;
         private final WhiteNoiseConfigSpec.DoubleValue uncommonStandardArmorSpawnChance;
         private final WhiteNoiseConfigSpec.DoubleValue rareStandardArmorSpawnChance;
         private final WhiteNoiseConfigSpec.DoubleValue epicStandardArmorSpawnChance;
@@ -733,6 +735,9 @@ public class ConfigHandler {
             builder.pop(); // spawning.effects
             builder.push("equipment"); // spawning.equipment
 
+            standardWeaponDropChance = builder
+                .comment(getTranslation("standardweapondropchance"))
+                .defineInRange("standardWeaponDropChance", 0.0, 0.0, 1.0);
             uncommonStandardWeaponSpawnChance = builder
                 .comment(getTranslation("uncommonstandardweaponspawnchance"))
                 .defineInRange("uncommonStandardWeaponSpawnChance", 0.7, 0.0, 1.0);
@@ -760,6 +765,9 @@ public class ConfigHandler {
             weapons = builder
                 .comment(getTranslation("weaponlist"))
                 .defineListAllowEmpty(weaponList, getFields(defaultWeapons), armorAndEquipmentValidator);
+            standardArmorDropChance = builder
+                .comment(getTranslation("standardarmordropchance"))
+                .defineInRange("standardArmorDropChance", 0.0, 0.0, 1.0);
             uncommonStandardArmorSpawnChance = builder
                 .comment(getTranslation("uncommonstandardarmorspawnchance"))
                 .defineInRange("uncommonStandardArmorSpawnChance", 0.7, 0.0, 1.0);
@@ -951,6 +959,10 @@ public class ConfigHandler {
             return COMMON.legendaryEffectBonusMultiplier.get();
         }
 
+        public static double getStandardWeaponDropChance() {
+            return COMMON.standardWeaponDropChance.get();
+        }
+
         public static ItemStack getWeaponForRank(Rank rank) {
             int randomWeight;
 
@@ -1005,6 +1017,10 @@ public class ConfigHandler {
 
         public static ItemStack getRandomLegendaryWeaponItem(int weight) {
             return legendaryWeaponItemsMap.floorEntry(weight).getValue();
+        }
+
+        public static double getStandardArmorDropChance() {
+            return COMMON.standardArmorDropChance.get();
         }
 
         public static ItemStack getArmorForRankAndSlot(Rank rank, EquipmentSlot slot) {

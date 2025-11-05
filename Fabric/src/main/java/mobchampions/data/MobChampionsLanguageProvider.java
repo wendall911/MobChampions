@@ -72,6 +72,7 @@ public class MobChampionsLanguageProvider extends FabricLanguageProvider {
         addTranslation(builder, "windchargedeffectchance");
         addTranslation(builder, "legendaryeffectbonusmultiplier");
         addTranslation(builder, "equipment");
+        addTranslation(builder, "standardweapondropchance");
         addTranslation(builder, "uncommonstandardweaponspawnchance");
         addTranslation(builder, "rarestandardweaponspawnchance");
         addTranslation(builder, "epicstandardweaponspawnchance");
@@ -81,6 +82,7 @@ public class MobChampionsLanguageProvider extends FabricLanguageProvider {
         addTranslation(builder, "epiclootableweaponspawnchance");
         addTranslation(builder, "legendarylootableweaponspawnchance");
         addTranslation(builder, "weaponlist");
+        addTranslation(builder, "standardarmordropchance");
         addTranslation(builder, "uncommonstandardarmorspawnchance");
         addTranslation(builder, "rarestandardarmorspawnchance");
         addTranslation(builder, "epicstandardarmorspawnchance");

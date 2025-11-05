@@ -143,6 +143,8 @@ public class Translations {
         translations.put("equipment", joiner(
             "Settings that modify the items equipped by champions based on their rank."
         ));
+        translations.put("standardweapondropchance.title", "Standard Weapon Drop Chance");
+        translations.put("standardweapondropchance", "Chance for champions wielding standard weapons to drop them on death.");
         translations.put("uncommonstandardweaponspawnchance.title", "Uncommon Champion Standard Weapons Spawn Chance");
         translations.put("uncommonstandardweaponspawnchance", "Chance for uncommon champions to spawn with standard weapons.");
         translations.put("rarestandardweaponspawnchance.title", "Rare Champion Standard Weapons Spawn Chance");
@@ -165,6 +167,8 @@ public class Translations {
             "Weight: Integer value representing the relative chance of selection",
             "Example: 2-50-minecraft:diamond_sword"
         ));
+        translations.put("standardarmordropchance.title", "Standard Armor Drop Chance");
+        translations.put("standardarmordropchance", "Chance for champions wearing standard armor to drop it on death.");
         translations.put("uncommonstandardarmorspawnchance.title", "Uncommon Champion Standard Armor Spawn Chance");
         translations.put("uncommonstandardarmorspawnchance", "Chance for uncommon champions to spawn with standard armor.");
         translations.put("rarestandardarmorspawnchance.title", "Rare Champion Standard Armor Spawn Chance");
