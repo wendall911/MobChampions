@@ -5,6 +5,7 @@ import java.util.Optional;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -30,6 +31,11 @@ public class FabricPlatform implements IPlatform {
     @Override
     public void syncMobChampionData(ServerPlayer player, LivingEntity entity) {
         // No-op: Fabric handles syncing automatically via Cardinal Components
+    }
+
+    @Override
+    public boolean isDevelopmentEnvironment() {
+        return FabricLoader.getInstance().isDevelopmentEnvironment();
     }
 
 }

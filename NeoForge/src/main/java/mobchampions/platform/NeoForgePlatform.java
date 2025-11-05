@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import org.joml.Vector3f;
@@ -36,6 +37,11 @@ public class NeoForgePlatform implements IPlatform {
                 new SyncMobChampionData(data.getEntityId(), data.getRank())
             );
         });
+    }
+
+    @Override
+    public boolean isDevelopmentEnvironment() {
+        return !FMLLoader.isProduction();
     }
 
 }

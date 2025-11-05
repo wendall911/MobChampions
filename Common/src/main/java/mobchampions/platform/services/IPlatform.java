@@ -26,4 +26,6 @@ public interface IPlatform {
      */
     void syncMobChampionData(ServerPlayer player, LivingEntity entity);
 
+    boolean isDevelopmentEnvironment();
+
 }

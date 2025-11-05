@@ -18,7 +18,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -33,6 +32,7 @@ import mobchampions.MobChampions;
 import mobchampions.common.Translations;
 import mobchampions.network.MobChampion;
 import mobchampions.network.MobChampion.Rank;
+import mobchampions.platform.Services;
 import mobchampions.util.ColorHelper;
 import mobchampions.util.MobChampionBuilder;
 
@@ -124,14 +124,16 @@ public class ConfigHandler {
             }
         }
 
-        MobChampions.LOGGER.warn("Configured champion rank weights: {} {}", Common.championWeightMap, Common.getTotalWeight());
-        MobChampions.LOGGER.warn("Odds: Common: {}%, Uncommon: {}%, Rare: {}%, Epic: {}%, Legendary: {}%",
-            (COMMON.commonMobWeight.get() * 100.0F) / Common.getTotalWeight(),
-            (COMMON.uncommonWeight.get() * 100.0F) / Common.getTotalWeight(),
-            (COMMON.rareWeight.get() * 100.0F) / Common.getTotalWeight(),
-            (COMMON.epicWeight.get() * 100.0F) / Common.getTotalWeight(),
-            (COMMON.legendaryWeight.get() * 100.0F) / Common.getTotalWeight()
-        );
+        if (Services.PLATFORM.isDevelopmentEnvironment()) {
+            MobChampions.LOGGER.warn("Configured champion rank weights: {} {}", Common.championWeightMap, Common.getTotalWeight());
+            MobChampions.LOGGER.warn("Odds: Common: {}%, Uncommon: {}%, Rare: {}%, Epic: {}%, Legendary: {}%",
+                (COMMON.commonMobWeight.get() * 100.0F) / Common.getTotalWeight(),
+                (COMMON.uncommonWeight.get() * 100.0F) / Common.getTotalWeight(),
+                (COMMON.rareWeight.get() * 100.0F) / Common.getTotalWeight(),
+                (COMMON.epicWeight.get() * 100.0F) / Common.getTotalWeight(),
+                (COMMON.legendaryWeight.get() * 100.0F) / Common.getTotalWeight()
+            );
+        }
 
         // Initialize spawn type blacklist enums
         Common.spawnTypeBlacklistEnums.clear();
@@ -204,10 +206,12 @@ public class ConfigHandler {
         Common.totalEpicWeaponWeight = lastEpicWeight[0];
         Common.totalLegendaryWeaponWeight = lastLegendaryWeight[0];
 
-        MobChampions.LOGGER.warn("Configured uncommon weapon items: {} of: {}", Common.uncommonWeaponItemsMap, Common.totalUncommonWeaponWeight);
-        MobChampions.LOGGER.warn("Configured rare weapon items: {} of: {}", Common.rareWeaponItemsMap, Common.totalRareWeaponWeight);
-        MobChampions.LOGGER.warn("Configured epic weapon items: {} of: {}", Common.epicWeaponItemsMap, Common.totalEpicWeaponWeight);
-        MobChampions.LOGGER.warn("Configured legendary weapon items: {} of: {}", Common.legendaryWeaponItemsMap, Common.totalLegendaryWeaponWeight);
+        if (Services.PLATFORM.isDevelopmentEnvironment()) {
+            MobChampions.LOGGER.warn("Configured uncommon weapon items: {} of: {}", Common.uncommonWeaponItemsMap, Common.totalUncommonWeaponWeight);
+            MobChampions.LOGGER.warn("Configured rare weapon items: {} of: {}", Common.rareWeaponItemsMap, Common.totalRareWeaponWeight);
+            MobChampions.LOGGER.warn("Configured epic weapon items: {} of: {}", Common.epicWeaponItemsMap, Common.totalEpicWeaponWeight);
+            MobChampions.LOGGER.warn("Configured legendary weapon items: {} of: {}", Common.legendaryWeaponItemsMap, Common.totalLegendaryWeaponWeight);
+        }
 
         final Map<EquipmentSlot, Integer> lastUncommonWeights = new HashMap<>();
         final Map<EquipmentSlot, Integer> lastRareWeights = new HashMap<>();
@@ -308,10 +312,12 @@ public class ConfigHandler {
             Common.totalEpicArmorWeight.put(slot, lastEpicWeights.get(slot));
             Common.totalLegendaryArmorWeight.put(slot, lastLegendaryWeights.get(slot));
 
-            MobChampions.LOGGER.warn("Configured uncommon armor {} items: {} of: {}", slot, Common.uncommonArmorItemsMap.get(slot), Common.totalUncommonArmorWeight.get(slot));
-            MobChampions.LOGGER.warn("Configured rare armor {} items: {} of: {}", slot, Common.rareArmorItemsMap.get(slot), Common.totalRareArmorWeight.get(slot));
-            MobChampions.LOGGER.warn("Configured epic armor {} items: {} of: {}", slot, Common.epicArmorItemsMap.get(slot), Common.totalEpicArmorWeight.get(slot));
-            MobChampions.LOGGER.warn("Configured legendary armor {} items: {} of: {}", slot, Common.legendaryArmorItemsMap.get(slot), Common.totalLegendaryArmorWeight.get(slot));
+            if (Services.PLATFORM.isDevelopmentEnvironment()) {
+                MobChampions.LOGGER.warn("Configured uncommon armor {} items: {} of: {}", slot, Common.uncommonArmorItemsMap.get(slot), Common.totalUncommonArmorWeight.get(slot));
+                MobChampions.LOGGER.warn("Configured rare armor {} items: {} of: {}", slot, Common.rareArmorItemsMap.get(slot), Common.totalRareArmorWeight.get(slot));
+                MobChampions.LOGGER.warn("Configured epic armor {} items: {} of: {}", slot, Common.epicArmorItemsMap.get(slot), Common.totalEpicArmorWeight.get(slot));
+                MobChampions.LOGGER.warn("Configured legendary armor {} items: {} of: {}", slot, Common.legendaryArmorItemsMap.get(slot), Common.totalLegendaryArmorWeight.get(slot));
+            }
         }
 
     }
