@@ -30,6 +30,14 @@
     ],
     "whitenoise-config": [
       "${mod_id}.FabricConfigInitializer"
+    ],
+    "cardinal-components-entity": [
+      "${mod_id}.components.${mod_name}CardinalComponents"
+    ]
+  },
+  "custom": {
+    "cardinal-components": [
+      "${mod_id}:mob_champion_data_provider"
     ]
   },
   "mixins": [

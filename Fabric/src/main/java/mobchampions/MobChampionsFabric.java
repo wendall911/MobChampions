@@ -10,9 +10,9 @@ public class MobChampionsFabric implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        MobChampions.init();
         PayloadTypeRegistry.playS2C().register(LaunchFireworksPacket.TYPE, LaunchFireworksPacket.STREAM_CODEC);
         PayloadTypeRegistry.playS2C().register(SyncMobChampionData.TYPE, SyncMobChampionData.STREAM_CODEC);
     }
 
 }
-
