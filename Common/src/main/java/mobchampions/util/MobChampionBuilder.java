@@ -29,110 +29,117 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.apache.commons.lang3.tuple.Pair;
 
 import mobchampions.MobChampions;
+import mobchampions.common.stats.ChampionStats;
+import mobchampions.common.stats.ChampionStatsManager;
 import mobchampions.config.ConfigHandler;
 import mobchampions.loot.MobChampionsLootTables;
 import mobchampions.network.MobChampion.Rank;
 
 public class MobChampionBuilder {
 
+    private static final ChampionStats uncommonStats = ChampionStatsManager.getStatsForRank(Rank.UNCOMMON);
+    private static final ChampionStats rareStats = ChampionStatsManager.getStatsForRank(Rank.RARE);
+    private static final ChampionStats epicStats = ChampionStatsManager.getStatsForRank(Rank.EPIC);
+    private static final ChampionStats legendaryStats = ChampionStatsManager.getStatsForRank(Rank.LEGENDARY);
+
     private static final AttributeModifier UNCOMMON_HEALTH_MODIFIER = new AttributeModifier(
         MobChampions.prefix("uncommon_health_multiplier"),
-        ConfigHandler.Common.getUncommonHealthMultiplier(),
+        uncommonStats.getHealthMultiplier(),
         AttributeModifier.Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier UNCOMMON_ARMOR_MODIFIER = new AttributeModifier(
         MobChampions.prefix("uncommon_armor_addition"),
-        ConfigHandler.Common.getUncommonArmorAddition(),
+        uncommonStats.getArmorAddition(),
         AttributeModifier.Operation.ADD_VALUE
     );
     private static final AttributeModifier UNCOMMON_MOVEMENT_SPEED_MODIFIER = new AttributeModifier(
         MobChampions.prefix("uncommon_movement_speed_multiplier"),
-        ConfigHandler.Common.getUncommonMovementSpeedMultiplier(),
+        uncommonStats.getMovementSpeedMultiplier(),
         Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier UNCOMMON_ATTACK_DAMAGE_MODIFIER = new AttributeModifier(
         MobChampions.prefix("uncommon_attack_damage_multiplier"),
-        ConfigHandler.Common.getUncommonAttackDamageMultiplier(),
+        uncommonStats.getAttackDamageMultiplier(),
         Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier UNCOMMON_KNOCKBACK_RESISTANCE_MODIFIER = new AttributeModifier(
         MobChampions.prefix("uncommon_knockback_resistance_addition"),
-        ConfigHandler.Common.getUncommonKnockbackResistanceAddition(),
+        uncommonStats.getKnockbackResistanceAddition(),
         Operation.ADD_VALUE
     );
     private static final AttributeModifier RARE_HEALTH_MODIFIER = new AttributeModifier(
         MobChampions.prefix("rare_health_multiplier"),
-        ConfigHandler.Common.getRareHealthMultiplier(),
+        rareStats.getHealthMultiplier(),
         AttributeModifier.Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier RARE_ARMOR_MODIFIER = new AttributeModifier(
         MobChampions.prefix("rare_armor_addition"),
-        ConfigHandler.Common.getRareArmorAddition(),
+        rareStats.getArmorAddition(),
         AttributeModifier.Operation.ADD_VALUE
     );
     private static final AttributeModifier RARE_MOVEMENT_SPEED_MODIFIER = new AttributeModifier(
         MobChampions.prefix("rare_movement_speed_multiplier"),
-        ConfigHandler.Common.getRareMovementSpeedMultiplier(),
+        rareStats.getMovementSpeedMultiplier(),
         Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier RARE_ATTACK_DAMAGE_MODIFIER = new AttributeModifier(
         MobChampions.prefix("rare_attack_damage_multiplier"),
-        ConfigHandler.Common.getRareAttackDamageMultiplier(),
+        rareStats.getAttackDamageMultiplier(),
         Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier RARE_KNOCKBACK_RESISTANCE_MODIFIER = new AttributeModifier(
         MobChampions.prefix("rare_knockback_resistance_addition"),
-        ConfigHandler.Common.getRareKnockbackResistanceAddition(),
+        rareStats.getKnockbackResistanceAddition(),
         Operation.ADD_VALUE
     );
     private static final AttributeModifier EPIC_HEALTH_MODIFIER = new AttributeModifier(
         MobChampions.prefix("epic_health_multiplier"),
-        ConfigHandler.Common.getEpicHealthMultiplier(),
+        epicStats.getHealthMultiplier(),
         AttributeModifier.Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier EPIC_ARMOR_MODIFIER = new AttributeModifier(
         MobChampions.prefix("epic_armor_addition"),
-        ConfigHandler.Common.getEpicArmorAddition(),
+        epicStats.getArmorAddition(),
         AttributeModifier.Operation.ADD_VALUE
     );
     private static final AttributeModifier EPIC_MOVEMENT_SPEED_MODIFIER = new AttributeModifier(
         MobChampions.prefix("epic_movement_speed_multiplier"),
-        ConfigHandler.Common.getEpicMovementSpeedMultiplier(),
+        epicStats.getMovementSpeedMultiplier(),
         Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier EPIC_ATTACK_DAMAGE_MODIFIER = new AttributeModifier(
         MobChampions.prefix("epic_attack_damage_multiplier"),
-        ConfigHandler.Common.getEpicAttackDamageMultiplier(),
+        epicStats.getAttackDamageMultiplier(),
         Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier EPIC_KNOCKBACK_RESISTANCE_MODIFIER = new AttributeModifier(
         MobChampions.prefix("epic_knockback_resistance_addition"),
-        ConfigHandler.Common.getEpicKnockbackResistanceAddition(),
+        epicStats.getKnockbackResistanceAddition(),
         Operation.ADD_VALUE
     );
     private static final AttributeModifier LEGENDARY_HEALTH_MODIFIER = new AttributeModifier(
         MobChampions.prefix("legendary_health_multiplier"),
-        ConfigHandler.Common.getLegendaryHealthMultiplier(),
+        legendaryStats.getHealthMultiplier(),
         AttributeModifier.Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier LEGENDARY_ARMOR_MODIFIER = new AttributeModifier(
         MobChampions.prefix("legendary_armor_addition"),
-        ConfigHandler.Common.getLegendaryArmorAddition(),
+        legendaryStats.getArmorAddition(),
         AttributeModifier.Operation.ADD_VALUE
     );
     private static final AttributeModifier LEGENDARY_MOVEMENT_SPEED_MODIFIER = new AttributeModifier(
         MobChampions.prefix("legendary_movement_speed_multiplier"),
-        ConfigHandler.Common.getLegendaryMovementSpeedMultiplier(),
+        legendaryStats.getMovementSpeedMultiplier(),
         Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier LEGENDARY_ATTACK_DAMAGE_MODIFIER = new AttributeModifier(
         MobChampions.prefix("legendary_attack_damage_multiplier"),
-        ConfigHandler.Common.getLegendaryAttackDamageMultiplier(),
+        legendaryStats.getAttackDamageMultiplier(),
         Operation.ADD_MULTIPLIED_BASE
     );
     private static final AttributeModifier LEGENDARY_KNOCKBACK_RESISTANCE_MODIFIER = new AttributeModifier(
         MobChampions.prefix("legendary_knockback_resistance_addition"),
-        ConfigHandler.Common.getLegendaryKnockbackResistanceAddition(),
+        legendaryStats.getKnockbackResistanceAddition(),
         Operation.ADD_VALUE
     );
 

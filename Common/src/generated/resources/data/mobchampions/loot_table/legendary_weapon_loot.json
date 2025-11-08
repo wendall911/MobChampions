@@ -11,7 +11,7 @@
               "function": "minecraft:set_name",
               "name": {
                 "color": "gold",
-                "translate": "mobchampions.lootitem.excalibur"
+                "translate": "mobchampions.lootitem.axecalibur"
               },
               "target": "item_name"
             },
@@ -35,7 +35,7 @@
               "mode": "append"
             }
           ],
-          "name": "minecraft:netherite_sword",
+          "name": "minecraft:netherite_axe",
           "weight": 10
         },
         {
