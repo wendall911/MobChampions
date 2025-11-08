@@ -1,0 +1,171 @@
+{
+  "type": "minecraft:equipment",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "red",
+                "translate": "mobchampions.lootitem.apocalypse_blade"
+              },
+              "target": "item_name"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:sharpness": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 2.0
+                },
+                "minecraft:smite": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 2.0
+                }
+              },
+              "function": "minecraft:set_enchantments"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
+            }
+          ],
+          "name": "minecraft:iron_sword",
+          "weight": 100
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "dark_gray",
+                "translate": "mobchampions.lootitem.chainsaw"
+              },
+              "target": "item_name"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:efficiency": {
+                  "type": "minecraft:uniform",
+                  "max": 6.0,
+                  "min": 5.0
+                },
+                "minecraft:unbreaking": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 3.0
+                }
+              },
+              "function": "minecraft:set_enchantments"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
+            }
+          ],
+          "name": "minecraft:iron_axe",
+          "weight": 90
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "gray",
+                "translate": "mobchampions.lootitem.mining_drill"
+              },
+              "target": "item_name"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:efficiency": {
+                  "type": "minecraft:uniform",
+                  "max": 6.0,
+                  "min": 5.0
+                },
+                "minecraft:unbreaking": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 3.0
+                }
+              },
+              "function": "minecraft:set_enchantments"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
+            }
+          ],
+          "name": "minecraft:iron_pickaxe",
+          "weight": 90
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "aqua",
+                "translate": "mobchampions.lootitem.gem_magnet"
+              },
+              "target": "item_name"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:fortune": {
+                  "type": "minecraft:uniform",
+                  "max": 4.0,
+                  "min": 2.0
+                }
+              },
+              "function": "minecraft:set_enchantments"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
+            }
+          ],
+          "name": "minecraft:iron_pickaxe",
+          "weight": 70
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "mobchampions:rare_weapon_loot"
+}

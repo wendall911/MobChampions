@@ -1,0 +1,220 @@
+{
+  "type": "minecraft:equipment",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "dark_green",
+                "translate": "mobchampions.lootitem.cornucopia_bow"
+              },
+              "target": "item_name"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:looting": {
+                  "type": "minecraft:uniform",
+                  "max": 4.0,
+                  "min": 2.0
+                },
+                "minecraft:punch": {
+                  "type": "minecraft:uniform",
+                  "max": 2.0,
+                  "min": 1.0
+                }
+              },
+              "function": "minecraft:set_enchantments"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
+            }
+          ],
+          "name": "minecraft:bow",
+          "weight": 30
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "gold",
+                "translate": "mobchampions.lootitem.basher"
+              },
+              "target": "item_name"
+            },
+            {
+              "components": {
+                "minecraft:base_color": "yellow"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "append": true,
+              "function": "minecraft:set_banner_pattern",
+              "patterns": [
+                {
+                  "color": "orange",
+                  "pattern": "minecraft:piglin"
+                },
+                {
+                  "color": "orange",
+                  "pattern": "minecraft:border"
+                }
+              ]
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:mending": 1.0,
+                "minecraft:unbreaking": 5.0
+              },
+              "function": "minecraft:set_enchantments"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
+            }
+          ],
+          "name": "minecraft:shield",
+          "weight": 30
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "dark_purple",
+                "translate": "mobchampions.lootitem.ripper"
+              },
+              "target": "item_name"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:riptide": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 3.0
+                }
+              },
+              "function": "minecraft:set_enchantments"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
+            }
+          ],
+          "name": "minecraft:trident",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "red",
+                "translate": "mobchampions.lootitem.reapers_scythe"
+              },
+              "target": "item_name"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:sharpness": {
+                  "type": "minecraft:uniform",
+                  "max": 6.0,
+                  "min": 3.0
+                },
+                "minecraft:vanishing_curse": 1.0
+              },
+              "function": "minecraft:set_enchantments"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
+            }
+          ],
+          "name": "minecraft:netherite_hoe",
+          "weight": 70
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "dark_aqua",
+                "translate": "mobchampions.lootitem.poseidons_trident"
+              },
+              "target": "item_name"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:loyalty": {
+                  "type": "minecraft:uniform",
+                  "max": 3.0,
+                  "min": 1.0
+                },
+                "minecraft:sharpness": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 2.0
+                }
+              },
+              "function": "minecraft:set_enchantments"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
+            }
+          ],
+          "name": "minecraft:trident",
+          "weight": 30
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "mobchampions:epic_weapon_loot"
+}

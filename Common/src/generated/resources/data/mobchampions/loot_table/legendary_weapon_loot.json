@@ -1,0 +1,84 @@
+{
+  "type": "minecraft:equipment",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "gold",
+                "translate": "mobchampions.lootitem.excalibur"
+              },
+              "target": "item_name"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:mending": 1.0,
+                "minecraft:sharpness": 5.0,
+                "minecraft:unbreaking": 5.0
+              },
+              "function": "minecraft:set_enchantments"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
+            }
+          ],
+          "name": "minecraft:netherite_sword",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "dark_green",
+                "translate": "mobchampions.lootitem.robins_bow"
+              },
+              "target": "item_name"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:infinity": 1.0,
+                "minecraft:looting": {
+                  "type": "minecraft:uniform",
+                  "max": 4.0,
+                  "min": 3.0
+                },
+                "minecraft:mending": 1.0
+              },
+              "function": "minecraft:set_enchantments"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
+            }
+          ],
+          "name": "minecraft:bow",
+          "weight": 20
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "mobchampions:legendary_weapon_loot"
+}

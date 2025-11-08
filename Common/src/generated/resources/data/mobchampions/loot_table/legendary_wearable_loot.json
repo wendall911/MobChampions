@@ -1,0 +1,359 @@
+{
+  "type": "minecraft:equipment",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "white",
+                "translate": "mobchampions.lootitem.plated_elytra"
+              },
+              "target": "item_name"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:protection": {
+                  "type": "minecraft:uniform",
+                  "max": 4.0,
+                  "min": 2.0
+                }
+              },
+              "function": "minecraft:set_enchantments"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
+            }
+          ],
+          "name": "minecraft:elytra",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "light_purple",
+                "translate": "mobchampions.lootitem.warding_chestplate"
+              },
+              "target": "item_name"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:blast_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 4.0,
+                  "min": 2.0
+                },
+                "minecraft:fire_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 4.0,
+                  "min": 2.0
+                },
+                "minecraft:projectile_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 4.0,
+                  "min": 2.0
+                },
+                "minecraft:protection": {
+                  "type": "minecraft:uniform",
+                  "max": 4.0,
+                  "min": 2.0
+                }
+              },
+              "function": "minecraft:set_enchantments"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
+            }
+          ],
+          "name": "minecraft:diamond_chestplate",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "gold",
+                "translate": "mobchampions.lootitem.champions_helmet"
+              },
+              "target": "item_name"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:blast_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 7.0,
+                  "min": 6.0
+                },
+                "minecraft:fire_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 7.0,
+                  "min": 6.0
+                },
+                "minecraft:projectile_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 7.0,
+                  "min": 6.0
+                },
+                "minecraft:protection": {
+                  "type": "minecraft:uniform",
+                  "max": 7.0,
+                  "min": 6.0
+                },
+                "minecraft:unbreaking": {
+                  "type": "minecraft:uniform",
+                  "max": 7.0,
+                  "min": 6.0
+                }
+              },
+              "function": "minecraft:set_enchantments"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
+            },
+            {
+              "components": {
+                "minecraft:trim": {
+                  "material": "minecraft:gold",
+                  "pattern": "minecraft:snout"
+                }
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "minecraft:netherite_helmet",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "gold",
+                "translate": "mobchampions.lootitem.champions_chestplate"
+              },
+              "target": "item_name"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:blast_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 7.0,
+                  "min": 6.0
+                },
+                "minecraft:fire_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 7.0,
+                  "min": 6.0
+                },
+                "minecraft:projectile_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 7.0,
+                  "min": 6.0
+                },
+                "minecraft:protection": {
+                  "type": "minecraft:uniform",
+                  "max": 7.0,
+                  "min": 6.0
+                },
+                "minecraft:unbreaking": {
+                  "type": "minecraft:uniform",
+                  "max": 7.0,
+                  "min": 6.0
+                }
+              },
+              "function": "minecraft:set_enchantments"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
+            },
+            {
+              "components": {
+                "minecraft:trim": {
+                  "material": "minecraft:gold",
+                  "pattern": "minecraft:snout"
+                }
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "minecraft:netherite_chestplate",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "gold",
+                "translate": "mobchampions.lootitem.champions_leggings"
+              },
+              "target": "item_name"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:blast_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 7.0,
+                  "min": 6.0
+                },
+                "minecraft:fire_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 7.0,
+                  "min": 6.0
+                },
+                "minecraft:projectile_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 7.0,
+                  "min": 6.0
+                },
+                "minecraft:protection": {
+                  "type": "minecraft:uniform",
+                  "max": 7.0,
+                  "min": 6.0
+                },
+                "minecraft:unbreaking": {
+                  "type": "minecraft:uniform",
+                  "max": 7.0,
+                  "min": 6.0
+                }
+              },
+              "function": "minecraft:set_enchantments"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
+            },
+            {
+              "components": {
+                "minecraft:trim": {
+                  "material": "minecraft:gold",
+                  "pattern": "minecraft:snout"
+                }
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "minecraft:netherite_leggings",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "gold",
+                "translate": "mobchampions.lootitem.champions_boots"
+              },
+              "target": "item_name"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:blast_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 7.0,
+                  "min": 6.0
+                },
+                "minecraft:fire_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 7.0,
+                  "min": 6.0
+                },
+                "minecraft:projectile_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 7.0,
+                  "min": 6.0
+                },
+                "minecraft:protection": {
+                  "type": "minecraft:uniform",
+                  "max": 7.0,
+                  "min": 6.0
+                },
+                "minecraft:unbreaking": {
+                  "type": "minecraft:uniform",
+                  "max": 7.0,
+                  "min": 6.0
+                }
+              },
+              "function": "minecraft:set_enchantments"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
+            },
+            {
+              "components": {
+                "minecraft:trim": {
+                  "material": "minecraft:gold",
+                  "pattern": "minecraft:snout"
+                }
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "minecraft:netherite_boots",
+          "weight": 10
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "mobchampions:legendary_wearable_loot"
+}

@@ -1,0 +1,252 @@
+{
+  "type": "minecraft:equipment",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "dark_aqua",
+                "translate": "mobchampions.lootitem.shiny_helmet"
+              },
+              "target": "item_name"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:blast_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 4.0
+                },
+                "minecraft:fire_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 4.0
+                },
+                "minecraft:protection": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 4.0
+                },
+                "minecraft:unbreaking": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 4.0
+                }
+              },
+              "function": "minecraft:set_enchantments"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
+            },
+            {
+              "components": {
+                "minecraft:trim": {
+                  "material": "minecraft:quartz",
+                  "pattern": "minecraft:ward"
+                }
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "minecraft:diamond_helmet",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "dark_aqua",
+                "translate": "mobchampions.lootitem.shiny_chestplate"
+              },
+              "target": "item_name"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:blast_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 4.0
+                },
+                "minecraft:fire_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 4.0
+                },
+                "minecraft:protection": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 4.0
+                },
+                "minecraft:unbreaking": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 4.0
+                }
+              },
+              "function": "minecraft:set_enchantments"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
+            },
+            {
+              "components": {
+                "minecraft:trim": {
+                  "material": "minecraft:quartz",
+                  "pattern": "minecraft:ward"
+                }
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "minecraft:diamond_chestplate",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "dark_aqua",
+                "translate": "mobchampions.lootitem.shiny_leggings"
+              },
+              "target": "item_name"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:blast_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 4.0
+                },
+                "minecraft:fire_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 4.0
+                },
+                "minecraft:protection": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 4.0
+                },
+                "minecraft:unbreaking": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 4.0
+                }
+              },
+              "function": "minecraft:set_enchantments"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
+            },
+            {
+              "components": {
+                "minecraft:trim": {
+                  "material": "minecraft:quartz",
+                  "pattern": "minecraft:ward"
+                }
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "minecraft:diamond_leggings",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "dark_aqua",
+                "translate": "mobchampions.lootitem.shiny_boots"
+              },
+              "target": "item_name"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:blast_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 4.0
+                },
+                "minecraft:fire_protection": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 4.0
+                },
+                "minecraft:protection": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 4.0
+                },
+                "minecraft:unbreaking": {
+                  "type": "minecraft:uniform",
+                  "max": 5.0,
+                  "min": 4.0
+                }
+              },
+              "function": "minecraft:set_enchantments"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
+            },
+            {
+              "components": {
+                "minecraft:trim": {
+                  "material": "minecraft:quartz",
+                  "pattern": "minecraft:ward"
+                }
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "minecraft:diamond_boots",
+          "weight": 20
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "mobchampions:epic_wearable_loot"
+}
