@@ -7,6 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
+import mobchampions.MobChampions;
 import mobchampions.platform.Services;
 import mobchampions.util.FireworksHelper;
 
@@ -38,6 +39,7 @@ public class MobChampionsNeoForgeNetwork {
 
                 if (entity instanceof LivingEntity livingEntity) {
                     Services.PLATFORM.getMobChampionData(livingEntity).ifPresent(mobChampionData -> {
+                        mobChampionData.setEntityId(data.entityId);
                         mobChampionData.setRank(data.rank);
                     });
                 }

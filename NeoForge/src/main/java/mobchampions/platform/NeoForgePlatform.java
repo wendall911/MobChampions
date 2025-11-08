@@ -32,8 +32,7 @@ public class NeoForgePlatform implements IPlatform {
     @Override
     public void syncMobChampionData(ServerPlayer player, LivingEntity entity) {
         getMobChampionData(entity).ifPresent(data -> {
-            PacketDistributor.sendToPlayer(
-                player,
+            PacketDistributor.sendToAllPlayers(
                 new SyncMobChampionData(data.getEntityId(), data.getRank())
             );
         });

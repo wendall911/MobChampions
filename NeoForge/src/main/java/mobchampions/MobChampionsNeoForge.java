@@ -14,6 +14,7 @@ import mobchampions.network.SyncMobChampionData;
 public class MobChampionsNeoForge {
 
     public MobChampionsNeoForge(IEventBus eventBus) {
+        MobChampions.init();
         AttachmentsRegistry.init(eventBus);
         MobChampions.initConfig();
         eventBus.addListener(this::registerPayloadHandler);
