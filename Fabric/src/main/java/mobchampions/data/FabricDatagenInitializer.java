@@ -18,6 +18,7 @@ public class FabricDatagenInitializer implements DataGeneratorEntrypoint {
 
     public static void configureCommonDatagen(FabricDataGenerator.Pack pack) {
         pack.addProvider(MobChampionsLanguageProvider::new);
+        pack.addProvider(MobChampionsLootTableGenerator::create);
     }
 
 }
