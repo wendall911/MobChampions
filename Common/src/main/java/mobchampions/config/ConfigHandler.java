@@ -456,7 +456,6 @@ public class ConfigHandler {
             "minecraft:creeper",
             "minecraft:spider",
             "minecraft:enderman",
-            "minecraft:witch",
             "minecraft:husk",
             "minecraft:stray",
             "minecraft:wither_skeleton",

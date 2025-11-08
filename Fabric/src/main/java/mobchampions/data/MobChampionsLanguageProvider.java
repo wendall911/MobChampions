@@ -115,7 +115,7 @@ public class MobChampionsLanguageProvider extends FabricLanguageProvider {
         addLootItemTranslation(builder, "knockback_stick", "Knockback Stick");
         addLootItemTranslation(builder, "apocalypse_blade", "Apocalypse Blade");
         addLootItemTranslation(builder, "cornucopia_bow", "Cornucopia Bow");
-        addLootItemTranslation(builder, "excalibur", "Excalibur");
+        addLootItemTranslation(builder, "axecalibur", "Axecalibur");
         addLootItemTranslation(builder, "yolt", "Fragile Totem of Undying");
         addLootItemTranslation(builder, "greed", "Greedy Axe");
         addLootItemTranslation(builder, "propeller_hat", "Propeller Hat");

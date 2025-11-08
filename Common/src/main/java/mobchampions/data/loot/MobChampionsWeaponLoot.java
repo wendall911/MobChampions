@@ -299,8 +299,8 @@ public class MobChampionsWeaponLoot implements LootTableSubProvider {
         LootPool.Builder lootPool = LootPool.lootPool().setRolls(ConstantValue.exactly(1))
             .add(
                 LootTableHelper.addItem(
-                    Items.NETHERITE_SWORD,
-                    "excalibur",
+                    Items.NETHERITE_AXE,
+                    "axecalibur",
                     10,
                     ChatFormatting.GOLD,
                     List.of(
