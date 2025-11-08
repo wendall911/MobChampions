@@ -18,71 +18,77 @@ public class MobChampionsLanguageProvider extends FabricLanguageProvider {
 
     @Override
     public void generateTranslations(HolderLookup.Provider provider, TranslationBuilder builder) {
-        addTranslationTitle(builder, "Mob Champions");
-        addTranslation(builder, "visuals");
-        addTranslation(builder, "uncommoncolor");
-        addTranslation(builder, "rarecolor");
-        addTranslation(builder, "epiccolor");
-        addTranslation(builder, "legendarycolor");
-        addTranslation(builder, "fireworkschance");
-        addTranslation(builder, "colors");
-        addTranslation(builder, "fireworksflicker");
-        addTranslation(builder, "fireworkstrail");
-        addTranslation(builder, "fireworksshape");
-        addTranslation(builder, "fireworksheight");
-        addTranslation(builder, "spawning");
-        addTranslation(builder, "disablebabychampions");
-        addTranslation(builder, "commonmobweight");
-        addTranslation(builder, "uncommonweight");
-        addTranslation(builder, "rareweight");
-        addTranslation(builder, "epicweight");
-        addTranslation(builder, "legendaryweight");
-        addTranslation(builder, "championwhitelist");
-        addTranslation(builder, "spawntypeblacklist");
-        addTranslation(builder, "stats");
-        addTranslation(builder, "uncommondifficulty");
-        addTranslation(builder, "raredifficulty");
-        addTranslation(builder, "epicdifficulty");
-        addTranslation(builder, "legendarydifficulty");
-        addTranslation(builder, "effects");
-        addTranslation(builder, "glowingeffectminimumrank");
-        addTranslation(builder, "glowingeffectduration");
-        addTranslation(builder, "infestedeffectminimumrank");
-        addTranslation(builder, "infestedeffectchance");
-        addTranslation(builder, "oozingeffectminimumrank");
-        addTranslation(builder, "oozingeffectchance");
-        addTranslation(builder, "weavingeffectminimumrank");
-        addTranslation(builder, "weavingeffectchance");
-        addTranslation(builder, "windchargedeffectminimumrank");
-        addTranslation(builder, "windchargedeffectchance");
-        addTranslation(builder, "legendaryeffectbonusmultiplier");
-        addTranslation(builder, "equipment");
-        addTranslation(builder, "uncommonstandardweaponspawnchance");
-        addTranslation(builder, "rarestandardweaponspawnchance");
-        addTranslation(builder, "epicstandardweaponspawnchance");
-        addTranslation(builder, "legendarystandardweaponspawnchance");
-        addTranslation(builder, "uncommonlootableweaponspawnchance");
-        addTranslation(builder, "rarelootableweaponspawnchance");
-        addTranslation(builder, "epiclootableweaponspawnchance");
-        addTranslation(builder, "legendarylootableweaponspawnchance");
-        addTranslation(builder, "weaponlist");
-        addTranslation(builder, "uncommonstandardarmorspawnchance");
-        addTranslation(builder, "rarestandardarmorspawnchance");
-        addTranslation(builder, "epicstandardarmorspawnchance");
-        addTranslation(builder, "legendarystandardarmorspawnchance");
-        addTranslation(builder, "uncommonlootablearmorspawnchance");
-        addTranslation(builder, "rarelootablearmorspawnchance");
-        addTranslation(builder, "epiclootablearmorspawnchance");
-        addTranslation(builder, "legendarylootablearmorspawnchance");
-        addTranslation(builder, "armorlist");
-        addTranslation(builder, "experience");
-        addTranslation(builder, "uncommonexperiencemultiplier");
-        addTranslation(builder, "rareexperiencemultiplier");
-        addTranslation(builder, "epicexperiencemultiplier");
-        addTranslation(builder, "legendaryexperiencemultiplier");
-        addTranslation(builder, "lootdrops");
-        addTranslation(builder, "standardarmordropchance");
-        addTranslation(builder, "standardweapondropchance");
+        addTypeTranslation(builder, "uncommon", "Uncommon");
+        addTypeTranslation(builder, "rare", "Rare");
+        addTypeTranslation(builder, "epic", "Epic");
+        addTypeTranslation(builder, "legendary", "Legendary");
+        addAnnouncementTranslation(builder, "message", "A %s champion has appeared nearby!");
+
+        addConfigurationTitle(builder, "Mob Champions");
+        addConfigTranslation(builder, "visuals");
+        addConfigTranslation(builder, "uncommoncolor");
+        addConfigTranslation(builder, "rarecolor");
+        addConfigTranslation(builder, "epiccolor");
+        addConfigTranslation(builder, "legendarycolor");
+        addConfigTranslation(builder, "fireworkschance");
+        addConfigTranslation(builder, "colors");
+        addConfigTranslation(builder, "fireworksflicker");
+        addConfigTranslation(builder, "fireworkstrail");
+        addConfigTranslation(builder, "fireworksshape");
+        addConfigTranslation(builder, "fireworksheight");
+        addConfigTranslation(builder, "spawning");
+        addConfigTranslation(builder, "disablebabychampions");
+        addConfigTranslation(builder, "commonmobweight");
+        addConfigTranslation(builder, "uncommonweight");
+        addConfigTranslation(builder, "rareweight");
+        addConfigTranslation(builder, "epicweight");
+        addConfigTranslation(builder, "legendaryweight");
+        addConfigTranslation(builder, "championwhitelist");
+        addConfigTranslation(builder, "spawntypeblacklist");
+        addConfigTranslation(builder, "stats");
+        addConfigTranslation(builder, "uncommondifficulty");
+        addConfigTranslation(builder, "raredifficulty");
+        addConfigTranslation(builder, "epicdifficulty");
+        addConfigTranslation(builder, "legendarydifficulty");
+        addConfigTranslation(builder, "effects");
+        addConfigTranslation(builder, "glowingeffectminimumrank");
+        addConfigTranslation(builder, "glowingeffectduration");
+        addConfigTranslation(builder, "infestedeffectminimumrank");
+        addConfigTranslation(builder, "infestedeffectchance");
+        addConfigTranslation(builder, "oozingeffectminimumrank");
+        addConfigTranslation(builder, "oozingeffectchance");
+        addConfigTranslation(builder, "weavingeffectminimumrank");
+        addConfigTranslation(builder, "weavingeffectchance");
+        addConfigTranslation(builder, "windchargedeffectminimumrank");
+        addConfigTranslation(builder, "windchargedeffectchance");
+        addConfigTranslation(builder, "legendaryeffectbonusmultiplier");
+        addConfigTranslation(builder, "equipment");
+        addConfigTranslation(builder, "uncommonstandardweaponspawnchance");
+        addConfigTranslation(builder, "rarestandardweaponspawnchance");
+        addConfigTranslation(builder, "epicstandardweaponspawnchance");
+        addConfigTranslation(builder, "legendarystandardweaponspawnchance");
+        addConfigTranslation(builder, "uncommonlootableweaponspawnchance");
+        addConfigTranslation(builder, "rarelootableweaponspawnchance");
+        addConfigTranslation(builder, "epiclootableweaponspawnchance");
+        addConfigTranslation(builder, "legendarylootableweaponspawnchance");
+        addConfigTranslation(builder, "weaponlist");
+        addConfigTranslation(builder, "uncommonstandardarmorspawnchance");
+        addConfigTranslation(builder, "rarestandardarmorspawnchance");
+        addConfigTranslation(builder, "epicstandardarmorspawnchance");
+        addConfigTranslation(builder, "legendarystandardarmorspawnchance");
+        addConfigTranslation(builder, "uncommonlootablearmorspawnchance");
+        addConfigTranslation(builder, "rarelootablearmorspawnchance");
+        addConfigTranslation(builder, "epiclootablearmorspawnchance");
+        addConfigTranslation(builder, "legendarylootablearmorspawnchance");
+        addConfigTranslation(builder, "armorlist");
+        addConfigTranslation(builder, "experience");
+        addConfigTranslation(builder, "uncommonexperiencemultiplier");
+        addConfigTranslation(builder, "rareexperiencemultiplier");
+        addConfigTranslation(builder, "epicexperiencemultiplier");
+        addConfigTranslation(builder, "legendaryexperiencemultiplier");
+        addConfigTranslation(builder, "lootdrops");
+        addConfigTranslation(builder, "standardarmordropchance");
+        addConfigTranslation(builder, "standardweapondropchance");
 
         // Loot Item Translations
         addLootItemTranslation(builder, "medkit", "Medkit");
@@ -142,29 +148,37 @@ public class MobChampionsLanguageProvider extends FabricLanguageProvider {
         addLootItemTranslation(builder, "title", "Mob Champion Loot");
     }
 
-    private void addTranslationTitle(TranslationBuilder builder, String title) {
+    private void addConfigurationTitle(TranslationBuilder builder, String title) {
         builder.add(Translations.MOD_NAME_KEY, title);
     }
 
-    private void addTranslation(TranslationBuilder builder, String id) {
-        addTranslationName(builder, id);
-        addTranslationDescription(builder, id);
+    private void addConfigTranslation(TranslationBuilder builder, String id) {
+        addConfigName(builder, id);
+        addConfigDescription(builder, id);
     }
 
-    private void addTranslationName(TranslationBuilder builder, String id) {
+    private void addConfigName(TranslationBuilder builder, String id) {
         builder.add(MobChampions.MODID + ".configuration." + id + ".name", Translations.get(id + ".title"));
     }
 
-    private void addTranslationDescription(TranslationBuilder builder, String id) {
+    private void addConfigDescription(TranslationBuilder builder, String id) {
         builder.add(MobChampions.MODID + ".configuration." + id + ".description", Translations.get(id));
     }
 
-    private void addTranslationDescription(TranslationBuilder builder, String id, String key) {
+    private void addConfigDescription(TranslationBuilder builder, String id, String key) {
         builder.add(MobChampions.MODID + ".configuration." + id + ".description", Translations.get(key));
     }
 
     private void addLootItemTranslation(TranslationBuilder builder, String id, String name) {
         builder.add(Translations.LOOT_KEY_BASE + id, name);
+    }
+
+    private void addAnnouncementTranslation(TranslationBuilder builder, String id, String message) {
+        builder.add(Translations.ANNOUNCEMENT_KEY + id, message);
+    }
+
+    private void addTypeTranslation(TranslationBuilder builder, String id, String name) {
+        builder.add(Translations.TYPE_KEY + id, name);
     }
 
 }

@@ -15,6 +15,8 @@ public class Translations {
 
     public static String MOD_NAME_KEY = MobChampions.MODID + ".configuration.title";
     public static String LOOT_KEY_BASE = MobChampions.MODID + ".lootitem.";
+    public static String ANNOUNCEMENT_KEY = MobChampions.MODID + ".announcement.";
+    public static String TYPE_KEY = MobChampions.MODID + ".type.";
 
     private static final Joiner LINE_JOINER = Joiner.on("\n");
     private static final Map<String, String> translations = Maps.newHashMap();
