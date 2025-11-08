@@ -12,6 +12,7 @@ import technology.roughness.whitenoise.config.WhiteNoiseConfigLoader;
 import technology.roughness.whitenoise.platform.Services;
 
 import mobchampions.config.ConfigHandler;
+import mobchampions.loot.MobChampionsLootTables;
 
 import static technology.roughness.whitenoise.util.ResourceLocationHelper.loc;
 
@@ -21,6 +22,10 @@ public class MobChampions {
     public static final String MOD_NAME = "Mob Champions";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
     public static final Random RANDOM = new Random();
+
+    public static void init() {
+        MobChampionsLootTables.init();
+    }
 
     public static void initConfig() {
         if (Services.PLATFORM.isPhysicalClient()) {

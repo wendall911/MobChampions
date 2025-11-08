@@ -2,6 +2,7 @@ package mobchampions.util;
 
 import java.util.List;
 
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -14,14 +15,22 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.providers.VanillaEnchantmentProviders;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import org.apache.commons.lang3.tuple.Pair;
 
 import mobchampions.MobChampions;
 import mobchampions.config.ConfigHandler;
+import mobchampions.loot.MobChampionsLootTables;
 import mobchampions.network.MobChampion.Rank;
 
 public class MobChampionBuilder {
@@ -172,36 +181,71 @@ public class MobChampionBuilder {
     }
 
     private static void equipChampionWeaponIfNeeded(LivingEntity entity, Rank rank) {
-        boolean hasLootTableWeapon = false;
+        EquipmentSlot weaponSlot = EquipmentSlot.MAINHAND;
+
         /*
          * First check if weapon equipping is allowed for this entity.
-         * Then check if the entity already has a weapon.
-         * If not, attempt to equip a weapon based on the rank.
+         * Then attempt to spawn a standard weapon based on the rank.
+         * If needed, upgrade the standard weapon to a loot table weapon.
          */
-        if (entity.canUseSlot(EquipmentSlot.MAINHAND) && entity.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty()) {
-            ItemStack weapon = ConfigHandler.Common.getWeaponForRank(rank);
+        if (entity.canUseSlot(weaponSlot)) {
+            ItemStack standardWeapon = ConfigHandler.Common.getWeaponForRank(rank);
+            Pair<Boolean, ItemStack> maybeWeapon = maybeUpgradeWeaponToLootTableWeapon(entity, standardWeapon, rank);
 
-            if (weapon != null) {
-                entity.setItemSlot(EquipmentSlot.MAINHAND, weapon);
+            if (maybeWeapon.getLeft()) {
+                if (maybeWeapon.getRight() != null && maybeWeapon.getRight().getItem() instanceof ShieldItem) {
+                    weaponSlot = EquipmentSlot.OFFHAND;
+                }
+                entity.setItemSlot(weaponSlot, maybeWeapon.getRight());
+            }
+            else if(standardWeapon != null) {
+                if (standardWeapon.getItem() instanceof ShieldItem) {
+                    weaponSlot = EquipmentSlot.OFFHAND;
+                }
+                entity.setItemSlot(weaponSlot, standardWeapon);
+            }
+
+            /*
+             * Finalize champion weapon by enchanting it if needed.
+             */
+            finalizeChampionWeapon(entity, rank, maybeWeapon.getLeft(), weaponSlot);
+        }
+    }
+
+    private static Pair<Boolean, ItemStack> maybeUpgradeWeaponToLootTableWeapon(LivingEntity entity, ItemStack weapon, Rank rank) {
+        double chanceToUpgrade = ConfigHandler.Common.getLootableWeaponSpawnChanceForRank(rank);
+        ResourceKey<LootTable> equipmentLootTable = MobChampionsLootTables.getWeaponLootTable(rank);
+        Level level = entity.level();
+
+        if (level instanceof ServerLevel serverLevel) {
+            LootTable lootTable = serverLevel.getServer().reloadableRegistries().getLootTable(equipmentLootTable);
+            LootParams params = createEquipmentParams(entity, serverLevel);
+
+            if (lootTable != LootTable.EMPTY && MobChampions.RANDOM.nextFloat() < chanceToUpgrade) {
+                List<ItemStack> list = lootTable.getRandomItems(params, 0L);
+
+                if (!list.isEmpty()) {
+                    return Pair.of(true, list.getFirst());
+                }
             }
         }
 
-        /*
-         * Next we will check if there is a need to update the main weapon with a loot table weapon.
-         * These will override the normal weapon if present.
-         * These weapons will drop normally on death.
-         */
-
-        finalizeChampionWeapon(entity, rank, hasLootTableWeapon);
+        return Pair.of(false, weapon);
     }
 
-    private static void finalizeChampionWeapon(LivingEntity entity, Rank rank, boolean hasLootTableWeapon) {
+    private static LootParams createEquipmentParams(LivingEntity livingEntity, ServerLevel level) {
+        return (new LootParams.Builder(level)).withParameter(
+            LootContextParams.ORIGIN, livingEntity.position()
+        ).withParameter(LootContextParams.THIS_ENTITY, livingEntity).create(LootContextParamSets.EQUIPMENT);
+    }
+
+    private static void finalizeChampionWeapon(LivingEntity entity, Rank rank, boolean hasLootTableWeapon, EquipmentSlot weaponSlot) {
         /*
          * Only applies if the entity has a weapon equipped and is a Mob.
          * Applies drop chance to standard weapons.
          * Sets guaranteed drop for loot table weapons.
          */
-        if (!entity.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty() && entity instanceof Mob mob) {
+        if (!entity.getItemBySlot(weaponSlot).isEmpty() && entity instanceof Mob mob) {
             Level level = entity.level();
 
             if (level instanceof ServerLevel serverLevel) {
@@ -211,23 +255,22 @@ public class MobChampionBuilder {
             }
 
             if (hasLootTableWeapon) {
-                mob.setGuaranteedDrop(EquipmentSlot.MAINHAND);
+                mob.setDropChance(weaponSlot, ConfigHandler.Common.getLootDropChance(rank));
             }
             else {
-                mob.setDropChance(EquipmentSlot.MAINHAND, (float) ConfigHandler.Common.getStandardWeaponDropChance());
+                mob.setDropChance(weaponSlot, (float) ConfigHandler.Common.getStandardWeaponDropChance());
             }
         }
     }
 
     private static void equipChampionGearIfNeeded(LivingEntity entity, Rank rank) {
-        boolean hasLootTableArmor = false;
         /*
          * First check if armor equipping is allowed for this entity.
          * Then check if the entity already has the armor item.
          * If not, attempt to equip an armor item based on the rank.
          */
         for (EquipmentSlot slot : getArmorSlots()) {
-            if (entity.canUseSlot(slot) && entity.getItemBySlot(slot).isEmpty()) {
+            if (entity.canUseSlot(slot)) {
                 ItemStack armor = ConfigHandler.Common.getArmorForRankAndSlot(rank, slot);
 
                 if (armor != null) {
@@ -236,13 +279,45 @@ public class MobChampionBuilder {
             }
         }
 
+        Pair<EquipmentSlot, ItemStack> upgrade = maybeUpgradeArmorToLootTableArmor(entity, rank);
+
+        if (upgrade.getLeft() != null) {
+            entity.setItemSlot(upgrade.getLeft(), upgrade.getRight());
+        }
         /*
          * Finalize champion armor by enchanting it if needed.
          */
-        finalizeChampionArmor(entity, rank, hasLootTableArmor);
+        finalizeChampionArmor(entity, rank, upgrade.getLeft());
+
     }
 
-    private static void finalizeChampionArmor(LivingEntity entity, Rank rank, boolean hasLootTableArmor) {
+    private static Pair<EquipmentSlot, ItemStack> maybeUpgradeArmorToLootTableArmor(LivingEntity livingEntity, Rank rank) {
+        double chanceToUpgrade = ConfigHandler.Common.getLootableArmorSpawnChanceForRank(rank);
+        ResourceKey<LootTable> equipmentLootTable = MobChampionsLootTables.getWearableLootTable(rank);
+        Level level = livingEntity.level();
+
+        if (level instanceof ServerLevel serverLevel) {
+            LootTable lootTable = serverLevel.getServer().reloadableRegistries().getLootTable(equipmentLootTable);
+            LootParams params = createEquipmentParams(livingEntity, serverLevel);
+
+            if (lootTable != LootTable.EMPTY && MobChampions.RANDOM.nextFloat() < chanceToUpgrade) {
+                List<ItemStack> list = lootTable.getRandomItems(params, 0L);
+
+                if (!list.isEmpty()) {
+                    ItemStack armorItem = list.getFirst();
+                    Equipable equipable = Equipable.get(armorItem);
+
+                    if (equipable != null) {
+                        return Pair.of(equipable.getEquipmentSlot(), armorItem);
+                    }
+                }
+            }
+        }
+
+        return Pair.of(null, null);
+    }
+
+    private static void finalizeChampionArmor(LivingEntity entity, Rank rank, EquipmentSlot lootTableArmorSlot) {
         /*
          * Only applies if the entity has armor equipped and is a Mob.
          * Applies drop chance to standard armor.
@@ -257,8 +332,8 @@ public class MobChampionBuilder {
                 for (EquipmentSlot slot : getArmorSlots()) {
                     if (!entity.getItemBySlot(slot).isEmpty()) {
                         enchantSpawnedArmor(mob, rank, serverLevel, serverLevel.getRandom(), slot, difficultyInstance);
-                        if (hasLootTableArmor) {
-                            mob.setGuaranteedDrop(slot);
+                        if (slot == lootTableArmorSlot) {
+                            mob.setDropChance(slot, ConfigHandler.Common.getLootDropChance(rank));
                         }
                         else {
                             mob.setDropChance(slot, (float) ConfigHandler.Common.getStandardArmorDropChance());
@@ -278,7 +353,7 @@ public class MobChampionBuilder {
             case LEGENDARY -> chance = 0.80F;
             default -> chance = 0.15F;
         }
-        enchantSpawnedEquipment(entity, level, EquipmentSlot.MAINHAND, random, chance, difficulty);
+        enchantSpawnedEquipment(entity, level, EquipmentSlot.MAINHAND, random, chance, difficulty, rank);
     }
 
     private static void enchantSpawnedArmor(LivingEntity entity, Rank rank, ServerLevelAccessor level, RandomSource random, EquipmentSlot slot, DifficultyInstance difficulty) {
@@ -290,25 +365,27 @@ public class MobChampionBuilder {
             case LEGENDARY -> chance = 1.0F;
             default -> chance = 0.25F;
         }
-        enchantSpawnedEquipment(entity, level, slot, random, chance, difficulty);
+        enchantSpawnedEquipment(entity, level, slot, random, chance, difficulty, rank);
     }
 
-    private static void enchantSpawnedEquipment(LivingEntity entity, ServerLevelAccessor level, EquipmentSlot slot, RandomSource random, float enchantChance, DifficultyInstance difficulty) {
+    private static void enchantSpawnedEquipment(LivingEntity entity, ServerLevelAccessor level, EquipmentSlot slot, RandomSource random, float enchantChance, DifficultyInstance difficulty, Rank rank) {
         ItemStack itemstack = entity.getItemBySlot(slot);
 
         if (!itemstack.isEmpty() && random.nextFloat() < enchantChance * difficulty.getSpecialMultiplier()) {
             EnchantmentHelper.enchantItemFromProvider(itemstack, level.registryAccess(), VanillaEnchantmentProviders.MOB_SPAWN_EQUIPMENT, difficulty, random);
             entity.setItemSlot(slot, itemstack);
         }
-
     }
-
 
     private static void applyGlowingEffectIfNeeded(LivingEntity entity, Rank rank) {
         int glowingEffectMinimumRankOrdinal = ConfigHandler.Common.getGlowingEffectMinimumRank().ordinal();
 
         if (rank.ordinal() >= glowingEffectMinimumRankOrdinal) {
             int glowingEffectDuration = ConfigHandler.Common.getGlowingEffectDuration();
+
+            if (glowingEffectDuration < 0) {
+                glowingEffectDuration = Integer.MAX_VALUE;
+            }
 
             entity.addEffect(new MobEffectInstance(
                 MobEffects.GLOWING,
