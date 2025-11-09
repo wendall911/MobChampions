@@ -148,11 +148,7 @@
             {
               "add": false,
               "enchantments": {
-                "minecraft:sharpness": {
-                  "type": "minecraft:uniform",
-                  "max": 6.0,
-                  "min": 3.0
-                },
+                "minecraft:sharpness": 10.0,
                 "minecraft:vanishing_curse": 1.0
               },
               "function": "minecraft:set_enchantments"

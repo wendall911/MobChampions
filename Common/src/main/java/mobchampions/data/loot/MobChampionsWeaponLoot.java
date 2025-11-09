@@ -270,7 +270,7 @@ public class MobChampionsWeaponLoot implements LootTableSubProvider {
                     70,
                     ChatFormatting.RED,
                     List.of(
-                        new ItemEnchantment(Enchantments.SHARPNESS, UniformGenerator.between(3, 6)),
+                        new ItemEnchantment(Enchantments.SHARPNESS, ConstantValue.exactly(10)),
                         new ItemEnchantment(Enchantments.VANISHING_CURSE, ConstantValue.exactly(1))
                     ),
                     enchantmentRegistryLookup
