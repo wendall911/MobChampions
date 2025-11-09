@@ -8,6 +8,8 @@
   "mobchampions.configuration.colors.name": "Legendary Fireworks Colors",
   "mobchampions.configuration.commonmobweight.description": "Relative weight for a normal or common mob to spawn.",
   "mobchampions.configuration.commonmobweight.name": "Common Mob Weight",
+  "mobchampions.configuration.creeperexplosionradiusmultiplier.description": "Multiplier applied to the explosion radius of creeper champions by rank.\nFor example, a value of 0.25 will double the explosion radius of a legendary (rank 4) creeper.",
+  "mobchampions.configuration.creeperexplosionradiusmultiplier.name": "Creeper Explosion Radius Multiplier",
   "mobchampions.configuration.disablebabychampions.description": "If true, baby variants of entities will not spawn as champions.",
   "mobchampions.configuration.disablebabychampions.name": "Disable Baby Champions",
   "mobchampions.configuration.effects.description": "Settings that modify the effects applied to champions based on their rank.",

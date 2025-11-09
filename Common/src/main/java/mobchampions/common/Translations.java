@@ -119,6 +119,11 @@ public class Translations {
         translations.put("windchargedeffectchance", "Chance for the wind charged effect to be applied to eligible champions.");
         translations.put("legendaryeffectbonusmultiplier.title", "Legendary Effect Bonus Multiplier");
         translations.put("legendaryeffectbonusmultiplier", "Multiplier applied to all effect chances for legendary champions.");
+        translations.put("creeperexplosionradiusmultiplier.title", "Creeper Explosion Radius Multiplier");
+        translations.put("creeperexplosionradiusmultiplier", joiner(
+            "Multiplier applied to the explosion radius of creeper champions by rank.",
+            "For example, a value of 0.25 will double the explosion radius of a legendary (rank 4) creeper."
+        ));
         translations.put("equipment.title", "Equipment Settings");
         translations.put("equipment", joiner(
             "Settings that modify the items equipped by champions based on their rank."

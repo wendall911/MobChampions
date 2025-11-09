@@ -497,6 +497,8 @@ public class ConfigHandler {
         private final WhiteNoiseConfigSpec.DoubleValue weavingEffectChance;
         private final WhiteNoiseConfigSpec.EnumValue<MobChampion.Rank> windChargedEffectMinimumRank;
         private final WhiteNoiseConfigSpec.DoubleValue windChargedEffectChance;
+        private final WhiteNoiseConfigSpec.DoubleValue legendaryEffectBonusMultiplier;
+        private final WhiteNoiseConfigSpec.DoubleValue creeperExplosionRadiusMultiplier;
         private final WhiteNoiseConfigSpec.DoubleValue uncommonStandardWeaponSpawnChance;
         private final WhiteNoiseConfigSpec.DoubleValue rareStandardWeaponSpawnChance;
         private final WhiteNoiseConfigSpec.DoubleValue epicStandardWeaponSpawnChance;
@@ -588,7 +590,6 @@ public class ConfigHandler {
         private static final Map<EquipmentSlot, NavigableMap<Integer, ItemStack>> epicArmorItemsMap = new HashMap<>();
         private static final Map<EquipmentSlot, NavigableMap<Integer, ItemStack>> legendaryArmorItemsMap = new HashMap<>();
         private final WhiteNoiseConfigSpec.DoubleValue uncommonExperienceMultiplier;
-        private final WhiteNoiseConfigSpec.DoubleValue legendaryEffectBonusMultiplier;
         private final WhiteNoiseConfigSpec.DoubleValue rareExperienceMultiplier;
         private final WhiteNoiseConfigSpec.DoubleValue epicExperienceMultiplier;
         private final WhiteNoiseConfigSpec.DoubleValue legendaryExperienceMultiplier;
@@ -679,6 +680,9 @@ public class ConfigHandler {
             legendaryEffectBonusMultiplier = builder
                 .comment(getTranslation("legendaryeffectbonusmultiplier"))
                 .defineInRange("legendaryEffectBonusMultiplier", 0.5, 0.0, 1.0);
+            creeperExplosionRadiusMultiplier = builder
+                .comment(getTranslation("creeperexplosionradiusmultiplier"))
+                .defineInRange("creeperExplosionRadiusMultiplier", 0.25, 0.0, 1.0);
 
             builder.pop(); // spawning.effects
             builder.push("equipment").comment(getTranslation("equipment")); // spawning.equipment
@@ -852,6 +856,10 @@ public class ConfigHandler {
 
         public static double getLegendaryEffectBonusMultiplier() {
             return COMMON.legendaryEffectBonusMultiplier.get();
+        }
+
+        public static double getCreeperExplosionRadiusMultiplier(Rank rank) {
+            return 1 + COMMON.creeperExplosionRadiusMultiplier.get() * rank.ordinal();
         }
 
         public static ItemStack getWeaponForRank(Rank rank) {
