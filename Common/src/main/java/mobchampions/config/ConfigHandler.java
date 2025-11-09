@@ -493,8 +493,6 @@ public class ConfigHandler {
         private final WhiteNoiseConfigSpec.IntValue glowingEffectDuration;
         private final WhiteNoiseConfigSpec.EnumValue<MobChampion.Rank> infestedEffectMinimumRank;
         private final WhiteNoiseConfigSpec.DoubleValue infestedEffectChance;
-        private final WhiteNoiseConfigSpec.EnumValue<MobChampion.Rank> oozingEffectMinimumRank;
-        private final WhiteNoiseConfigSpec.DoubleValue oozingEffectChance;
         private final WhiteNoiseConfigSpec.EnumValue<MobChampion.Rank> weavingEffectMinimumRank;
         private final WhiteNoiseConfigSpec.DoubleValue weavingEffectChance;
         private final WhiteNoiseConfigSpec.EnumValue<MobChampion.Rank> windChargedEffectMinimumRank;
@@ -666,12 +664,6 @@ public class ConfigHandler {
             infestedEffectChance = builder
                 .comment(getTranslation("infestedeffectchance"))
                 .defineInRange("infestedEffectChance", 0.35, 0.0, 1.0);
-            oozingEffectMinimumRank = builder
-                .comment(getTranslation("oozingeffectminimumrank"))
-                .defineEnum("oozingEffectMinimumRank", MobChampion.Rank.EPIC);
-            oozingEffectChance = builder
-                .comment(getTranslation("oozingeffectchance"))
-                .defineInRange("oozingEffectChance", 0.45, 0.0, 1.0);
             weavingEffectMinimumRank = builder
                 .comment(getTranslation("weavingeffectminimumrank"))
                 .defineEnum("weavingEffectMinimumRank", MobChampion.Rank.RARE);
@@ -840,14 +832,6 @@ public class ConfigHandler {
 
         public static double getInfestedEffectChance() {
             return COMMON.infestedEffectChance.get();
-        }
-
-        public static MobChampion.Rank getOozingEffectMinimumRank() {
-            return COMMON.oozingEffectMinimumRank.get();
-        }
-
-        public static double getOozingEffectChance() {
-            return COMMON.oozingEffectChance.get();
         }
 
         public static MobChampion.Rank getWeavingEffectMinimumRank() {

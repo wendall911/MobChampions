@@ -109,10 +109,6 @@ public class Translations {
         translations.put("infestedeffectminimumrank", "Minimum champion rank required to apply the infested effect.");
         translations.put("infestedeffectchance.title", "Infested Effect Chance");
         translations.put("infestedeffectchance", "Chance for the infested effect to be applied to eligible champions.");
-        translations.put("oozingeffectminimumrank.title", "Oozing Effect Minimum Rank");
-        translations.put("oozingeffectminimumrank", "Minimum champion rank required to apply the oozing effect.");
-        translations.put("oozingeffectchance.title", "Oozing Effect Chance");
-        translations.put("oozingeffectchance", "Chance for the oozing effect to be applied to eligible champions.");
         translations.put("weavingeffectminimumrank.title", "Weaving Effect Minimum Rank");
         translations.put("weavingeffectminimumrank", "Minimum champion rank required to apply the weaving effect.");
         translations.put("weavingeffectchance.title", "Weaving Effect Chance");

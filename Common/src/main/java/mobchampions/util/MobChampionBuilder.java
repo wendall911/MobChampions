@@ -180,7 +180,6 @@ public class MobChampionBuilder {
         updateMaxHealth(entity);
         applyGlowingEffectIfNeeded(entity, rank);
         applyInfestedEffectIfNeeded(entity, rank);
-        applyOozingEffectIfNeeded(entity, rank);
         applyWeavingEffectIfNeeded(entity, rank);
         applyWindChargedEffectIfNeeded(entity, rank);
         equipChampionWeaponIfNeeded(entity, rank);
@@ -416,25 +415,6 @@ public class MobChampionBuilder {
                 MobEffectInstance infestedEffect = new MobEffectInstance(MobEffects.INFESTED, -1);
 
                 entity.addEffect(infestedEffect);
-            }
-        }
-    }
-
-    private static void applyOozingEffectIfNeeded(LivingEntity entity, Rank rank) {
-        int oozingEffectMinimumRankOrdinal = ConfigHandler.Common.getOozingEffectMinimumRank().ordinal();
-
-        if (rank.ordinal() >= oozingEffectMinimumRankOrdinal) {
-            double oozingEffectChance = ConfigHandler.Common.getOozingEffectChance();
-            double bonusMultiplier = 1 + ConfigHandler.Common.getLegendaryEffectBonusMultiplier();
-
-            if (rank == Rank.LEGENDARY) {
-                oozingEffectChance = oozingEffectChance * bonusMultiplier;
-            }
-
-            if (MobChampions.RANDOM.nextFloat() < oozingEffectChance) {
-                MobEffectInstance oozingEffect = new MobEffectInstance(MobEffects.OOZING, -1);
-
-                entity.addEffect(oozingEffect);
             }
         }
     }

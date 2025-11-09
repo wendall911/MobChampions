@@ -59,8 +59,6 @@ public class MobChampionsLanguageProvider extends FabricLanguageProvider {
         addConfigTranslation(builder, "glowingeffectduration");
         addConfigTranslation(builder, "infestedeffectminimumrank");
         addConfigTranslation(builder, "infestedeffectchance");
-        addConfigTranslation(builder, "oozingeffectminimumrank");
-        addConfigTranslation(builder, "oozingeffectchance");
         addConfigTranslation(builder, "weavingeffectminimumrank");
         addConfigTranslation(builder, "weavingeffectchance");
         addConfigTranslation(builder, "windchargedeffectminimumrank");
