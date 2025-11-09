@@ -411,7 +411,10 @@ public class MobChampionBuilder {
 
             entity.addEffect(new MobEffectInstance(
                 MobEffects.GLOWING,
-                glowingEffectDuration
+                glowingEffectDuration,
+                1,
+                false,
+                false
             ));
         }
     }
