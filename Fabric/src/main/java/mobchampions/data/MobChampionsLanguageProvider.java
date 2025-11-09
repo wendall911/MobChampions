@@ -22,7 +22,8 @@ public class MobChampionsLanguageProvider extends FabricLanguageProvider {
         addTypeTranslation(builder, "rare", "Rare");
         addTypeTranslation(builder, "epic", "Epic");
         addTypeTranslation(builder, "legendary", "Legendary");
-        addAnnouncementTranslation(builder, "message", "A %s champion has appeared nearby!");
+
+        addAnnouncementTranslation(builder, "spawn", "A %s champion has appeared nearby!");
 
         addConfigurationTitle(builder, "Mob Champions");
         addConfigTranslation(builder, "visuals");
@@ -38,6 +39,9 @@ public class MobChampionsLanguageProvider extends FabricLanguageProvider {
         addConfigTranslation(builder, "fireworksheight");
         addConfigTranslation(builder, "spawning");
         addConfigTranslation(builder, "disablebabychampions");
+        addConfigTranslation(builder, "enablespawnmessage");
+        addConfigTranslation(builder, "spawnmessageminimumrank");
+        addConfigTranslation(builder, "spawnmessagerange");
         addConfigTranslation(builder, "commonmobweight");
         addConfigTranslation(builder, "uncommonweight");
         addConfigTranslation(builder, "rareweight");

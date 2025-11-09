@@ -10,6 +10,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import org.slf4j.helpers.MessageFormatter;
 
 import mobchampions.MobChampions;
+import mobchampions.network.MobChampion.Rank;
 
 public class Translations {
 
@@ -53,6 +54,12 @@ public class Translations {
         ));
         translations.put("disablebabychampions.title", "Disable Baby Champions");
         translations.put("disablebabychampions", "If true, baby variants of entities will not spawn as champions.");
+        translations.put("enablespawnmessage.title", "Enable Spawn Message");
+        translations.put("enablespawnmessage", "If true, a message will be broadcast to players in the configurable range when a champion spawns.");
+        translations.put("spawnmessageminimumrank.title", "Spawn Message Minimum Rank");
+        translations.put("spawnmessageminimumrank", "Minimum champion rank required to trigger a spawn message.");
+        translations.put("spawnmessagerange.title", "Spawn Message Range Check");
+        translations.put("spawnmessagerange", "Radius around the champion spawn point to check for players to send the spawn message to.");
         translations.put("commonmobweight.title", "Common Mob Weight");
         translations.put("commonmobweight", "Relative weight for a normal or common mob to spawn.");
         translations.put("uncommonweight.title", "Uncommon Weight");
@@ -197,6 +204,10 @@ public class Translations {
 
     private static String joiner(String... string) {
         return LINE_JOINER.join(string);
+    }
+
+    public static String getTitleByRank(Rank rank) {
+        return TYPE_KEY + rank.name().toLowerCase();
     }
 
 }

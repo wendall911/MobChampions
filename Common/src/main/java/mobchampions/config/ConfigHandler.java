@@ -441,6 +441,9 @@ public class ConfigHandler {
         private static int totalWeight;
         private static final NavigableMap<Integer, Rank> championWeightMap = new TreeMap<>();
         private final WhiteNoiseConfigSpec.BooleanValue disableBabyChampions;
+        private final WhiteNoiseConfigSpec.BooleanValue enableSpawnMessage;
+        private final WhiteNoiseConfigSpec.EnumValue<MobChampion.Rank> spawnMessageMinimumRank;
+        private final WhiteNoiseConfigSpec.IntValue spawnMessageRange;
         private final WhiteNoiseConfigSpec.IntValue commonMobWeight;
         private final WhiteNoiseConfigSpec.IntValue uncommonWeight;
         private final WhiteNoiseConfigSpec.IntValue rareWeight;
@@ -600,6 +603,15 @@ public class ConfigHandler {
             disableBabyChampions = builder
                 .comment(getTranslation("disablebabychampions"))
                 .define("disableBabyChampions", false);
+            enableSpawnMessage = builder
+                .comment(getTranslation("enablespawnmessage"))
+                .define("enableSpawnMessage", true);
+            spawnMessageMinimumRank = builder
+                .comment(getTranslation("spawnmessageminimumrank"))
+                .defineEnum("spawnMessageMinimumRank", MobChampion.Rank.LEGENDARY);
+            spawnMessageRange = builder
+                .comment(getTranslation("spawnmessagerange"))
+                .defineInRange("spawnMessageRange", 64, 0, 256);
             commonMobWeight = builder
                 .comment(getTranslation("commonmobweight"))
                 .defineInRange("commonMobWeight", 200, 0, 5000);
@@ -771,6 +783,18 @@ public class ConfigHandler {
 
         public static boolean isBabyChampionsDisabled() {
             return COMMON.disableBabyChampions.get();
+        }
+
+        public static boolean enableSpawnMessage() {
+            return COMMON.enableSpawnMessage.get();
+        }
+
+        public static int getSpawnMessageMinimumRank() {
+            return COMMON.spawnMessageMinimumRank.get().ordinal();
+        }
+
+        public static int getSpawnMessageRange() {
+            return COMMON.spawnMessageRange.get();
         }
 
         public static int getTotalWeight() {

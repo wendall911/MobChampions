@@ -1,10 +1,16 @@
 package mobchampions.event;
 
+import java.util.List;
+
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.phys.AABB;
 
+import mobchampions.common.Translations;
 import mobchampions.config.ConfigHandler;
 import mobchampions.MobChampions;
 import mobchampions.network.MobChampion;
@@ -38,6 +44,22 @@ public class MobChampionEventHandler {
 
                     // Apply champion effects/attributes if uncommon or higher
                     MobChampionBuilder.build(livingEntity, newRank);
+
+                    if (ConfigHandler.Common.enableSpawnMessage() && newRank.ordinal() >= ConfigHandler.Common.getSpawnMessageMinimumRank()) {
+                        AABB aabb = new AABB(livingEntity.blockPosition()).inflate(ConfigHandler.Common.getSpawnMessageRange());
+                        List<ServerPlayer> list = livingEntity.level().getEntitiesOfClass(ServerPlayer.class, aabb, player -> true);
+
+                        for (ServerPlayer serverPlayer : list) {
+                            serverPlayer.displayClientMessage(
+                                Component.translatable(
+                                    Translations.ANNOUNCEMENT_KEY + "spawn",
+                                    Component.translatable(
+                                        Translations.getTitleByRank(newRank)
+                                    ).withColor(ConfigHandler.Client.getChampionColor(newRank))
+                                )
+                            , true);
+                        }
+                    }
                 }
 
                 Services.PLATFORM.syncMobChampionData(null, livingEntity);
