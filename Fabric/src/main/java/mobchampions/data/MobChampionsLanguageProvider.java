@@ -22,6 +22,10 @@ public class MobChampionsLanguageProvider extends FabricLanguageProvider {
         addTypeTranslation(builder, "rare", "Rare");
         addTypeTranslation(builder, "epic", "Epic");
         addTypeTranslation(builder, "legendary", "Legendary");
+        addEffectTranslation(builder, "uncommon_champion_effect", "Uncommon");
+        addEffectTranslation(builder, "rare_champion_effect", "Rare");
+        addEffectTranslation(builder, "epic_champion_effect", "Epic");
+        addEffectTranslation(builder, "legendary_champion_effect", "Legendary");
 
         addAnnouncementTranslation(builder, "spawn", "A %s champion has appeared nearby!");
 
@@ -37,6 +41,9 @@ public class MobChampionsLanguageProvider extends FabricLanguageProvider {
         addConfigTranslation(builder, "fireworkstrail");
         addConfigTranslation(builder, "fireworksshape");
         addConfigTranslation(builder, "fireworksheight");
+        addConfigTranslation(builder, "mobdeath");
+        addConfigTranslation(builder, "fireworksondeath");
+        addConfigTranslation(builder, "fireworksminimumrank");
         addConfigTranslation(builder, "spawning");
         addConfigTranslation(builder, "disablebabychampions");
         addConfigTranslation(builder, "enablespawnmessage");
@@ -182,6 +189,10 @@ public class MobChampionsLanguageProvider extends FabricLanguageProvider {
 
     private void addTypeTranslation(TranslationBuilder builder, String id, String name) {
         builder.add(Translations.TYPE_KEY + id, name);
+    }
+
+    private void addEffectTranslation(TranslationBuilder builder, String id, String name) {
+        builder.add("effect." + MobChampions.MODID + "." + id, name);
     }
 
 }

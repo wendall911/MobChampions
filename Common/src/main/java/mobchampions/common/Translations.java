@@ -45,6 +45,15 @@ public class Translations {
         translations.put("fireworksshape", "Fireworks shape setting as it relates to Minecraft fireworks.");
         translations.put("fireworksheight.title", "Legendary Fireworks Height");
         translations.put("fireworksheight", "Height above champion that fireworks explode.");
+        translations.put("mobdeath.title", "Mob Death Settings");
+        translations.put("mobdeath", joiner(
+            "Settings that modify the behavior of mob deaths when killed by champions.",
+            "All settings in this section require a restart to take effect."
+        ));
+        translations.put("fireworksondeath.title", "Fireworks on Death");
+        translations.put("fireworksondeath", "If true, fireworks will spawn when a champion is killed by player.");
+        translations.put("fireworksminimumrank.title", "Fireworks Minimum Rank");
+        translations.put("fireworksminimumrank", "Minimum champion rank required to trigger fireworks on death.");
         translations.put("spawning.title", "Spawning Settings");
         translations.put("spawning", joiner(
             "Relative weights determine the chance of each rank spawning.",

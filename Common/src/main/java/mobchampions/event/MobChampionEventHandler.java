@@ -10,9 +10,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.phys.AABB;
 
+import mobchampions.MobChampions;
 import mobchampions.common.Translations;
 import mobchampions.config.ConfigHandler;
-import mobchampions.MobChampions;
 import mobchampions.network.MobChampion;
 import mobchampions.platform.Services;
 import mobchampions.util.MobChampionBuilder;

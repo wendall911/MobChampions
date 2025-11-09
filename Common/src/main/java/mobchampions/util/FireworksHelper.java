@@ -53,9 +53,9 @@ public class FireworksHelper {
     }
 
     private static boolean showFireworks() {
-        int fireworksChance = ConfigHandler.Client.fireworksChance();
+        double fireworksChance = ConfigHandler.Client.fireworksChance();
 
-        return fireworksChance > 0 && MobChampions.RANDOM.nextInt(100) <= fireworksChance;
+        return fireworksChance > 0 && MobChampions.RANDOM.nextFloat() <= fireworksChance;
     }
 
 }

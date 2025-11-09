@@ -336,7 +336,7 @@ public class ConfigHandler {
         private final WhiteNoiseConfigSpec.ConfigValue<String> rareColor;
         private final WhiteNoiseConfigSpec.ConfigValue<String> epicColor;
         private final WhiteNoiseConfigSpec.ConfigValue<String> legendaryColor;
-        private final WhiteNoiseConfigSpec.IntValue fireworksChance;
+        private final WhiteNoiseConfigSpec.DoubleValue fireworksChance;
         private final WhiteNoiseConfigSpec.ConfigValue<List<? extends String>> fireworksColors;
         private final WhiteNoiseConfigSpec.BooleanValue fireworksFlicker;
         private final WhiteNoiseConfigSpec.BooleanValue fireworksTrail;
@@ -360,7 +360,7 @@ public class ConfigHandler {
                 .define("legendaryColor", "#F49000", hexValidator);
             fireworksChance = builder
                 .comment(getTranslation("fireworkschance"))
-                .defineInRange("fireworksChance", 100, 0, 100);
+                .defineInRange("fireworksChance", 1.0, 0, 1.0);
             fireworksColors = builder
                 .comment(
                     getTranslation("colors"),
@@ -378,7 +378,7 @@ public class ConfigHandler {
                 .defineEnum("fireworksShape", FireworkExplosion.Shape.BURST);
             fireworksHeight = builder
                 .comment(getTranslation("fireworksheight"), "Default 5")
-                .defineInRange("fireworksHeight", 5, 0, 32);
+                .defineInRange("fireworksHeight", 3, 0, 32);
         }
 
         public static int getUncommonColor() {
@@ -406,7 +406,7 @@ public class ConfigHandler {
             };
         }
 
-        public static int fireworksChance() {
+        public static double fireworksChance() {
             return CLIENT.fireworksChance.get();
         }
 
@@ -440,6 +440,8 @@ public class ConfigHandler {
 
         private static int totalWeight;
         private static final NavigableMap<Integer, Rank> championWeightMap = new TreeMap<>();
+        private final WhiteNoiseConfigSpec.BooleanValue fireworksOnDeath;
+        private final WhiteNoiseConfigSpec.EnumValue<MobChampion.Rank> fireworksMinimumRank;
         private final WhiteNoiseConfigSpec.BooleanValue disableBabyChampions;
         private final WhiteNoiseConfigSpec.BooleanValue enableSpawnMessage;
         private final WhiteNoiseConfigSpec.EnumValue<MobChampion.Rank> spawnMessageMinimumRank;
@@ -597,6 +599,18 @@ public class ConfigHandler {
         private final WhiteNoiseConfigSpec.DoubleValue standardWeaponDropChance;
 
         public Common(WhiteNoiseConfigSpec.Builder builder) {
+
+            builder.push("mobdeath").comment(getTranslation("mobdeath")); // mobkill
+
+            fireworksOnDeath = builder
+                .comment(getTranslation("fireworksondeath"))
+                .define("fireworksOnDeath", true);
+            fireworksMinimumRank = builder
+                .comment(getTranslation("fireworksminimumrank"))
+                .defineEnum("fireworksMinimumRank", MobChampion.Rank.LEGENDARY);
+
+            builder.pop(); // mobkill
+
             builder.push("spawning").comment(getTranslation("spawning")); // spawning
 
             disableBabyChampions = builder
@@ -775,6 +789,14 @@ public class ConfigHandler {
 
         private static Supplier<List<? extends String>> getFields(String[] strings) {
             return () -> Arrays.asList(strings);
+        }
+
+        public static boolean fireworksOnDeath() {
+            return COMMON.fireworksOnDeath.get();
+        }
+
+        public static MobChampion.Rank getFireworksMinimumRank() {
+            return COMMON.fireworksMinimumRank.get();
         }
 
         public static boolean isBabyChampionsDisabled() {

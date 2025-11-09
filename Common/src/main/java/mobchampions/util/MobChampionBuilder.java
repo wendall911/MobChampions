@@ -2,10 +2,13 @@ package mobchampions.util;
 
 import java.util.List;
 
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -29,6 +32,8 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.apache.commons.lang3.tuple.Pair;
 
 import mobchampions.MobChampions;
+import mobchampions.common.effect.ChampionMobEffect;
+import mobchampions.common.effect.MobChampionsEffects;
 import mobchampions.common.stats.ChampionStats;
 import mobchampions.common.stats.ChampionStatsManager;
 import mobchampions.config.ConfigHandler;
@@ -178,6 +183,7 @@ public class MobChampionBuilder {
             }
         }
         updateMaxHealth(entity);
+        applyChampionEffect(entity, rank);
         applyGlowingEffectIfNeeded(entity, rank);
         applyInfestedEffectIfNeeded(entity, rank);
         applyWeavingEffectIfNeeded(entity, rank);
@@ -380,6 +386,16 @@ public class MobChampionBuilder {
         if (!itemstack.isEmpty() && random.nextFloat() < enchantChance * difficulty.getSpecialMultiplier()) {
             EnchantmentHelper.enchantItemFromProvider(itemstack, level.registryAccess(), VanillaEnchantmentProviders.MOB_SPAWN_EQUIPMENT, difficulty, random);
             entity.setItemSlot(slot, itemstack);
+        }
+    }
+
+    private static void applyChampionEffect(LivingEntity entity, Rank rank) {
+        Holder<MobEffect> mobEffectHolder = MobChampionsEffects.getChampionEffectHolderByRank(rank);
+
+        if (mobEffectHolder != null) {
+            entity.forceAddEffect(new MobEffectInstance(
+                mobEffectHolder, -1
+            ), entity);
         }
     }
 

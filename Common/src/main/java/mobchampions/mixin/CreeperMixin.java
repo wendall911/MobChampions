@@ -30,4 +30,18 @@ public abstract class CreeperMixin {
             });
         }
     }
+
+    @Inject(method = "spawnLingeringCloud", at = @At("HEAD"), cancellable = true)
+    private void mobchampions$spawnLingeringCloud(CallbackInfo ci) {
+        LivingEntity livingEntity = (LivingEntity)(Object) this;
+
+        if (!livingEntity.level().isClientSide()) {
+            Services.PLATFORM.getMobChampionData(livingEntity).ifPresent(data -> {
+                if (data.getRank().ordinal() > 0) {
+                    ci.cancel();
+                }
+            });
+        }
+    }
+
 }

@@ -12,7 +12,6 @@
     "PersistentEntitySectionManagerMixin"
   ],
   "client": [
-    "ClientLevelMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -17,7 +17,7 @@ public abstract class EntityMixin {
 
     @Inject(method = "getTeamColor", at = @At("RETURN"), cancellable = true)
     private void mobchampions$modifyTeamColor(CallbackInfoReturnable<Integer> cir) {
-        Entity entity = (Entity)(Object)this;
+        Entity entity = (Entity)(Object) this;
 
         if (entity instanceof LivingEntity livingEntity) {
             Services.PLATFORM.getMobChampionData(livingEntity).ifPresent(data -> {

@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,7 +22,9 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import mobchampions.common.effect.MobChampionsEffects;
 import mobchampions.config.ConfigHandler;
 import mobchampions.loot.MobChampionsLootTables;
 import mobchampions.network.MobChampion;
@@ -29,14 +32,6 @@ import mobchampions.platform.Services;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
-
-    @Shadow public abstract boolean wasExperienceConsumed();
-
-    @Shadow protected abstract boolean isAlwaysExperienceDropper();
-
-    @Shadow protected int lastHurtByPlayerTime;
-
-    @Shadow public abstract boolean shouldDropExperience();
 
     @Shadow
     @Nullable
@@ -77,9 +72,30 @@ public abstract class LivingEntityMixin extends Entity {
                     wearableLootTable.getRandomItems(params).forEach(livingEntity::spawnAtLocation);
                     genericLootTable.getRandomItems(params).forEach(livingEntity::spawnAtLocation);
                 }
+
+                if (ConfigHandler.Common.fireworksOnDeath()
+                        && data.getRank().ordinal() >= ConfigHandler.Common.getFireworksMinimumRank().ordinal()) {
+                    Services.PLATFORM.sendLaunchFireworksPacket(livingEntity);
+                }
             }
         });
 
+    }
+
+    @Inject(method = "canBeAffected", at = @At("RETURN"), cancellable = true)
+    private void mobchampions$modifyCanBeAffected(MobEffectInstance effectInstance, CallbackInfoReturnable<Boolean> cir) {
+        LivingEntity livingEntity = (LivingEntity) (Object) this;
+
+        if (MobChampionsEffects.ALL_CHAMPION_EFFECT_HOLDERS.contains(effectInstance.getEffect())) {
+            Services.PLATFORM.getMobChampionData(livingEntity).ifPresent(data -> {
+                if (data.getEntityId() != -1 && data.getRank() != MobChampion.Rank.COMMON) {
+                    cir.setReturnValue(true);
+                }
+                else {
+                    cir.setReturnValue(false);
+                }
+            });
+        }
     }
 
     @Unique
