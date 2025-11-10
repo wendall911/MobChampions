@@ -19,6 +19,19 @@ mods for modern versions of Minecraft.
    - Different levels of champions can spawn, with higher levels having better stats and more effects.
  - Champions can drop rare loot and unobtainable items.
  - Supports both NeoForge and Fabric mod loaders.
+
+## Configuration
+- GUI or file-based configuration options available.
+- Nearly every aspect of the mod is configurable, including:
+  - Mob types that can spawn as mob champions.
+  - Spawn rates and spawn type conditions for mob champions.
+  - Stats and effects for each mob champion rank.
+    - Stats have 10 levels of scaling for each rank, with a default of level 5.
+  - Loot tables for each mob champion rank.
+    - Custom armor and weapons for each rank.
+    - Chance for special enchantments or attributes on dropped items.
+  - Visual effects for mob champions.
+  - Celebratory fireworks for defeating legendary (by default) mob champions.
  
 ## Mob Champions
 Mob champions are special elite versions of regular mobs that spawn with armor, weapons, enhanced stats and effects. They can be configured to spawn at different levels, with higher-level champions being more powerful. Champion mobs can drop rare loot and unobtainable items upon defeat.
