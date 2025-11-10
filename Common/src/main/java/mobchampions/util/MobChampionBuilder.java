@@ -3,7 +3,6 @@ package mobchampions.util;
 import java.util.List;
 
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -32,7 +31,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.apache.commons.lang3.tuple.Pair;
 
 import mobchampions.MobChampions;
-import mobchampions.common.effect.ChampionMobEffect;
 import mobchampions.common.effect.MobChampionsEffects;
 import mobchampions.common.stats.ChampionStats;
 import mobchampions.common.stats.ChampionStatsManager;
@@ -147,6 +145,11 @@ public class MobChampionBuilder {
         legendaryStats.getKnockbackResistanceAddition(),
         Operation.ADD_VALUE
     );
+    private static final AttributeModifier SAFE_FALL_DISTANCE_MODIFIER = new AttributeModifier(
+        MobChampions.prefix("safe_fall_distance_addition"),
+        320.0,
+        Operation.ADD_VALUE
+    );
 
     public static void build(LivingEntity entity, Rank rank) {
         switch(rank) {
@@ -182,12 +185,14 @@ public class MobChampionBuilder {
                 // No modifications for COMMON rank
             }
         }
+        addChampionAttribute(entity.getAttribute(Attributes.SAFE_FALL_DISTANCE), SAFE_FALL_DISTANCE_MODIFIER);
         updateMaxHealth(entity);
         applyChampionEffect(entity, rank);
         applyGlowingEffectIfNeeded(entity, rank);
         applyInfestedEffectIfNeeded(entity, rank);
         applyWeavingEffectIfNeeded(entity, rank);
         applyWindChargedEffectIfNeeded(entity, rank);
+        applyFireResistanceEffectIfNeeded(entity, rank);
         equipChampionWeaponIfNeeded(entity, rank);
         equipChampionGearIfNeeded(entity, rank);
     }
@@ -430,7 +435,7 @@ public class MobChampionBuilder {
                 infestedEffectChance = infestedEffectChance * bonusMultiplier;
             }
 
-            if (MobChampions.RANDOM.nextFloat() < infestedEffectChance) {
+            if (MobChampions.RANDOM.nextFloat() <= infestedEffectChance) {
                 MobEffectInstance infestedEffect = new MobEffectInstance(MobEffects.INFESTED, -1);
 
                 entity.addEffect(infestedEffect);
@@ -449,7 +454,7 @@ public class MobChampionBuilder {
                 weavingEffectChance = weavingEffectChance * bonusMultiplier;
             }
 
-            if (MobChampions.RANDOM.nextFloat() < weavingEffectChance) {
+            if (MobChampions.RANDOM.nextFloat() <= weavingEffectChance) {
                 MobEffectInstance weavingEffect = new MobEffectInstance(MobEffects.WEAVING, -1);
 
                 entity.addEffect(weavingEffect);
@@ -468,13 +473,34 @@ public class MobChampionBuilder {
                 windChargedEffectChance = windChargedEffectChance * bonusMultiplier;
             }
 
-            if (MobChampions.RANDOM.nextFloat() < windChargedEffectChance) {
+            if (MobChampions.RANDOM.nextFloat() <= windChargedEffectChance) {
                 MobEffectInstance windChargedEffect = new MobEffectInstance(MobEffects.WIND_CHARGED, -1);
 
                 entity.addEffect(windChargedEffect);
             }
         }
     }
+
+    private static void applyFireResistanceEffectIfNeeded(LivingEntity entity, Rank rank) {
+        int fireResistanceEffectMinimumRankOrdinal = ConfigHandler.Common.getFireResistanceEffectMinimumRank().ordinal();
+
+        if (rank.ordinal() >= fireResistanceEffectMinimumRankOrdinal) {
+            double fireResistanceEffectChance = ConfigHandler.Common.getFireResistanceEffectChance();
+
+            if (MobChampions.RANDOM.nextFloat() <= fireResistanceEffectChance) {
+                MobEffectInstance fireResistanceEffect = new MobEffectInstance(
+                    MobEffects.FIRE_RESISTANCE,
+                    -1,
+                    1,
+                    false,
+                    false
+                );
+
+                entity.addEffect(fireResistanceEffect);
+            }
+        }
+    }
+
 
     public static void updateMaxHealth(LivingEntity entity) {
         AttributeInstance maxHealthAttribute = entity.getAttribute(Attributes.MAX_HEALTH);

@@ -126,6 +126,13 @@ public class Translations {
         translations.put("windchargedeffectminimumrank", "Minimum champion rank required to apply the wind charged effect.");
         translations.put("windchargedeffectchance.title", "Wind Charged Effect Chance");
         translations.put("windchargedeffectchance", "Chance for the wind charged effect to be applied to eligible champions.");
+        translations.put("fireresistanceeffectminimumrank.title", "Fire Resistance Effect Minimum Rank");
+        translations.put("fireresistanceeffectminimumrank", "Minimum champion rank required to apply the fire resistance effect.");
+        translations.put("fireresistanceeffectchance.title", "Fire Resistance Effect Chance");
+        translations.put("fireresistanceeffectchance", joiner(
+            "Chance for the fire resistance effect to be applied to eligible champions.",
+            "This is added so players can't cheese kill fire-based damage against champions."
+        ));
         translations.put("legendaryeffectbonusmultiplier.title", "Legendary Effect Bonus Multiplier");
         translations.put("legendaryeffectbonusmultiplier", "Multiplier applied to all effect chances for legendary champions.");
         translations.put("creeperexplosionradiusmultiplier.title", "Creeper Explosion Radius Multiplier");

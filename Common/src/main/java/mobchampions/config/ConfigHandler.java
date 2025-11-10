@@ -499,6 +499,8 @@ public class ConfigHandler {
         private final WhiteNoiseConfigSpec.DoubleValue weavingEffectChance;
         private final WhiteNoiseConfigSpec.EnumValue<MobChampion.Rank> windChargedEffectMinimumRank;
         private final WhiteNoiseConfigSpec.DoubleValue windChargedEffectChance;
+        private final WhiteNoiseConfigSpec.EnumValue<MobChampion.Rank> fireResistanceEffectMinimumRank;
+        private final WhiteNoiseConfigSpec.DoubleValue fireResistanceEffectChance;
         private final WhiteNoiseConfigSpec.DoubleValue legendaryEffectBonusMultiplier;
         private final WhiteNoiseConfigSpec.DoubleValue creeperExplosionRadiusMultiplier;
         private final WhiteNoiseConfigSpec.DoubleValue uncommonStandardWeaponSpawnChance;
@@ -691,6 +693,12 @@ public class ConfigHandler {
             windChargedEffectChance = builder
                 .comment(getTranslation("windchargedeffectchance"))
                 .defineInRange("windChargedEffectChance", 0.20, 0.0, 1.0);
+            fireResistanceEffectMinimumRank = builder
+                .comment(getTranslation("fireresistanceeffectminimumrank"))
+                .defineEnum("fireResistanceEffectMinimumRank", MobChampion.Rank.UNCOMMON);
+            fireResistanceEffectChance = builder
+                .comment(getTranslation("fireresistanceeffectchance"))
+                .defineInRange("fireResistanceEffectChance", 1.0, 0.0, 1.0);
             legendaryEffectBonusMultiplier = builder
                 .comment(getTranslation("legendaryeffectbonusmultiplier"))
                 .defineInRange("legendaryEffectBonusMultiplier", 0.5, 0.0, 1.0);
@@ -874,6 +882,14 @@ public class ConfigHandler {
 
         public static double getWindChargedEffectChance() {
             return COMMON.windChargedEffectChance.get();
+        }
+
+        public static MobChampion.Rank getFireResistanceEffectMinimumRank() {
+            return COMMON.fireResistanceEffectMinimumRank.get();
+        }
+
+        public static double getFireResistanceEffectChance() {
+            return COMMON.fireResistanceEffectChance.get();
         }
 
         public static double getLegendaryEffectBonusMultiplier() {

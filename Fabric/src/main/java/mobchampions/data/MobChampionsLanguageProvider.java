@@ -70,6 +70,8 @@ public class MobChampionsLanguageProvider extends FabricLanguageProvider {
         addConfigTranslation(builder, "weavingeffectchance");
         addConfigTranslation(builder, "windchargedeffectminimumrank");
         addConfigTranslation(builder, "windchargedeffectchance");
+        addConfigTranslation(builder, "fireresistanceeffectminimumrank");
+        addConfigTranslation(builder, "fireresistanceeffectchance");
         addConfigTranslation(builder, "legendaryeffectbonusmultiplier");
         addConfigTranslation(builder, "creeperexplosionradiusmultiplier");
         addConfigTranslation(builder, "equipment");
