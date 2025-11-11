@@ -185,7 +185,11 @@ public class MobChampionBuilder {
                 // No modifications for COMMON rank
             }
         }
-        addChampionAttribute(entity.getAttribute(Attributes.SAFE_FALL_DISTANCE), SAFE_FALL_DISTANCE_MODIFIER);
+
+        if (rank != Rank.COMMON) {
+            addChampionAttribute(entity.getAttribute(Attributes.SAFE_FALL_DISTANCE), SAFE_FALL_DISTANCE_MODIFIER);
+        }
+
         updateMaxHealth(entity);
         applyChampionEffect(entity, rank);
         applyGlowingEffectIfNeeded(entity, rank);
