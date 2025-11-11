@@ -43,6 +43,10 @@ dependencies {
     runtimeOnly "curse.maven:jade-324717:${jade_neoforge_version}"
 }
 
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+}
+
 shadowJar {
     archiveClassifier = ''
 }
