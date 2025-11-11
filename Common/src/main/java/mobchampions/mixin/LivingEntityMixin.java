@@ -68,9 +68,15 @@ public abstract class LivingEntityMixin extends Entity {
                     LootTable wearableLootTable = level.getServer().reloadableRegistries().getLootTable(wearableLootTableKey);
                     LootTable genericLootTable = level.getServer().reloadableRegistries().getLootTable(genericLootTableKey);
 
-                    weaponLootTable.getRandomItems(params).forEach(livingEntity::spawnAtLocation);
-                    wearableLootTable.getRandomItems(params).forEach(livingEntity::spawnAtLocation);
-                    genericLootTable.getRandomItems(params).forEach(livingEntity::spawnAtLocation);
+                    weaponLootTable.getRandomItems(params).forEach(itemStack -> {
+                        livingEntity.spawnAtLocation(level, itemStack);
+                    });
+                    wearableLootTable.getRandomItems(params).forEach(itemStack -> {
+                        livingEntity.spawnAtLocation(level, itemStack);
+                    });
+                    genericLootTable.getRandomItems(params).forEach(itemStack -> {
+                        livingEntity.spawnAtLocation(level, itemStack);
+                    });
                 }
 
                 if (ConfigHandler.Common.fireworksOnDeath()

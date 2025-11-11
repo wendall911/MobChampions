@@ -10,6 +10,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import mobchampions.MobChampions;
 import mobchampions.platform.Services;
 import mobchampions.util.FireworksHelper;
+import mobchampions.util.LocalPlayerHelper;
 
 public class MobChampionsNeoForgeNetwork {
 
@@ -33,6 +34,8 @@ public class MobChampionsNeoForgeNetwork {
         context.enqueueWork(() -> {
             ClientLevel level = Minecraft.getInstance().level;
             MobChampionData data = payload.getMobChampionData();
+
+            MobChampionData.process(LocalPlayerHelper.getLocalPlayer(), payload.getData());
 
             if (level != null) {
                 Entity entity = level.getEntity(data.entityId);

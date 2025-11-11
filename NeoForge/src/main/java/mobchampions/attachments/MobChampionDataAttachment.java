@@ -3,12 +3,12 @@ package mobchampions.attachments;
 import java.util.Optional;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.UnknownNullability;
 
-import net.minecraft.core.HolderLookup.Provider;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.world.entity.Entity;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+
+import net.neoforged.neoforge.common.util.ValueIOSerializable;
 
 import mobchampions.network.MobChampion;
 
@@ -18,18 +18,18 @@ public class MobChampionDataAttachment {
         return Optional.of(entity.getData(AttachmentsRegistry.MOB_CHAMPION_DATA_ATTACHMENT.get()));
     }
 
-    public static class MobChampionDataProvider extends MobChampion implements INBTSerializable<ListTag> {
+    public static class MobChampionDataProvider extends MobChampion implements ValueIOSerializable {
 
         public MobChampionDataProvider() {}
 
         @Override
-        public @UnknownNullability ListTag serializeNBT(@NotNull Provider provider) {
-            return write();
+        public void serialize(@NotNull ValueOutput valueOutput) {
+            write(valueOutput);
         }
 
         @Override
-        public void deserializeNBT(@NotNull Provider provider, @NotNull ListTag tags) {
-            read(tags);
+        public void deserialize(@NotNull ValueInput valueInput) {
+            read(valueInput);
         }
 
     }

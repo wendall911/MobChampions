@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.Optional;
 import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -14,15 +15,16 @@ import java.util.stream.Stream;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 
+import net.minecraft.core.Holder.Reference;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.FireworkExplosion;
+import net.minecraft.world.item.equipment.Equippable;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -137,10 +139,10 @@ public class ConfigHandler {
         }
 
         // Initialize spawn type blacklist enums
-        Common.spawnTypeBlacklistEnums.clear();
+        Common.spawnReasonBlacklistEnums.clear();
         COMMON.spawnTypeBlacklistSource.get().forEach(
-            (spawnTypeString) -> Common.spawnTypeBlacklistEnums.add(
-                Enum.valueOf(MobSpawnType.class, spawnTypeString)));
+            (spawnTypeString) -> Common.spawnReasonBlacklistEnums.add(
+                Enum.valueOf(EntitySpawnReason.class, spawnTypeString)));
 
         // Initialize weapon items maps
         Common.uncommonWeaponItemsMap.clear();
@@ -162,14 +164,14 @@ public class ConfigHandler {
                 default -> Rank.UNCOMMON;
             };
             int weight = Integer.parseInt(weaponParts[1]);
-            Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(weaponParts[2]));
+            Optional<Reference<Item>> optionalItemReference = BuiltInRegistries.ITEM.get(ResourceLocation.parse(weaponParts[2]));
 
-            if (item == Items.AIR) {
+            if (optionalItemReference.isEmpty()) {
                 MobChampions.LOGGER.warn("Invalid item '{}' in weapons list, skipping...", weaponParts[2]);
                 return;
             }
 
-            ItemStack itemStack = new ItemStack(item);
+            ItemStack itemStack = new ItemStack(optionalItemReference.get().value());
 
             switch (rank) {
                 case UNCOMMON -> {
@@ -257,23 +259,23 @@ public class ConfigHandler {
                 default -> Rank.UNCOMMON;
             };
             int weight = Integer.parseInt(armorParts[1]);
-            Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(armorParts[2]));
+            Optional<Reference<Item>> optionalItemReference = BuiltInRegistries.ITEM.get(ResourceLocation.parse(armorParts[2]));
 
-            if (item == Items.AIR) {
+            if (optionalItemReference.isEmpty()) {
                 MobChampions.LOGGER.warn("Invalid item '{}' in armors list, skipping...", armorParts[2]);
                 return;
             }
 
-            ItemStack itemStack = new ItemStack(item);
-            Equipable equipable = Equipable.get(itemStack);
+            ItemStack itemStack = new ItemStack(optionalItemReference.get().value());
+            Equippable equippable = itemStack.get(DataComponents.EQUIPPABLE);
 
             // Check if item is equipable
-            if (equipable == null) {
+            if (equippable == null) {
                 MobChampions.LOGGER.warn("Item '{}' in armors list is not equipable, skipping...", armorParts[2]);
                 return;
             }
 
-            EquipmentSlot slot = equipable.getEquipmentSlot();
+            EquipmentSlot slot = equippable.slot();
 
             switch (rank) {
                 case UNCOMMON -> {
@@ -471,20 +473,20 @@ public class ConfigHandler {
         private final Predicate<Object> resourceLocationValidator = s -> s instanceof String
             && ((String) s).matches("[a-z]+[:]{1}[a-z_]+");
         private final WhiteNoiseConfigSpec.ConfigValue<List<? extends String>> spawnTypeBlacklistSource;
-        private static final List<Enum<MobSpawnType>> spawnTypeBlacklistEnums = new ArrayList<>();
+        private static final List<Enum<EntitySpawnReason>> spawnReasonBlacklistEnums = new ArrayList<>();
         private static final List<String> spawnTypeBlacklist =  List.of("spawnTypeBlacklist");
-        private static final String[] defaultSpawnTypeBlacklist = {
-            MobSpawnType.BREEDING.name(),
-            MobSpawnType.BUCKET.name(),
-            MobSpawnType.CHUNK_GENERATION.name(),
-            MobSpawnType.DISPENSER.name(),
-            MobSpawnType.PATROL.name(),
-            MobSpawnType.SPAWNER.name(),
-            MobSpawnType.STRUCTURE.name(),
-            MobSpawnType.TRIAL_SPAWNER.name()
+        private static final String[] defaultSpawnReasonsBlacklist = {
+            EntitySpawnReason.BREEDING.name(),
+            EntitySpawnReason.BUCKET.name(),
+            EntitySpawnReason.CHUNK_GENERATION.name(),
+            EntitySpawnReason.DISPENSER.name(),
+            EntitySpawnReason.PATROL.name(),
+            EntitySpawnReason.SPAWNER.name(),
+            EntitySpawnReason.STRUCTURE.name(),
+            EntitySpawnReason.TRIAL_SPAWNER.name()
         };
         private final Predicate<Object> spawnTypeValidator = s -> s instanceof String
-            && Arrays.stream(MobSpawnType.values())
+            && Arrays.stream(EntitySpawnReason.values())
                 .map(Enum::name)
                 .anyMatch(name -> name.equals(s));
         private final WhiteNoiseConfigSpec.IntValue uncommonDifficulty;
@@ -650,7 +652,7 @@ public class ConfigHandler {
                 .defineListAllowEmpty(championWhitelist, getFields(defaultWhitelist), resourceLocationValidator);
             spawnTypeBlacklistSource = builder
                 .comment(getTranslation("spawntypeblacklist"))
-                .defineListAllowEmpty(spawnTypeBlacklist, getFields(defaultSpawnTypeBlacklist), spawnTypeValidator);
+                .defineListAllowEmpty(spawnTypeBlacklist, getFields(defaultSpawnReasonsBlacklist), spawnTypeValidator);
 
             builder.push("stats").comment(getTranslation("stats")); // spawning.stats
             uncommonDifficulty = builder
@@ -835,8 +837,8 @@ public class ConfigHandler {
             return COMMON.championWhitelistMobs.get();
         }
 
-        public static List<Enum<MobSpawnType>> getSpawnTypeBlacklistEnums() {
-            return spawnTypeBlacklistEnums;
+        public static List<Enum<EntitySpawnReason>> getSpawnReasonBlacklistEnums() {
+            return spawnReasonBlacklistEnums;
         }
 
         public static int getDifficultyForRank(Rank rank) {

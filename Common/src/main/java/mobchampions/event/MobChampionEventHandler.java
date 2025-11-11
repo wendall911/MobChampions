@@ -67,7 +67,7 @@ public class MobChampionEventHandler {
         }
     }
 
-    public static void updateChampionArrowDamage(LivingEntity livingEntity, AbstractArrow abstractArrow) {
+    public static void updateChampionArrowDamage(LivingEntity livingEntity, AbstractArrow abstractArrow, double baseDamage) {
         /*
          * If entity is a mob champion, ensure its projectile damage is updated.
          * This is done because projectiles are separate entities and don't inherit attributes automatically.
@@ -77,9 +77,8 @@ public class MobChampionEventHandler {
         if (ConfigHandler.Common.getChampionWhitelist().contains(entityTypeString)) {
             Services.PLATFORM.getMobChampionData(livingEntity).ifPresent(data -> {
                 if (data.getEntityId() != -1 && data.getRank() != MobChampion.Rank.COMMON) {
-                    double damage = abstractArrow.getBaseDamage();
                     double damageModifier = ConfigHandler.Common.getProjectileDamageModifier(data.getRank());
-                    double newDamage = damage + (damage * damageModifier);
+                    double newDamage = baseDamage + (baseDamage * damageModifier);
 
                     abstractArrow.setBaseDamage(newDamage);
                 }

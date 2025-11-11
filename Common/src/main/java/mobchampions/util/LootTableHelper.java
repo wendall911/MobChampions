@@ -10,9 +10,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.armortrim.ArmorTrim;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.equipment.trim.ArmorTrim;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
@@ -21,8 +21,6 @@ import net.minecraft.world.level.storage.loot.functions.SetEnchantmentsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetLoreFunction;
 import net.minecraft.world.level.storage.loot.functions.SetNameFunction;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
-
-import mobchampions.common.Translations;
 
 public class LootTableHelper {
 
@@ -111,7 +109,7 @@ public class LootTableHelper {
     }
 
     public static LootItemConditionalFunction.Builder<?> setDyedColor(int color) {
-        return SetComponentsFunction.setComponent(DataComponents.DYED_COLOR, new DyedItemColor(color, true));
+        return SetComponentsFunction.setComponent(DataComponents.DYED_COLOR, new DyedItemColor(color));
     }
 
     public static LootPoolSingletonContainer.Builder<?> addEffects(LootPoolSingletonContainer.Builder<?> builder, List<MobEffectInstance> effects) {

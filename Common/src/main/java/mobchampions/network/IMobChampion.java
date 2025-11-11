@@ -1,7 +1,10 @@
 package mobchampions.network;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import mobchampions.network.MobChampion.Rank;
 
@@ -15,9 +18,9 @@ public interface IMobChampion {
 
     Rank getRank();
 
-    ListTag write();
+    ValueOutput write(@NotNull ValueOutput valueOutput);
 
-    void read(ListTag tag);
+    void read(@NotNull ValueInput valueInput);
 
     CompoundTag write(CompoundTag tag);
 

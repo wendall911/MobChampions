@@ -119,7 +119,7 @@ public class MobChampionsGenericLoot implements LootTableSubProvider {
                             ChatFormatting.LIGHT_PURPLE,
                             Potions.STRONG_HEALING,
                             List.of(
-                                new MobEffectInstance(MobEffects.HEAL, 0, 3, false, true)
+                                new MobEffectInstance(MobEffects.INSTANT_HEALTH, 0, 3, false, true)
                             )
                         )
                     )
@@ -130,7 +130,7 @@ public class MobChampionsGenericLoot implements LootTableSubProvider {
                             ChatFormatting.RED,
                             Potions.STRONG_SWIFTNESS,
                             List.of(
-                                new MobEffectInstance(MobEffects.DAMAGE_BOOST, 600, 2, false, true)
+                                new MobEffectInstance(MobEffects.STRENGTH, 600, 2, false, true)
                             )
                         )
                     )
@@ -171,7 +171,7 @@ public class MobChampionsGenericLoot implements LootTableSubProvider {
                             ChatFormatting.LIGHT_PURPLE,
                             Potions.STRONG_HEALING,
                             List.of(
-                                new MobEffectInstance(MobEffects.HEAL, 0, 5, false, true)
+                                new MobEffectInstance(MobEffects.INSTANT_HEALTH, 0, 5, false, true)
                             )
                         )
                     )
@@ -182,7 +182,7 @@ public class MobChampionsGenericLoot implements LootTableSubProvider {
                             ChatFormatting.GOLD,
                             Potions.STRONG_SWIFTNESS,
                             List.of(
-                                new MobEffectInstance(MobEffects.DIG_SPEED, 3600, 3, false, true)
+                                new MobEffectInstance(MobEffects.HASTE, 3600, 3, false, true)
                             )
                         )
                     )

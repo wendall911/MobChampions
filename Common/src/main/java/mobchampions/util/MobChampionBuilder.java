@@ -3,6 +3,7 @@ package mobchampions.util;
 import java.util.List;
 
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -17,11 +18,11 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.providers.VanillaEnchantmentProviders;
+import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -322,10 +323,10 @@ public class MobChampionBuilder {
 
                 if (!list.isEmpty()) {
                     ItemStack armorItem = list.getFirst();
-                    Equipable equipable = Equipable.get(armorItem);
+                    Equippable equippable = armorItem.get(DataComponents.EQUIPPABLE);
 
-                    if (equipable != null) {
-                        return Pair.of(equipable.getEquipmentSlot(), armorItem);
+                    if (equippable != null) {
+                        return Pair.of(equippable.slot(), armorItem);
                     }
                 }
             }

@@ -12,18 +12,18 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.armortrim.ArmorTrim;
-import net.minecraft.world.item.armortrim.TrimMaterial;
-import net.minecraft.world.item.armortrim.TrimMaterials;
-import net.minecraft.world.item.armortrim.TrimPattern;
-import net.minecraft.world.item.armortrim.TrimPatterns;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.equipment.ArmorMaterial;
+import net.minecraft.world.item.equipment.ArmorMaterials;
+import net.minecraft.world.item.equipment.trim.ArmorTrim;
+import net.minecraft.world.item.equipment.trim.TrimMaterial;
+import net.minecraft.world.item.equipment.trim.TrimMaterials;
+import net.minecraft.world.item.equipment.trim.TrimPattern;
+import net.minecraft.world.item.equipment.trim.TrimPatterns;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.LootTable.Builder;
@@ -43,9 +43,9 @@ public class MobChampionsWearableLoot implements LootTableSubProvider {
     private final HolderLookup.RegistryLookup<TrimPattern> patternRegistry;
     private final HolderLookup.RegistryLookup<TrimMaterial> materialRegistry;
 
-    private final Map<Holder<ArmorMaterial>, List<Item>> armorItems = Map.of(
+    private final Map<ArmorMaterial, List<Item>> armorItems = Map.of(
         ArmorMaterials.LEATHER, List.of(Items.LEATHER_HELMET, Items.LEATHER_CHESTPLATE, Items.LEATHER_LEGGINGS, Items.LEATHER_BOOTS),
-        ArmorMaterials.CHAIN, List.of(Items.CHAINMAIL_HELMET, Items.CHAINMAIL_CHESTPLATE, Items.CHAINMAIL_LEGGINGS, Items.CHAINMAIL_BOOTS),
+        ArmorMaterials.CHAINMAIL, List.of(Items.CHAINMAIL_HELMET, Items.CHAINMAIL_CHESTPLATE, Items.CHAINMAIL_LEGGINGS, Items.CHAINMAIL_BOOTS),
         ArmorMaterials.IRON, List.of(Items.IRON_HELMET, Items.IRON_CHESTPLATE, Items.IRON_LEGGINGS, Items.IRON_BOOTS),
         ArmorMaterials.GOLD, List.of(Items.GOLDEN_HELMET, Items.GOLDEN_CHESTPLATE, Items.GOLDEN_LEGGINGS, Items.GOLDEN_BOOTS),
         ArmorMaterials.DIAMOND, List.of(Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS),
@@ -56,6 +56,9 @@ public class MobChampionsWearableLoot implements LootTableSubProvider {
         this.enchantmentRegistryLookup = lookupProvider.lookupOrThrow(Registries.ENCHANTMENT);
         this.patternRegistry = lookupProvider.lookupOrThrow(Registries.TRIM_PATTERN);
         this.materialRegistry = lookupProvider.lookupOrThrow(Registries.TRIM_MATERIAL);
+    }
+
+    private void init() {
     }
 
     @Override

@@ -1,7 +1,10 @@
 package mobchampions.network;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class MobChampion implements IMobChampion {
 
@@ -29,19 +32,17 @@ public class MobChampion implements IMobChampion {
     }
 
     @Override
-    public ListTag write() {
-        ListTag listTag = new ListTag();
-        CompoundTag tag = new CompoundTag();
+    public ValueOutput write(@NotNull ValueOutput valueOutput) {
+        valueOutput.putInt("entityId", this.getEntityId());
+        valueOutput.putInt("rank", this.getRank().ordinal());
 
-        write(tag);
-        listTag.add(tag);
-
-        return listTag;
+        return valueOutput;
     }
 
     @Override
-    public void read(ListTag tag) {
-        read(tag.getCompound(0));
+    public void read(@NotNull ValueInput valueInput) {
+        this.setEntityId(valueInput.getIntOr("entityId", -1));
+        this.setRank(Rank.values()[valueInput.getIntOr("rank", 0)]);
     }
 
     @Override
@@ -54,8 +55,8 @@ public class MobChampion implements IMobChampion {
 
     @Override
     public void read(CompoundTag tag) {
-        this.setEntityId(tag.getInt("entityId"));
-        this.setRank(Rank.values()[tag.getInt("rank")]);
+        this.setEntityId(tag.getInt("entityId").orElseThrow());
+        this.setRank(Rank.values()[tag.getInt("rank").orElseThrow()]);
     }
 
     public enum Rank {

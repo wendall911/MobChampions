@@ -2,10 +2,10 @@ package mobchampions.components;
 
 import org.jetbrains.annotations.NotNull;
 
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import org.ladysnake.cca.api.v3.component.Component;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -16,13 +16,13 @@ import mobchampions.network.MobChampionData;
 public class ComponentMobChampionData extends MobChampion implements Component, AutoSyncedComponent {
 
     @Override
-    public void readFromNbt(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registryLookup) {
-        this.read(tag);
+    public void readData(@NotNull ValueInput valueInput) {
+        this.read(valueInput);
     }
 
     @Override
-    public void writeToNbt(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registryLookup) {
-        this.write(tag);
+    public void writeData(@NotNull ValueOutput valueOutput) {
+        this.write(valueOutput);
     }
 
     @Override

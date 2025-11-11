@@ -6,7 +6,8 @@ import java.util.Map;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
 
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
+
 import org.slf4j.helpers.MessageFormatter;
 
 import mobchampions.MobChampions;
@@ -84,10 +85,10 @@ public class Translations {
             "Whitelist of entities that can spawn as champions.",
             "If the whitelist is empty, the mod is effectively disabled."
         ));
-        translations.put("spawntypeblacklist.title", "Spawn Type Blacklist");
+        translations.put("spawntypeblacklist.title", "Spawn Reason Blacklist");
         translations.put("spawntypeblacklist", joiner(
-            "Blacklist of spawn types that prevent champions from spawning.",
-            "Spawn types must be one of: " + Arrays.toString(Arrays.stream(MobSpawnType.values()).map(Enum::name).toArray())
+            "Blacklist of spawn reasons that prevent champions from spawning.",
+            "Spawn reasons must be one of: " + Arrays.toString(Arrays.stream(EntitySpawnReason.values()).map(Enum::name).toArray())
         ));
         translations.put("stats.title", "Stats Settings");
         translations.put("stats", joiner(
