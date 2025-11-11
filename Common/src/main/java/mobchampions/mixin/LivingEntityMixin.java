@@ -1,5 +1,7 @@
 package mobchampions.mixin;
 
+import java.util.function.Consumer;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.resources.ResourceKey;
@@ -10,6 +12,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -35,7 +38,7 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Shadow
     @Nullable
-    protected Player lastHurtByPlayer;
+    public abstract Player getLastHurtByPlayer();
 
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
@@ -45,9 +48,12 @@ public abstract class LivingEntityMixin extends Entity {
      * Inject into loot table drops to add mob champion bonus loot.
      * Only applies if killed by a player.
      */
-    @Inject(method = "dropFromLootTable", at = @At("TAIL"))
-    public void mc$dropFromLootTable(DamageSource damageSource, boolean hitByPlayer, CallbackInfo ci) {
-        if (!hitByPlayer || this.lastHurtByPlayer == null) {
+    @Inject(method = "dropFromLootTable(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;ZLnet/minecraft/resources/ResourceKey;Ljava/util/function/Consumer;)V", at = @At("TAIL"))
+    public void mc$dropFromLootTable(ServerLevel level, DamageSource damageSource, boolean playerKill,
+            ResourceKey<LootTable> lootTable, Consumer<ItemStack> dropConsumer, CallbackInfo ci) {
+        Player player = this.getLastHurtByPlayer();
+
+        if (!playerKill && player != null) {
             return;
         }
 
@@ -55,8 +61,7 @@ public abstract class LivingEntityMixin extends Entity {
 
         Services.PLATFORM.getMobChampionData(livingEntity).ifPresent(data -> {
             if (data.getEntityId() != -1 && data.getRank() != MobChampion.Rank.COMMON) {
-                ServerLevel level = (ServerLevel) livingEntity.level();
-                LootParams params = mobChampions$createEquipmentParams(livingEntity, level, damageSource, hitByPlayer);
+                LootParams params = mobChampions$createEquipmentParams(livingEntity, level, damageSource, player);
                 float lootChance = ConfigHandler.Common.getLootDropChance(data.getRank());
 
                 if (lootChance > 0 && level.getRandom().nextFloat() < lootChance) {
@@ -105,7 +110,8 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @Unique
-    private LootParams mobChampions$createEquipmentParams(LivingEntity livingEntity, ServerLevel level, DamageSource damageSource, boolean hitByPlayer) {
+    private LootParams mobChampions$createEquipmentParams(LivingEntity livingEntity, ServerLevel level,
+            DamageSource damageSource, Player player) {
         LootParams.Builder lootparams$builder = (new LootParams.Builder(level)).withParameter(
             LootContextParams.THIS_ENTITY,
             livingEntity
@@ -123,12 +129,10 @@ public abstract class LivingEntityMixin extends Entity {
             damageSource.getDirectEntity()
         );
 
-        if (hitByPlayer && this.lastHurtByPlayer != null) {
-            lootparams$builder = lootparams$builder.withParameter(
-                LootContextParams.LAST_DAMAGE_PLAYER,
-                this.lastHurtByPlayer
-            ).withLuck(this.lastHurtByPlayer.getLuck());
-        }
+        lootparams$builder = lootparams$builder.withParameter(
+            LootContextParams.LAST_DAMAGE_PLAYER,
+            player
+        ).withLuck(player.getLuck());
 
         return lootparams$builder.create(LootContextParamSets.ENTITY);
     }
