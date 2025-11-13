@@ -22,7 +22,7 @@ public abstract class EntityMixin {
         if (entity instanceof LivingEntity livingEntity) {
             Services.PLATFORM.getMobChampionData(livingEntity).ifPresent(data -> {
                 if (data.getRank().ordinal() > MobChampion.Rank.COMMON.ordinal()) {
-                    cir.setReturnValue(ConfigHandler.Client.getChampionColor(data.getRank()));
+                    cir.setReturnValue(ConfigHandler.Common.getChampionColor(data.getRank()));
                 }
             });
         }

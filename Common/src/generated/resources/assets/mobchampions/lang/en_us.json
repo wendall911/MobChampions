@@ -8,6 +8,8 @@
   "mobchampions.configuration.armorlist.name": "Armor List",
   "mobchampions.configuration.championwhitelist.description": "Whitelist of entities that can spawn as champions.\nIf the whitelist is empty, the mod is effectively disabled.",
   "mobchampions.configuration.championwhitelist.name": "Entity Type Whitelist",
+  "mobchampions.configuration.color.description": "Colors used for champions based on their rank.",
+  "mobchampions.configuration.color.name": "Champion Colors",
   "mobchampions.configuration.colors.description": "Colors to use in fireworks. Requires hex formatted colors.",
   "mobchampions.configuration.colors.name": "Legendary Fireworks Colors",
   "mobchampions.configuration.commonmobweight.description": "Relative weight for a normal or common mob to spawn.",

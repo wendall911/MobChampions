@@ -15,7 +15,7 @@ public class ChampionMobEffect extends MobEffect {
     protected ChampionMobEffect(MobChampion.Rank rank) {
         super(MobEffectCategory.NEUTRAL, -1, ColorParticleOption.create(
             ParticleTypes.ENTITY_EFFECT,
-            ConfigHandler.Client.getChampionColor(rank)
+            ConfigHandler.Common.getChampionColor(rank)
         ));
 
         ChampionMobEffect.rank = rank;
@@ -23,7 +23,7 @@ public class ChampionMobEffect extends MobEffect {
 
     @Override
     public int getColor() {
-        return ConfigHandler.Client.getChampionColor(rank);
+        return ConfigHandler.Common.getChampionColor(rank);
     }
 
 }

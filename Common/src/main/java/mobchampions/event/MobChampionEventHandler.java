@@ -55,7 +55,7 @@ public class MobChampionEventHandler {
                                     Translations.ANNOUNCEMENT_KEY + "spawn",
                                     Component.translatable(
                                         Translations.getTitleByRank(newRank)
-                                    ).withColor(ConfigHandler.Client.getChampionColor(newRank))
+                                    ).withColor(ConfigHandler.Common.getChampionColor(newRank))
                                 )
                             , true);
                         }
