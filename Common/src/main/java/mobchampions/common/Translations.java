@@ -25,14 +25,7 @@ public class Translations {
     static {
         translations.put("visuals.title", "Rendering Settings");
         translations.put("visuals", "All settings related to the rendering of fireworks when a creeper explodes.");
-        translations.put("uncommoncolor.title", "Uncommon Color");
-        translations.put("uncommoncolor", "Color used for uncommon champions.");
-        translations.put("rarecolor.title", "Rare Color");
-        translations.put("rarecolor", "Color used for rare champions.");
-        translations.put("epiccolor.title", "Epic Color");
-        translations.put("epiccolor", "Color used for epic champions.");
-        translations.put("legendarycolor.title", "Legendary Color");
-        translations.put("legendarycolor", "Color used for legendary champions.");
+
         translations.put("fireworkschance.title", "Legendary Fireworks Chance");
         translations.put("fireworkschance", "Chance of fireworks after legendary champion defeat. 0 disables fireworks.");
         translations.put("colors.title", "Legendary Fireworks Colors");
@@ -50,6 +43,16 @@ public class Translations {
             "Settings that modify the behavior of mob deaths when killed by champions.",
             "All settings in this section require a restart to take effect."
         ));
+        translations.put("color.title", "Champion Colors");
+        translations.put("color", "Colors used for champions based on their rank.");
+        translations.put("uncommoncolor.title", "Uncommon Color");
+        translations.put("uncommoncolor", "Color used for uncommon champions.");
+        translations.put("rarecolor.title", "Rare Color");
+        translations.put("rarecolor", "Color used for rare champions.");
+        translations.put("epiccolor.title", "Epic Color");
+        translations.put("epiccolor", "Color used for epic champions.");
+        translations.put("legendarycolor.title", "Legendary Color");
+        translations.put("legendarycolor", "Color used for legendary champions.");
         translations.put("fireworksondeath.title", "Fireworks on Death");
         translations.put("fireworksondeath", "If true, fireworks will spawn when a champion is killed by player.");
         translations.put("fireworksminimumrank.title", "Fireworks Minimum Rank");

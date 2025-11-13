@@ -31,10 +31,6 @@ public class MobChampionsLanguageProvider extends FabricLanguageProvider {
 
         addConfigurationTitle(builder, "Mob Champions");
         addConfigTranslation(builder, "visuals");
-        addConfigTranslation(builder, "uncommoncolor");
-        addConfigTranslation(builder, "rarecolor");
-        addConfigTranslation(builder, "epiccolor");
-        addConfigTranslation(builder, "legendarycolor");
         addConfigTranslation(builder, "fireworkschance");
         addConfigTranslation(builder, "colors");
         addConfigTranslation(builder, "fireworksflicker");
@@ -42,6 +38,11 @@ public class MobChampionsLanguageProvider extends FabricLanguageProvider {
         addConfigTranslation(builder, "fireworksshape");
         addConfigTranslation(builder, "fireworksheight");
         addConfigTranslation(builder, "mobdeath");
+        addConfigTranslation(builder, "color");
+        addConfigTranslation(builder, "uncommoncolor");
+        addConfigTranslation(builder, "rarecolor");
+        addConfigTranslation(builder, "epiccolor");
+        addConfigTranslation(builder, "legendarycolor");
         addConfigTranslation(builder, "fireworksondeath");
         addConfigTranslation(builder, "fireworksminimumrank");
         addConfigTranslation(builder, "spawning");
