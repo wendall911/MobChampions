@@ -53,7 +53,7 @@ public abstract class LivingEntityMixin extends Entity {
             ResourceKey<LootTable> lootTable, Consumer<ItemStack> dropConsumer, CallbackInfo ci) {
         Player player = this.getLastHurtByPlayer();
 
-        if (!playerKill && player != null) {
+        if (!playerKill) {
             return;
         }
 
@@ -129,10 +129,12 @@ public abstract class LivingEntityMixin extends Entity {
             damageSource.getDirectEntity()
         );
 
-        lootparams$builder = lootparams$builder.withParameter(
-            LootContextParams.LAST_DAMAGE_PLAYER,
-            player
-        ).withLuck(player.getLuck());
+        if (player != null) {
+            lootparams$builder = lootparams$builder.withParameter(
+                LootContextParams.LAST_DAMAGE_PLAYER,
+                player
+            ).withLuck(player.getLuck());
+        }
 
         return lootparams$builder.create(LootContextParamSets.ENTITY);
     }
