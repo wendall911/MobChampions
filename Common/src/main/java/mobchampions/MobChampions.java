@@ -36,8 +36,7 @@ public class MobChampions {
             clientConfig.addLoadListener((config, flag) -> ConfigHandler.clientInit());
         }
 
-        WhiteNoiseConfig commonConfig = WhiteNoiseConfigLoader.add(WhiteNoiseConfig.Type.COMMON, ConfigHandler.COMMON_SPEC, MODID);
-        commonConfig.addLoadListener((config, flag) -> ConfigHandler.commonInit());
+        WhiteNoiseConfigLoader.add(WhiteNoiseConfig.Type.COMMON, ConfigHandler.COMMON_SPEC, MODID);
     }
 
     public static ResourceLocation prefix(String path) {
