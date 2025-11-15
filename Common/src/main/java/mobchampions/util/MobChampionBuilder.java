@@ -272,7 +272,7 @@ public class MobChampionBuilder {
             if (level instanceof ServerLevel serverLevel) {
                 DifficultyInstance difficultyInstance = serverLevel.getCurrentDifficultyAt(entity.blockPosition());
 
-                enchantSpawnedWeapon(mob, rank, serverLevel, serverLevel.getRandom(), difficultyInstance);
+                enchantSpawnedWeapon(mob, rank, serverLevel, RandomSource.createNewThreadLocalInstance(), difficultyInstance);
             }
 
             if (hasLootTableWeapon) {
