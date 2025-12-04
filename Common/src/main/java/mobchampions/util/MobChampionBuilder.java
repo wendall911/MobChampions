@@ -29,6 +29,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import mobchampions.MobChampions;
@@ -220,7 +221,7 @@ public class MobChampionBuilder {
                 }
                 entity.setItemSlot(weaponSlot, maybeWeapon.getRight());
             }
-            else if(standardWeapon != null) {
+            else if (standardWeapon != null) {
                 if (standardWeapon.getItem() instanceof ShieldItem) {
                     weaponSlot = EquipmentSlot.OFFHAND;
                 }
@@ -271,7 +272,7 @@ public class MobChampionBuilder {
             Level level = entity.level();
 
             if (level instanceof ServerLevel serverLevel) {
-                DifficultyInstance difficultyInstance = serverLevel.getCurrentDifficultyAt(entity.blockPosition());
+                DifficultyInstance difficultyInstance = new DifficultyInstance(serverLevel.getDifficulty(), serverLevel.getDayTime(), 0, 0);
 
                 enchantSpawnedWeapon(mob, rank, serverLevel, RandomSource.createNewThreadLocalInstance(), difficultyInstance);
             }
@@ -349,11 +350,11 @@ public class MobChampionBuilder {
             Level level = entity.level();
 
             if (level instanceof ServerLevel serverLevel) {
-                DifficultyInstance difficultyInstance = serverLevel.getCurrentDifficultyAt(entity.blockPosition());
+                DifficultyInstance difficultyInstance = new DifficultyInstance(serverLevel.getDifficulty(), serverLevel.getDayTime(), 0, 0);
 
                 for (EquipmentSlot slot : getArmorSlots()) {
                     if (!entity.getItemBySlot(slot).isEmpty()) {
-                        enchantSpawnedArmor(mob, rank, serverLevel, serverLevel.getRandom(), slot, difficultyInstance);
+                        enchantSpawnedArmor(mob, rank, serverLevel, RandomSource.createNewThreadLocalInstance(), slot, difficultyInstance);
                         if (slot == lootTableArmorSlot) {
                             mob.setDropChance(slot, ConfigHandler.Common.getLootDropChance(rank));
                         }
