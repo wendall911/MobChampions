@@ -2,7 +2,7 @@ package mobchampions.network;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 
 import mobchampions.network.MobChampion.Rank;
@@ -14,7 +14,7 @@ public class MobChampionData {
 
     public int entityId;
     public Rank rank;
-    public static final ResourceLocation ID = prefix("mob_champion_data");
+    public static final Identifier ID = prefix("mob_champion_data");
 
     public MobChampionData(int entityId, Rank rank) {
         this.entityId = entityId;

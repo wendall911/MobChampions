@@ -18,7 +18,7 @@ import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
@@ -164,7 +164,7 @@ public class ConfigHandler {
                 default -> Rank.UNCOMMON;
             };
             int weight = Integer.parseInt(weaponParts[1]);
-            Optional<Reference<Item>> optionalItemReference = BuiltInRegistries.ITEM.get(ResourceLocation.parse(weaponParts[2]));
+            Optional<Reference<Item>> optionalItemReference = BuiltInRegistries.ITEM.get(Identifier.parse(weaponParts[2]));
 
             if (optionalItemReference.isEmpty()) {
                 MobChampions.LOGGER.warn("Invalid item '{}' in weapons list, skipping...", weaponParts[2]);
@@ -259,7 +259,7 @@ public class ConfigHandler {
                 default -> Rank.UNCOMMON;
             };
             int weight = Integer.parseInt(armorParts[1]);
-            Optional<Reference<Item>> optionalItemReference = BuiltInRegistries.ITEM.get(ResourceLocation.parse(armorParts[2]));
+            Optional<Reference<Item>> optionalItemReference = BuiltInRegistries.ITEM.get(Identifier.parse(armorParts[2]));
 
             if (optionalItemReference.isEmpty()) {
                 MobChampions.LOGGER.warn("Invalid item '{}' in armors list, skipping...", armorParts[2]);

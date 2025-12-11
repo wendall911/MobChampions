@@ -2,7 +2,7 @@ package mobchampions.mixin;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.phys.EntityHitResult;
 
 import org.spongepowered.asm.mixin.Mixin;

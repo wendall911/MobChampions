@@ -39,7 +39,7 @@ public class MobChampionsLootTables {
             return key;
         }
         else {
-            throw new IllegalStateException("LootTable " + key.location() + " is already registered");
+            throw new IllegalStateException("LootTable " + key.identifier() + " is already registered");
         }
     }
 
