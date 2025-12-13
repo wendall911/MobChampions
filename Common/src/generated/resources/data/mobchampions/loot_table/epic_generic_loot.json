@@ -49,12 +49,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_name",
-              "name": {
-                "color": "light_purple",
-                "translate": "mobchampions.lootitem.elite_medkit"
+              "components": {
+                "minecraft:custom_name": {
+                  "color": "light_purple",
+                  "translate": "mobchampions.lootitem.elite_medkit"
+                }
               },
-              "target": "item_name"
+              "function": "minecraft:set_components"
             },
             {
               "function": "minecraft:set_potion",
@@ -92,12 +93,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_name",
-              "name": {
-                "color": "red",
-                "translate": "mobchampions.lootitem.adrenaline_shot"
+              "components": {
+                "minecraft:custom_name": {
+                  "color": "red",
+                  "translate": "mobchampions.lootitem.adrenaline_shot"
+                }
               },
-              "target": "item_name"
+              "function": "minecraft:set_components"
             },
             {
               "function": "minecraft:set_potion",

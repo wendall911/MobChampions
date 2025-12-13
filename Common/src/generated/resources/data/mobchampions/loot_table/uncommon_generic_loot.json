@@ -27,12 +27,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_name",
-              "name": {
-                "color": "light_purple",
-                "translate": "mobchampions.lootitem.medkit"
+              "components": {
+                "minecraft:custom_name": {
+                  "color": "light_purple",
+                  "translate": "mobchampions.lootitem.medkit"
+                }
               },
-              "target": "item_name"
+              "function": "minecraft:set_components"
             },
             {
               "function": "minecraft:set_potion",
