@@ -49,12 +49,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_name",
-              "name": {
-                "color": "light_purple",
-                "translate": "mobchampions.lootitem.legendary_medkit"
+              "components": {
+                "minecraft:custom_name": {
+                  "color": "light_purple",
+                  "translate": "mobchampions.lootitem.legendary_medkit"
+                }
               },
-              "target": "item_name"
+              "function": "minecraft:set_components"
             },
             {
               "function": "minecraft:set_potion",
@@ -92,12 +93,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_name",
-              "name": {
-                "color": "gold",
-                "translate": "mobchampions.lootitem.energy_drink"
+              "components": {
+                "minecraft:custom_name": {
+                  "color": "gold",
+                  "translate": "mobchampions.lootitem.energy_drink"
+                }
               },
-              "target": "item_name"
+              "function": "minecraft:set_components"
             },
             {
               "function": "minecraft:set_potion",

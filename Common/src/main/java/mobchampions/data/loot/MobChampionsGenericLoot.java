@@ -8,12 +8,14 @@ import org.jetbrains.annotations.NotNull;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.Potions;
@@ -26,6 +28,8 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
+import net.minecraft.world.level.storage.loot.functions.SetComponentsFunction;
+import net.minecraft.world.level.storage.loot.functions.SetCustomDataFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SetNameFunction;
 import net.minecraft.world.level.storage.loot.functions.SetNameFunction.Target;
@@ -205,10 +209,7 @@ public class MobChampionsGenericLoot implements LootTableSubProvider {
     private LootPoolSingletonContainer.Builder<?> createPotion(String name, int weight, ChatFormatting color,
             Holder<Potion> potion, List<MobEffectInstance> effects) {
         LootPoolSingletonContainer.Builder<?> builder = LootItem.lootTableItem(Items.POTION).apply(
-            SetNameFunction.setName(
-                TranslationHelper.getLootComponent(name, color),
-                Target.ITEM_NAME
-            )
+            SetComponentsFunction.setComponent(DataComponents.CUSTOM_NAME, TranslationHelper.getLootComponent(name, color))
         )
         .setWeight(weight)
         .apply(
