@@ -212,6 +212,8 @@ public class Translations {
         translations.put("standardarmordropchance", "Chance for champions wearing standard armor to drop it on death.");
         translations.put("standardweapondropchance.title", "Standard Weapon Drop Chance");
         translations.put("standardweapondropchance", "Chance for champions wielding standard weapons to drop them on death.");
+        translations.put("allowelytradrops.title", "Allow Elytra Drops");
+        translations.put("allowelytradrops", "Set to false to prevent champions from dropping elytra.");
     }
 
     public static String get(String key) {

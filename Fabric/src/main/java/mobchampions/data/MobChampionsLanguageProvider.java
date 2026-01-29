@@ -102,6 +102,7 @@ public class MobChampionsLanguageProvider extends FabricLanguageProvider {
         addConfigTranslation(builder, "lootdrops");
         addConfigTranslation(builder, "standardarmordropchance");
         addConfigTranslation(builder, "standardweapondropchance");
+        addConfigTranslation(builder, "allowelytradrops");
 
         // Loot Item Translations
         addLootItemTranslation(builder, "medkit", "Medkit");

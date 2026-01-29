@@ -19,6 +19,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.providers.VanillaEnchantmentProviders;
@@ -328,6 +329,13 @@ public class MobChampionBuilder {
                 if (!list.isEmpty()) {
                     ItemStack armorItem = list.getFirst();
                     Equipable equipable = Equipable.get(armorItem);
+                    boolean isElytra = armorItem.is(Items.ELYTRA);
+
+                    if (isElytra) {
+                        if (!ConfigHandler.Common.allowElytraDrops()) {
+                            return Pair.of(null, null);
+                        }
+                    }
 
                     if (equipable != null) {
                         return Pair.of(equipable.getEquipmentSlot(), armorItem);
