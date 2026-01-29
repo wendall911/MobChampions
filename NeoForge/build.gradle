@@ -35,6 +35,8 @@ dependencies {
 
     // Testing mods
     //runtimeOnly "curse.maven:mod-XXX:XXX"
+    //runtimeOnly "curse.maven:puzzleslib-495476:7436985"
+    //runtimeOnly "curse.maven:easy_anvils-682567:7345077"
     runtimeOnly "curse.maven:jade-324717:${jade_neoforge_version}"
 }
 

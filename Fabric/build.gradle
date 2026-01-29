@@ -27,6 +27,9 @@ dependencies {
 
     // Testing Mods
     //modRuntimeOnly "curse.maven:mod-XXX:XXX"
+    //modRuntimeOnly "curse.maven:puzzleslib-495476:7436986"
+    //modRuntimeOnly "curse.maven:forge_config_api-547434:7337130"
+    //modRuntimeOnly "curse.maven:easy_anvils-682567:7345078"
     modRuntimeOnly "curse.maven:jade-324717:${jade_fabric_version}"
 }
 
