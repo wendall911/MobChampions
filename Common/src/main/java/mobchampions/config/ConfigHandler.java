@@ -566,6 +566,7 @@ public class ConfigHandler {
         private final WhiteNoiseConfigSpec.DoubleValue legendaryExperienceMultiplier;
         private final WhiteNoiseConfigSpec.DoubleValue standardArmorDropChance;
         private final WhiteNoiseConfigSpec.DoubleValue standardWeaponDropChance;
+        private final WhiteNoiseConfigSpec.BooleanValue allowElytraDrops;
 
         public Common(WhiteNoiseConfigSpec.Builder builder) {
 
@@ -777,6 +778,10 @@ public class ConfigHandler {
             standardArmorDropChance = builder
                 .comment(getTranslation("standardarmordropchance"))
                 .defineInRange("standardArmorDropChance", 0.0, 0.0, 1.0);
+
+            allowElytraDrops = builder
+                .comment(getTranslation("allowelytradrops"))
+                .define("allowElytraDrops", true);
         }
 
         private static Supplier<List<? extends String>> getFields(String[] strings) {
@@ -1059,6 +1064,10 @@ public class ConfigHandler {
             return COMMON.standardArmorDropChance.get();
         }
 
+        public static boolean allowElytraDrops() {
+            return COMMON.allowElytraDrops.get();
+        }
+
         /*
          * Calculate the chance that a mob champion of the given rank will drop loot.
          * This is calculated as:
@@ -1073,12 +1082,16 @@ public class ConfigHandler {
                 case LEGENDARY -> COMMON.legendaryWeight.get();
                 default -> 0;
              };
+             int totalWeight = Common.getTotalWeight();
 
-             if (weight == 0 || Common.getTotalWeight() == 0) {
+             if (weight == 0 || totalWeight == 0) {
                 return 0F;
              }
+             else if (weight >= totalWeight) {
+                return 1F;
+             }
 
-             return 1F - ((float) weight / (float) Common.getTotalWeight());
+             return 1F - ((float) weight / (float) totalWeight);
         }
 
     }

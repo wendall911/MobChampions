@@ -13,6 +13,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -77,7 +78,18 @@ public abstract class LivingEntityMixin extends Entity {
                         livingEntity.spawnAtLocation(level, itemStack);
                     });
                     wearableLootTable.getRandomItems(params).forEach(itemStack -> {
-                        livingEntity.spawnAtLocation(level, itemStack);
+                        boolean isElytra = itemStack.is(Items.ELYTRA);
+                        boolean dropWearable = true;
+
+                        if (isElytra) {
+                            if (!ConfigHandler.Common.allowElytraDrops()) {
+                                dropWearable = false;
+                            }
+                        }
+
+                        if (dropWearable) {
+                            livingEntity.spawnAtLocation(level, itemStack);
+                        }
                     });
                     genericLootTable.getRandomItems(params).forEach(itemStack -> {
                         livingEntity.spawnAtLocation(level, itemStack);
