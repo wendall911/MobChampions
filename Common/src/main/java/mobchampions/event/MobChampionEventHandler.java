@@ -50,7 +50,7 @@ public class MobChampionEventHandler {
                         List<ServerPlayer> list = livingEntity.level().getEntitiesOfClass(ServerPlayer.class, aabb, player -> true);
 
                         for (ServerPlayer serverPlayer : list) {
-                            serverPlayer.displayClientMessage(
+                            serverPlayer.sendSystemMessage(
                                 Component.translatable(
                                     Translations.ANNOUNCEMENT_KEY + "spawn",
                                     Component.translatable(

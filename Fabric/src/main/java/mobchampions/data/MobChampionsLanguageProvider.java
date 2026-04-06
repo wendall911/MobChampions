@@ -2,7 +2,7 @@ package mobchampions.data;
 
 import java.util.concurrent.CompletableFuture;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 
 import net.minecraft.core.HolderLookup;
@@ -12,7 +12,7 @@ import mobchampions.MobChampions;
 
 public class MobChampionsLanguageProvider extends FabricLanguageProvider {
 
-    protected MobChampionsLanguageProvider(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryFuture) {
+    protected MobChampionsLanguageProvider(FabricPackOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryFuture) {
         super(dataOutput, "en_us", registryFuture);
     }
 

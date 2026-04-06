@@ -19,8 +19,8 @@ public class MobChampionsFabric implements ModInitializer {
     public void onInitialize() {
         registryInit();
         MobChampions.init();
-        PayloadTypeRegistry.playS2C().register(LaunchFireworksPacket.TYPE, LaunchFireworksPacket.STREAM_CODEC);
-        PayloadTypeRegistry.playS2C().register(SyncMobChampionData.TYPE, SyncMobChampionData.STREAM_CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(LaunchFireworksPacket.TYPE, LaunchFireworksPacket.STREAM_CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(SyncMobChampionData.TYPE, SyncMobChampionData.STREAM_CODEC);
     }
 
     private void registryInit() {

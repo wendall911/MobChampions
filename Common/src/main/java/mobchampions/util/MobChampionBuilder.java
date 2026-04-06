@@ -273,9 +273,9 @@ public class MobChampionBuilder {
             Level level = entity.level();
 
             if (level instanceof ServerLevel serverLevel) {
-                DifficultyInstance difficultyInstance = new DifficultyInstance(serverLevel.getDifficulty(), serverLevel.getDayTime(), 0, 0);
+                DifficultyInstance difficultyInstance = new DifficultyInstance(serverLevel.getDifficulty(), serverLevel.getDefaultClockTime(), 0, 0);
 
-                enchantSpawnedWeapon(mob, rank, serverLevel, RandomSource.createNewThreadLocalInstance(), difficultyInstance);
+                enchantSpawnedWeapon(mob, rank, serverLevel, RandomSource.createThreadLocalInstance(), difficultyInstance);
             }
 
             if (hasLootTableWeapon) {
@@ -358,11 +358,11 @@ public class MobChampionBuilder {
             Level level = entity.level();
 
             if (level instanceof ServerLevel serverLevel) {
-                DifficultyInstance difficultyInstance = new DifficultyInstance(serverLevel.getDifficulty(), serverLevel.getDayTime(), 0, 0);
+                DifficultyInstance difficultyInstance = new DifficultyInstance(serverLevel.getDifficulty(), serverLevel.getDefaultClockTime(), 0, 0);
 
                 for (EquipmentSlot slot : getArmorSlots()) {
                     if (!entity.getItemBySlot(slot).isEmpty()) {
-                        enchantSpawnedArmor(mob, rank, serverLevel, RandomSource.createNewThreadLocalInstance(), slot, difficultyInstance);
+                        enchantSpawnedArmor(mob, rank, serverLevel, RandomSource.createThreadLocalInstance(), slot, difficultyInstance);
                         if (slot == lootTableArmorSlot) {
                             mob.setDropChance(slot, ConfigHandler.Common.getLootDropChance(rank));
                         }
