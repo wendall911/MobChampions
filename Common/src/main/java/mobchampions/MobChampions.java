@@ -31,7 +31,7 @@ public class MobChampions {
     public static void initConfig() {
         ChampionStatsManager.init();
 
-        if (Services.PLATFORM.isPhysicalClient()) {
+        if (Services.WN_PLATFORM.isPhysicalClient()) {
             WhiteNoiseConfig clientConfig = WhiteNoiseConfigLoader.add(WhiteNoiseConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC, MODID);
             clientConfig.addLoadListener((config, flag) -> ConfigHandler.clientInit());
         }
