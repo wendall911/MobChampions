@@ -3,7 +3,7 @@ package mobchampions.data.loot;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.HolderLookup;
@@ -44,7 +44,7 @@ public class MobChampionsWeaponLoot implements LootTableSubProvider {
     }
 
     @Override
-    public void generate(@NotNull BiConsumer<ResourceKey<LootTable>, Builder> consumer) {
+    public void generate(@NonNull BiConsumer<ResourceKey<LootTable>, Builder> consumer) {
         generateUncommonWeaponLoot(consumer);
         generateRareWeaponLoot(consumer);
         generateEpicWeaponLoot(consumer);

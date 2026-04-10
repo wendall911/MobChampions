@@ -1,6 +1,6 @@
 package mobchampions.components;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,24 +16,24 @@ import mobchampions.network.MobChampionData;
 public class ComponentMobChampionData extends MobChampion implements Component, AutoSyncedComponent {
 
     @Override
-    public void readData(@NotNull ValueInput valueInput) {
+    public void readData(@NonNull ValueInput valueInput) {
         this.read(valueInput);
     }
 
     @Override
-    public void writeData(@NotNull ValueOutput valueOutput) {
+    public void writeData(@NonNull ValueOutput valueOutput) {
         this.write(valueOutput);
     }
 
     @Override
-    public void writeSyncPacket(RegistryFriendlyByteBuf buf, ServerPlayer recipient) {
+    public void writeSyncPacket(@NonNull RegistryFriendlyByteBuf buf, @NonNull ServerPlayer recipient) {
         MobChampionData mobChampionData = new MobChampionData(getEntityId(), getRank());
 
         mobChampionData.write(buf);
     }
 
     @Override
-    public void applySyncPacket(RegistryFriendlyByteBuf buf) {
+    public void applySyncPacket(@NonNull RegistryFriendlyByteBuf buf) {
         MobChampionData mobChampionData = new MobChampionData(buf);
 
         this.setEntityId(mobChampionData.entityId);

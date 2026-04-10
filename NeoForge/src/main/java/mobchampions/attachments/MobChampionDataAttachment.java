@@ -2,7 +2,7 @@ package mobchampions.attachments;
 
 import java.util.Optional;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.storage.ValueInput;
@@ -23,12 +23,12 @@ public class MobChampionDataAttachment {
         public MobChampionDataProvider() {}
 
         @Override
-        public void serialize(@NotNull ValueOutput valueOutput) {
+        public void serialize(@NonNull ValueOutput valueOutput) {
             write(valueOutput);
         }
 
         @Override
-        public void deserialize(@NotNull ValueInput valueInput) {
+        public void deserialize(@NonNull ValueInput valueInput) {
             read(valueInput);
         }
 

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -62,14 +62,14 @@ public class MobChampionsWearableLoot implements LootTableSubProvider {
     }
 
     @Override
-    public void generate(@NotNull BiConsumer<ResourceKey<LootTable>, Builder> consumer) {
+    public void generate(@NonNull BiConsumer<ResourceKey<LootTable>, Builder> consumer) {
         generateUncommonWearableLoot(consumer);
         generateRareWearableLoot(consumer);
         generateEpicWearableLoot(consumer);
         generateLegendaryWearableLoot(consumer);
     }
 
-    private void generateUncommonWearableLoot(@NotNull BiConsumer<ResourceKey<LootTable>, Builder> consumer) {
+    private void generateUncommonWearableLoot(@NonNull BiConsumer<ResourceKey<LootTable>, Builder> consumer) {
         LootPool.Builder lootPool = LootPool.lootPool().setRolls(ConstantValue.exactly(1))
             .add(
                 LootTableHelper.addDyedItem(
@@ -121,7 +121,7 @@ public class MobChampionsWearableLoot implements LootTableSubProvider {
         );
     }
 
-    private void generateRareWearableLoot(@NotNull BiConsumer<ResourceKey<LootTable>, Builder> consumer) {
+    private void generateRareWearableLoot(@NonNull BiConsumer<ResourceKey<LootTable>, Builder> consumer) {
         LootPool.Builder lootPool = LootPool.lootPool().setRolls(ConstantValue.exactly(1))
             .add(
                 LootTableHelper.addItem(
@@ -236,7 +236,7 @@ public class MobChampionsWearableLoot implements LootTableSubProvider {
         );
     }
 
-    private void generateEpicWearableLoot(@NotNull BiConsumer<ResourceKey<LootTable>, Builder> consumer) {
+    private void generateEpicWearableLoot(@NonNull BiConsumer<ResourceKey<LootTable>, Builder> consumer) {
         LootPool.Builder lootPool = LootPool.lootPool().setRolls(ConstantValue.exactly(1));
 
         List<? extends LootPoolSingletonContainer.Builder<?>> diamondArmorSet = LootTableHelper.createArmorSet(
@@ -265,7 +265,7 @@ public class MobChampionsWearableLoot implements LootTableSubProvider {
         );
     }
 
-    private void generateLegendaryWearableLoot(@NotNull BiConsumer<ResourceKey<LootTable>, Builder> consumer) {
+    private void generateLegendaryWearableLoot(@NonNull BiConsumer<ResourceKey<LootTable>, Builder> consumer) {
         LootPool.Builder lootPool = LootPool.lootPool().setRolls(ConstantValue.exactly(1))
             .add(
                 LootTableHelper.addItem(

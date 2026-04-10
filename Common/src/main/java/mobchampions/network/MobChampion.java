@@ -1,6 +1,6 @@
 package mobchampions.network;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.storage.ValueInput;
@@ -32,7 +32,7 @@ public class MobChampion implements IMobChampion {
     }
 
     @Override
-    public ValueOutput write(@NotNull ValueOutput valueOutput) {
+    public ValueOutput write(@NonNull ValueOutput valueOutput) {
         valueOutput.putInt("entityId", this.getEntityId());
         valueOutput.putInt("rank", this.getRank().ordinal());
 
@@ -40,7 +40,7 @@ public class MobChampion implements IMobChampion {
     }
 
     @Override
-    public void read(@NotNull ValueInput valueInput) {
+    public void read(@NonNull ValueInput valueInput) {
         this.setEntityId(valueInput.getIntOr("entityId", -1));
         this.setRank(Rank.values()[valueInput.getIntOr("rank", 0)]);
     }

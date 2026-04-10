@@ -3,7 +3,7 @@ package mobchampions.data.loot;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -15,7 +15,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.Potions;
@@ -29,10 +28,7 @@ import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer
 import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetComponentsFunction;
-import net.minecraft.world.level.storage.loot.functions.SetCustomDataFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.functions.SetNameFunction;
-import net.minecraft.world.level.storage.loot.functions.SetNameFunction.Target;
 import net.minecraft.world.level.storage.loot.functions.SetPotionFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
@@ -52,7 +48,7 @@ public class MobChampionsGenericLoot implements LootTableSubProvider {
     }
 
     @Override
-    public void generate(@NotNull BiConsumer<ResourceKey<LootTable>, Builder> consumer) {
+    public void generate(@NonNull BiConsumer<ResourceKey<LootTable>, Builder> consumer) {
         generateUncommonGenericLoot(consumer);
         generateRareGenericLoot(consumer);
         generateEpicGenericLoot(consumer);
