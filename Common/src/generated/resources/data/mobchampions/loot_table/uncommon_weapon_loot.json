@@ -2,7 +2,6 @@
   "type": "minecraft:equipment",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -44,7 +43,6 @@
               ]
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:unbreaking": {
                   "type": "minecraft:uniform",
@@ -80,7 +78,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:knockback": {
                   "type": "minecraft:uniform",
@@ -116,7 +113,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:looting": {
                   "type": "minecraft:uniform",
@@ -152,7 +148,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:fire_aspect": {
                   "type": "minecraft:uniform",
@@ -188,7 +183,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:multishot": 1.0,
                 "minecraft:piercing": {
@@ -225,7 +219,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:smite": {
                   "type": "minecraft:uniform",
@@ -261,7 +254,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:efficiency": {
                   "type": "minecraft:uniform",
@@ -297,7 +289,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:efficiency": {
                   "type": "minecraft:uniform",

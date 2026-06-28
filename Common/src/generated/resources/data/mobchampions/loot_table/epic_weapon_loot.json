@@ -2,7 +2,6 @@
   "type": "minecraft:equipment",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -16,7 +15,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:looting": {
                   "type": "minecraft:uniform",
@@ -77,7 +75,6 @@
               ]
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:mending": 1.0,
                 "minecraft:unbreaking": 5.0
@@ -110,7 +107,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:riptide": {
                   "type": "minecraft:uniform",
@@ -146,7 +142,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:sharpness": 10.0,
                 "minecraft:vanishing_curse": 1.0
@@ -179,7 +174,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:loyalty": {
                   "type": "minecraft:uniform",

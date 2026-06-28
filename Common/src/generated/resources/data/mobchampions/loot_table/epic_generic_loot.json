@@ -1,7 +1,6 @@
 {
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -146,7 +145,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:protection": 1.0
               },

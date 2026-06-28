@@ -2,7 +2,6 @@
   "type": "minecraft:equipment",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -16,7 +15,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:sharpness": {
                   "type": "minecraft:uniform",
@@ -57,7 +55,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:efficiency": {
                   "type": "minecraft:uniform",
@@ -98,7 +95,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:efficiency": {
                   "type": "minecraft:uniform",
@@ -139,7 +135,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:fortune": {
                   "type": "minecraft:uniform",

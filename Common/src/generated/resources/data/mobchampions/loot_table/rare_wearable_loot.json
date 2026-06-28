@@ -2,7 +2,6 @@
   "type": "minecraft:equipment",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -16,7 +15,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:binding_curse": 1.0,
                 "minecraft:protection": {
@@ -53,7 +51,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:binding_curse": 1.0,
                 "minecraft:protection": {
@@ -90,7 +87,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:feather_falling": {
                   "type": "minecraft:uniform",
@@ -126,7 +122,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:soul_speed": {
                   "type": "minecraft:uniform",
@@ -163,7 +158,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:depth_strider": {
                   "type": "minecraft:uniform",
@@ -204,7 +198,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:depth_strider": {
                   "type": "minecraft:uniform",
@@ -245,7 +238,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:projectile_protection": {
                   "type": "minecraft:uniform",
@@ -281,7 +273,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:protection": {
                   "type": "minecraft:uniform",
@@ -331,7 +322,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:protection": {
                   "type": "minecraft:uniform",
@@ -381,7 +371,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:protection": {
                   "type": "minecraft:uniform",
@@ -431,7 +420,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:protection": {
                   "type": "minecraft:uniform",

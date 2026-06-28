@@ -2,7 +2,6 @@
   "type": "minecraft:equipment",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -16,7 +15,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:mending": 1.0,
                 "minecraft:sharpness": 5.0,
@@ -50,7 +48,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:infinity": 1.0,
                 "minecraft:looting": {

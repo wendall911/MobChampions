@@ -2,7 +2,6 @@
   "type": "minecraft:equipment",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -16,7 +15,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:blast_protection": {
                   "type": "minecraft:uniform",
@@ -76,7 +74,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:blast_protection": {
                   "type": "minecraft:uniform",
@@ -136,7 +133,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:blast_protection": {
                   "type": "minecraft:uniform",
@@ -196,7 +192,6 @@
               "target": "item_name"
             },
             {
-              "add": false,
               "enchantments": {
                 "minecraft:blast_protection": {
                   "type": "minecraft:uniform",
