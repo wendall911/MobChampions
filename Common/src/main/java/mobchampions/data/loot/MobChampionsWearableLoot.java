@@ -58,9 +58,6 @@ public class MobChampionsWearableLoot implements LootTableSubProvider {
         this.materialRegistry = lookupProvider.lookupOrThrow(Registries.TRIM_MATERIAL);
     }
 
-    private void init() {
-    }
-
     @Override
     public void generate(@NonNull BiConsumer<ResourceKey<LootTable>, Builder> consumer) {
         generateUncommonWearableLoot(consumer);
