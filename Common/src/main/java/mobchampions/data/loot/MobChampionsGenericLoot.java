@@ -162,7 +162,7 @@ public class MobChampionsGenericLoot implements LootTableSubProvider {
                         createBookWithLevels(50, 30, 50)
                     )
                     .add(
-                        createItemDrop(Items.DIAMOND, 50, 2, 5)
+                        createBookWithLevels(50, 30, 50)
                     )
                     .add(
                         createPotion(
