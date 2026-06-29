@@ -33,16 +33,26 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": true,
-              "count": {
+              "function": "minecraft:enchant_with_levels",
+              "levels": {
                 "type": "minecraft:uniform",
-                "max": 5.0,
-                "min": 2.0
+                "max": 50.0,
+                "min": 30.0
               },
-              "function": "minecraft:set_count"
+              "options": "#minecraft:on_random_loot"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "dark_green",
+                  "translate": "mobchampions.lootitem.title"
+                }
+              ],
+              "mode": "append"
             }
           ],
-          "name": "minecraft:diamond",
+          "name": "minecraft:book",
           "weight": 50
         },
         {
